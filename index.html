@@ -152,13 +152,22 @@
   .basket-head{ padding:26px 26px 0; display:flex; justify-content:space-between; align-items:baseline; }
   .basket-name{ font-size:24px; font-weight:700; }
   .basket-price{
-    font-family:var(--font-display); font-size:42px; font-weight:900; color:var(--tomato);
+    font-family:var(--font-display); font-size:58px; font-weight:900; color:var(--tomato);
+    display:inline-block; transform:rotate(-3deg) scale(1);
     text-shadow:
       1px 1px 0 var(--ink),
       2px 2px 0 var(--ink),
       3px 3px 0 var(--ink),
-      4px 4px 6px rgba(0,0,0,0.25);
-    letter-spacing:-0.01em;
+      4px 4px 0 var(--ink),
+      5px 5px 0 var(--ink),
+      6px 6px 10px rgba(0,0,0,0.35);
+    letter-spacing:-0.02em;
+    -webkit-text-stroke:1px var(--ink);
+    animation:pricePop 2.6s ease-in-out infinite;
+  }
+  @keyframes pricePop{
+    0%,100%{ transform:rotate(-3deg) scale(1); }
+    50%{ transform:rotate(-3deg) scale(1.06); }
   }
   .basket-card.featured .basket-price{
     color:var(--mustard);
@@ -166,10 +175,19 @@
       1px 1px 0 var(--green),
       2px 2px 0 var(--green),
       3px 3px 0 var(--green),
-      4px 4px 6px rgba(0,0,0,0.35);
+      4px 4px 0 var(--green),
+      5px 5px 0 var(--green),
+      6px 6px 10px rgba(0,0,0,0.4);
+    -webkit-text-stroke:1px var(--green);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .basket-price{ animation:none; }
   }
   @media (max-width:560px){
-    .basket-price{ font-size:34px; text-shadow:1px 1px 0 var(--ink),2px 2px 0 var(--ink),3px 3px 4px rgba(0,0,0,0.25); }
+    .basket-price{
+      font-size:42px;
+      text-shadow:1px 1px 0 var(--ink),2px 2px 0 var(--ink),3px 3px 0 var(--ink),4px 4px 6px rgba(0,0,0,0.3);
+    }
   }
   .basket-for{ padding:6px 26px 20px; font-size:14.5px; }
   .basket-body{ padding:0 26px 28px; display:flex; flex-direction:column; flex:1; }
@@ -1096,19 +1114,15 @@
       return;
     }
 
-    let msg = 'PEDIDO — COMPRA CON MISTI\n';
-    msg += `ID: ${celular}\n`;
     let total = 0;
-    const multiple = ids.length > 1;
-    ids.forEach((id, i) => {
+    const productos = ids.map((id) => {
       const item = carrito[id];
       const subtotal = item.qty * item.price;
       total += subtotal;
-      const etiqueta = multiple ? `Producto ${i + 1}` : 'Producto';
-      msg += `${etiqueta}: ${item.name} | Cantidad: ${item.qty} | Precio: S/ ${subtotal.toFixed(2)}\n`;
-    });
-    msg += `Total: S/ ${total.toFixed(2)}\n`;
-    msg += 'Solicitud: Confirmar día de entrega y coordinar pago';
+      return `${item.name} (x${item.qty}) - S/ ${subtotal.toFixed(2)}`;
+    }).join('  ▸  ');
+
+    const msg = `🧺 PEDIDO - COMPRA CON MISTI  ▸  Cliente: ${celular}  ▸  Producto(s): ${productos}  ▸  TOTAL: S/ ${total.toFixed(2)}  ▸  Solicitud: Confirmar día de entrega y coordinar pago.`;
 
     const url = 'https://wa.me/51977101608?text=' + encodeURIComponent(msg);
     window.open(url, '_blank');
