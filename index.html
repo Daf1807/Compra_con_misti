@@ -151,7 +151,26 @@
   .basket-card.featured .basket-extra{ color:#C7D6C9; }
   .basket-head{ padding:26px 26px 0; display:flex; justify-content:space-between; align-items:baseline; }
   .basket-name{ font-size:24px; font-weight:700; }
-  .basket-price{ font-family:var(--font-display); font-size:30px; font-weight:700; color:var(--tomato); }
+  .basket-price{
+    font-family:var(--font-display); font-size:42px; font-weight:900; color:var(--tomato);
+    text-shadow:
+      1px 1px 0 var(--ink),
+      2px 2px 0 var(--ink),
+      3px 3px 0 var(--ink),
+      4px 4px 6px rgba(0,0,0,0.25);
+    letter-spacing:-0.01em;
+  }
+  .basket-card.featured .basket-price{
+    color:var(--mustard);
+    text-shadow:
+      1px 1px 0 var(--green),
+      2px 2px 0 var(--green),
+      3px 3px 0 var(--green),
+      4px 4px 6px rgba(0,0,0,0.35);
+  }
+  @media (max-width:560px){
+    .basket-price{ font-size:34px; text-shadow:1px 1px 0 var(--ink),2px 2px 0 var(--ink),3px 3px 4px rgba(0,0,0,0.25); }
+  }
   .basket-for{ padding:6px 26px 20px; font-size:14.5px; }
   .basket-body{ padding:0 26px 28px; display:flex; flex-direction:column; flex:1; }
   .basket-table{ width:100%; border-collapse:collapse; margin-bottom:16px; }
@@ -253,6 +272,10 @@
   .qty-btn:hover{ background:var(--ink); color:var(--cream); }
   .cart-item-qty{ min-width:18px; text-align:center; font-weight:800; }
   .cart-total-row{ display:flex; justify-content:space-between; align-items:center; padding:18px 0 6px; font-size:19px; font-weight:800; border-top:2px solid var(--ink); margin-top:8px; }
+  .cart-total-row #cartTotalBig{
+    font-family:var(--font-display); font-size:28px; font-weight:900; color:var(--tomato);
+    text-shadow:1px 1px 0 var(--ink),2px 2px 0 var(--ink),3px 3px 4px rgba(0,0,0,0.25);
+  }
   .btn-whatsapp{
     margin-top:18px; width:100%; background:#25D366; color:#133322; border:none;
     padding:16px 18px; font-family:var(--font-body); font-weight:800; font-size:16px;
@@ -287,12 +310,18 @@
   }
   .auth-user-name{ font-weight:800; font-size:14.5px; }
   .auth-user-phone{ font-size:13.5px; color:var(--ink-soft,#5B4E3B); }
-  .auth-user-actions{ display:flex; gap:14px; margin-top:6px; }
   .auth-link{
-    background:none; border:none; padding:0; font-size:13px; font-weight:800;
+    background:none; border:none; padding:0; margin-top:8px; font-size:13px; font-weight:800;
     color:var(--tomato); text-decoration:underline; text-underline-offset:3px; cursor:pointer;
+    display:inline-block;
   }
   .auth-link:hover{ color:var(--tomato-deep); }
+  .auth-logout-link{
+    display:block; margin:10px auto 0; background:none; border:none; padding:6px 10px;
+    font-size:11.5px; font-weight:600; color:var(--ink-soft,#8a8a8a); opacity:0.6;
+    text-decoration:underline; text-underline-offset:2px; cursor:pointer;
+  }
+  .auth-logout-link:hover{ opacity:1; }
   .auth-phone-edit{ margin-top:10px; }
   .btn-save-phone{
     margin-top:8px; width:100%; background:var(--green); color:var(--cream); border:none;
@@ -831,12 +860,9 @@
       <!-- Estado: autenticado, con telefono registrado -->
       <div id="authReady" class="auth-hidden">
         <div class="auth-user">
-          <span class="auth-user-name">👤 Hola, <span id="authUserName"></span></span>
-          <span class="auth-user-phone">WhatsApp: <span id="authUserPhone"></span></span>
-          <div class="auth-user-actions">
-            <button class="auth-link" id="btnEditPhone" type="button">Editar número</button>
-            <button class="auth-link" id="btnLogout" type="button">Cerrar sesión</button>
-          </div>
+          <span class="auth-user-name">👋 ¡Hola, <span id="authUserName"></span>!</span>
+          <span class="auth-user-phone">Tu ID: <span id="authUserPhone"></span></span>
+          <button class="auth-link" id="btnEditPhone" type="button">Editar número</button>
         </div>
         <div class="auth-phone-edit auth-hidden" id="authPhoneEditBox">
           <input type="tel" id="phoneInputEdit" inputmode="numeric" placeholder="Ej: 987654321" />
@@ -846,6 +872,7 @@
 
     </div>
     <button class="btn-whatsapp" id="btnWhatsapp">Confirmar pedido por WhatsApp</button>
+    <button class="auth-logout-link auth-hidden" id="btnLogout" type="button">Cerrar sesión</button>
     <p class="cart-note">Te escribimos por WhatsApp para confirmar el día de entrega y coordinar el pago.</p>
   </div>
 </div>
@@ -892,10 +919,12 @@
   const phoneInputNew   = document.getElementById('phoneInputNew');
   const phoneInputEdit  = document.getElementById('phoneInputEdit');
 
+  const btnLogoutLink = document.getElementById('btnLogout');
   function showAuthState(state){
     authLoggedOut.classList.toggle('auth-hidden', state !== 'loggedOut');
     authNeedsPhone.classList.toggle('auth-hidden', state !== 'needsPhone');
     authReady.classList.toggle('auth-hidden', state !== 'ready');
+    btnLogoutLink.classList.toggle('auth-hidden', state !== 'ready');
     if (state !== 'ready') authPhoneEditBox.classList.add('auth-hidden');
   }
 
@@ -1083,6 +1112,12 @@
 
     const url = 'https://wa.me/51977101608?text=' + encodeURIComponent(msg);
     window.open(url, '_blank');
+
+    // Vaciar el carrito tras confirmar, para evitar que el pedido se duplique
+    // si el cliente quiere hacer una compra nueva.
+    ids.forEach(id => delete carrito[id]);
+    render();
+    document.getElementById('cartPanel').classList.remove('open');
   });
 
   render();
