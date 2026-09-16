@@ -919,9 +919,6 @@
   const db = getFirestore(fbApp);
   const googleProvider = new GoogleAuthProvider();
 
-  // Fuente principal de identidad: Firebase Auth UID + Firestore clientes/{uid}
-  // localStorage se usa SOLO como ayuda visual opcional (último celular visto en este dispositivo),
-  // nunca como fuente de verdad. Si hay conflicto, siempre gana Firestore.
   const CEL_KEY = 'misti_cliente_cel';
 
   let clienteUID = null;
@@ -981,7 +978,6 @@
       localStorage.setItem(CEL_KEY, clienteTelefono);
       showAuthState('ready');
     } else {
-      // Ayuda visual opcional: prellenar con el último celular visto en este dispositivo
       const celGuardado = localStorage.getItem(CEL_KEY);
       if (celGuardado) phoneInputNew.value = celGuardado;
       showAuthState('needsPhone');
@@ -1045,12 +1041,14 @@
     carrito[id].qty += 1;
     render();
   }
-  function changeQty(id, delta){
+
+  // Función global para que los botones generados dinámicamente puedan llamarla
+  window.changeQty = function(id, delta){
     if (!carrito[id]) return;
     carrito[id].qty += delta;
     if (carrito[id].qty <= 0) delete carrito[id];
     render();
-  }
+  };
 
   function render(){
     const ids = Object.keys(carrito);
@@ -1075,13 +1073,22 @@
           <div class="cart-item-price">S/ ${item.price.toFixed(2)} c/u</div>
         </div>
         <div class="cart-item-controls">
-          <button class="qty-btn" onclick="changeQty('${id}',-1)">−</button>
+          <button class="qty-btn" data-action="decrease" data-id="${id}">−</button>
           <span class="cart-item-qty">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty('${id}',1)">+</button>
+          <button class="qty-btn" data-action="increase" data-id="${id}">+</button>
         </div>
       </div>`;
     }).join('');
   }
+
+  // Delegación de eventos: funciona aunque el HTML se regenere
+  document.getElementById('cartItems').addEventListener('click', (e) => {
+    const btn = e.target.closest('.qty-btn');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (btn.dataset.action === 'increase') window.changeQty(id, 1);
+    else if (btn.dataset.action === 'decrease') window.changeQty(id, -1);
+  });
 
   document.querySelectorAll('.btn-add-basket').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1122,13 +1129,14 @@
       return `${item.name} (x${item.qty}) - S/ ${subtotal.toFixed(2)}`;
     }).join('  ▸  ');
 
-    const msg = `🧺 PEDIDO - COMPRA CON MISTI  ▸  Cliente: ${celular}  ▸  Producto(s): ${productos}  ▸  TOTAL: S/ ${total.toFixed(2)}  ▸  Solicitud: Confirmar día de entrega y coordinar pago.`;
+    const nombreMostrar = clienteNombre || 'Cliente';
+    const idMostrar = '001' + celular;
+
+    const msg = `🧺 PEDIDO - COMPRA CON MISTI  ▸  Cliente: ${nombreMostrar}  ▸  ID: ${idMostrar}  ▸  Producto(s): ${productos}  ▸  TOTAL: S/ ${total.toFixed(2)}  ▸  Solicitud: Confirmar día de entrega y coordinar pago.`;
 
     const url = 'https://wa.me/51977101608?text=' + encodeURIComponent(msg);
     window.open(url, '_blank');
 
-    // Vaciar el carrito tras confirmar, para evitar que el pedido se duplique
-    // si el cliente quiere hacer una compra nueva.
     ids.forEach(id => delete carrito[id]);
     render();
     document.getElementById('cartPanel').classList.remove('open');
