@@ -260,6 +260,46 @@
   }
   .btn-whatsapp:hover{ background:#1EBE5A; }
   .cart-note{ font-size:13.5px; color:var(--ink-soft,#5B4E3B); text-align:center; margin-top:12px; }
+  .cart-phone-row{ margin-top:14px; }
+  .cart-phone-row label{ display:block; font-size:13.5px; font-weight:700; margin-bottom:6px; }
+  .cart-phone-row input{
+    width:100%; box-sizing:border-box; padding:12px 14px; border-radius:12px;
+    border:2px solid var(--ink); font-size:16px; font-family:inherit; outline:none;
+  }
+  .cart-phone-row input:focus{ border-color:var(--green,#2E7D32); }
+  .cart-phone-hint{ font-size:12px; color:var(--ink-soft,#5B4E3B); margin-top:6px; }
+
+  /* ===== AUTENTICACION GOOGLE / CLIENTE ===== */
+  .auth-box{ margin-top:14px; }
+  .auth-hidden{ display:none !important; }
+  .btn-google{
+    width:100%; box-sizing:border-box; display:flex; align-items:center; justify-content:center;
+    gap:10px; background:var(--cream); color:var(--ink); border:2px solid var(--ink);
+    padding:12px 16px; font-family:var(--font-body); font-weight:800; font-size:15px;
+    border-radius:12px; cursor:pointer; transition:background .15s ease;
+  }
+  .btn-google:hover{ background:var(--ink); color:var(--cream); }
+  .btn-google svg{ width:18px; height:18px; flex:none; }
+  .auth-note{ font-size:13.5px; font-weight:700; margin-bottom:8px; }
+  .auth-user{
+    display:flex; flex-direction:column; gap:4px; padding:12px 14px; border-radius:12px;
+    border:2px solid var(--ink); background:rgba(19,51,34,0.05);
+  }
+  .auth-user-name{ font-weight:800; font-size:14.5px; }
+  .auth-user-phone{ font-size:13.5px; color:var(--ink-soft,#5B4E3B); }
+  .auth-user-actions{ display:flex; gap:14px; margin-top:6px; }
+  .auth-link{
+    background:none; border:none; padding:0; font-size:13px; font-weight:800;
+    color:var(--tomato); text-decoration:underline; text-underline-offset:3px; cursor:pointer;
+  }
+  .auth-link:hover{ color:var(--tomato-deep); }
+  .auth-phone-edit{ margin-top:10px; }
+  .btn-save-phone{
+    margin-top:8px; width:100%; background:var(--green); color:var(--cream); border:none;
+    padding:12px 16px; font-family:var(--font-body); font-weight:800; font-size:14.5px;
+    border-radius:12px; cursor:pointer;
+  }
+  .btn-save-phone:hover{ background:var(--green-2); }
 
   /* ===== MAS PRODUCTOS ===== */
   .grow-block{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
@@ -770,12 +810,187 @@
       <span>Total</span>
       <span id="cartTotalBig">S/ 0.00</span>
     </div>
+    <div class="auth-box" id="authBox">
+
+      <!-- Estado: no autenticado -->
+      <div id="authLoggedOut">
+        <button class="btn-google" id="btnGoogleLogin" type="button">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.6 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.6 6.1 29.6 4 24 4 16 4 9 8.6 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.1-5.1l-6.5-5.5C29.6 35.1 27 36 24 36c-5.3 0-9.7-3.4-11.3-8l-6.6 5.1C9 39.4 16 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4.1 5.5l6.5 5.5C41.4 35.6 45 30.3 45 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+          Continuar con Google
+        </button>
+        <p class="cart-phone-hint">Inicia sesión con tu cuenta de Google para guardar tu WhatsApp y no volver a escribirlo.</p>
+      </div>
+
+      <!-- Estado: autenticado, sin telefono registrado -->
+      <div id="authNeedsPhone" class="auth-hidden">
+        <p class="auth-note">Para realizar tu primer pedido, registra tu número de WhatsApp</p>
+        <input type="tel" id="phoneInputNew" inputmode="numeric" placeholder="Ej: 987654321" />
+        <button class="btn-save-phone" id="btnSavePhoneNew" type="button">Registrar número de WhatsApp</button>
+      </div>
+
+      <!-- Estado: autenticado, con telefono registrado -->
+      <div id="authReady" class="auth-hidden">
+        <div class="auth-user">
+          <span class="auth-user-name">👤 Hola, <span id="authUserName"></span></span>
+          <span class="auth-user-phone">WhatsApp: <span id="authUserPhone"></span></span>
+          <div class="auth-user-actions">
+            <button class="auth-link" id="btnEditPhone" type="button">Editar número</button>
+            <button class="auth-link" id="btnLogout" type="button">Cerrar sesión</button>
+          </div>
+        </div>
+        <div class="auth-phone-edit auth-hidden" id="authPhoneEditBox">
+          <input type="tel" id="phoneInputEdit" inputmode="numeric" placeholder="Ej: 987654321" />
+          <button class="btn-save-phone" id="btnSavePhoneEdit" type="button">Guardar número</button>
+        </div>
+      </div>
+
+    </div>
     <button class="btn-whatsapp" id="btnWhatsapp">Confirmar pedido por WhatsApp</button>
     <p class="cart-note">Te escribimos por WhatsApp para confirmar el día de entrega y coordinar el pago.</p>
   </div>
 </div>
 
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc, setDoc, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  // ===== FIREBASE (proyecto: compra-con-misti) =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyCGc2HtXQT8sqq76-kARtwTnVgg1WmDSwM",
+    authDomain: "compra-con-misti.firebaseapp.com",
+    projectId: "compra-con-misti",
+    storageBucket: "compra-con-misti.firebasestorage.app",
+    messagingSenderId: "720786788852",
+    appId: "1:720786788852:web:ec6e45e4368746b107e9a1",
+    measurementId: "G-WYEFXM5BXG"
+  };
+  const fbApp = initializeApp(firebaseConfig);
+  const auth = getAuth(fbApp);
+  const db = getFirestore(fbApp);
+  const googleProvider = new GoogleAuthProvider();
+
+  // Fuente principal de identidad: Firebase Auth UID + Firestore clientes/{uid}
+  // localStorage se usa SOLO como ayuda visual opcional (último celular visto en este dispositivo),
+  // nunca como fuente de verdad. Si hay conflicto, siempre gana Firestore.
+  const CEL_KEY = 'misti_cliente_cel';
+
+  let clienteUID = null;
+  let clienteNombre = '';
+  let clienteTelefono = '';
+
+  const authLoggedOut   = document.getElementById('authLoggedOut');
+  const authNeedsPhone  = document.getElementById('authNeedsPhone');
+  const authReady       = document.getElementById('authReady');
+  const authPhoneEditBox= document.getElementById('authPhoneEditBox');
+  const authUserName    = document.getElementById('authUserName');
+  const authUserPhone   = document.getElementById('authUserPhone');
+  const phoneInputNew   = document.getElementById('phoneInputNew');
+  const phoneInputEdit  = document.getElementById('phoneInputEdit');
+
+  function showAuthState(state){
+    authLoggedOut.classList.toggle('auth-hidden', state !== 'loggedOut');
+    authNeedsPhone.classList.toggle('auth-hidden', state !== 'needsPhone');
+    authReady.classList.toggle('auth-hidden', state !== 'ready');
+    if (state !== 'ready') authPhoneEditBox.classList.add('auth-hidden');
+  }
+
+  async function guardarTelefono(uid, telefono, nombre, email, esNuevo){
+    const datos = {
+      uid,
+      nombre: nombre || '',
+      email: email || '',
+      telefono,
+      actualizadoEn: serverTimestamp()
+    };
+    if (esNuevo) datos.creadoEn = serverTimestamp();
+    await setDoc(doc(db, 'clientes', uid), datos, { merge: true });
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      clienteUID = null;
+      clienteNombre = '';
+      clienteTelefono = '';
+      showAuthState('loggedOut');
+      return;
+    }
+
+    clienteUID = user.uid;
+    clienteNombre = user.displayName || '';
+
+    const refCliente = doc(db, 'clientes', user.uid);
+    const snap = await getDoc(refCliente);
+
+    if (snap.exists() && snap.data().telefono) {
+      clienteTelefono = snap.data().telefono;
+      clienteNombre = snap.data().nombre || clienteNombre;
+      authUserName.textContent = clienteNombre || (user.email || 'Cliente');
+      authUserPhone.textContent = clienteTelefono;
+      localStorage.setItem(CEL_KEY, clienteTelefono);
+      showAuthState('ready');
+    } else {
+      // Ayuda visual opcional: prellenar con el último celular visto en este dispositivo
+      const celGuardado = localStorage.getItem(CEL_KEY);
+      if (celGuardado) phoneInputNew.value = celGuardado;
+      showAuthState('needsPhone');
+    }
+  });
+
+  document.getElementById('btnGoogleLogin').addEventListener('click', async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      console.error(err);
+      alert('No se pudo iniciar sesión con Google. Intenta nuevamente.');
+    }
+  });
+
+  document.getElementById('btnLogout').addEventListener('click', async () => {
+    await signOut(auth);
+  });
+
+  document.getElementById('btnSavePhoneNew').addEventListener('click', async () => {
+    const telefono = phoneInputNew.value.replace(/\s+/g, '').trim();
+    if (!telefono) {
+      alert('Por favor ingresa tu número de WhatsApp.');
+      phoneInputNew.focus();
+      return;
+    }
+    if (!clienteUID) return;
+    await guardarTelefono(clienteUID, telefono, clienteNombre, auth.currentUser?.email, true);
+    clienteTelefono = telefono;
+    authUserName.textContent = clienteNombre || (auth.currentUser?.email || 'Cliente');
+    authUserPhone.textContent = telefono;
+    localStorage.setItem(CEL_KEY, telefono);
+    showAuthState('ready');
+  });
+
+  document.getElementById('btnEditPhone').addEventListener('click', () => {
+    phoneInputEdit.value = clienteTelefono;
+    authPhoneEditBox.classList.remove('auth-hidden');
+    phoneInputEdit.focus();
+  });
+
+  document.getElementById('btnSavePhoneEdit').addEventListener('click', async () => {
+    const telefono = phoneInputEdit.value.replace(/\s+/g, '').trim();
+    if (!telefono) {
+      alert('Por favor ingresa tu número de WhatsApp.');
+      phoneInputEdit.focus();
+      return;
+    }
+    if (!clienteUID) return;
+    await guardarTelefono(clienteUID, telefono, clienteNombre, auth.currentUser?.email, false);
+    clienteTelefono = telefono;
+    authUserPhone.textContent = telefono;
+    localStorage.setItem(CEL_KEY, telefono);
+    authPhoneEditBox.classList.add('auth-hidden');
+  });
+
   const carrito = {};
 
   function addToCart(id, name, price){
@@ -842,16 +1057,29 @@
     const ids = Object.keys(carrito);
     if (ids.length === 0) return;
 
-    let msg = 'PEDIDO — COMPRA CON MISTI\n\n';
+    if (!clienteUID) {
+      alert('Por favor inicia sesión con Google antes de confirmar tu pedido.');
+      return;
+    }
+    const celular = clienteTelefono;
+    if (!celular) {
+      alert('Por favor registra tu número de WhatsApp antes de confirmar tu pedido.');
+      return;
+    }
+
+    let msg = 'PEDIDO — COMPRA CON MISTI\n';
+    msg += `ID: ${celular}\n`;
     let total = 0;
-    ids.forEach(id => {
+    const multiple = ids.length > 1;
+    ids.forEach((id, i) => {
       const item = carrito[id];
       const subtotal = item.qty * item.price;
       total += subtotal;
-      msg += `- ${item.name} x${item.qty} = S/ ${subtotal.toFixed(2)}\n`;
+      const etiqueta = multiple ? `Producto ${i + 1}` : 'Producto';
+      msg += `${etiqueta}: ${item.name} | Cantidad: ${item.qty} | Precio: S/ ${subtotal.toFixed(2)}\n`;
     });
-    msg += `\nTOTAL: S/ ${total.toFixed(2)}\n\n`;
-    msg += 'Quisiera confirmar el día de entrega y coordinar el pago.';
+    msg += `Total: S/ ${total.toFixed(2)}\n`;
+    msg += 'Solicitud: Confirmar día de entrega y coordinar pago';
 
     const url = 'https://wa.me/51977101608?text=' + encodeURIComponent(msg);
     window.open(url, '_blank');
