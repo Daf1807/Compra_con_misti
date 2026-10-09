@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#C7392B">
+<title>Compra con Misti — La despensa de El Misti, en tu casa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rojo-aji:#C7392B;
+    --rojo-aji-osc:#9E2A1F;
+    --naranja-zanah:#E8763A;
+    --miel:#E9A521;
+    --miel-suave:#F5D68A;
+    --verde-culantro:#3F7D3F;
+    --verde-hoja:#2E5E2E;
+    --crema:#FAF4E8;
+    --crema-2:#F0E6D2;
+    --blanco:#FFFDF9;
+    --carbon:#2B1810;
+    --texto:#3D2817;
+    --texto-suave:#7A5C47;
+    --texto-muy-suave:#A88A72;
+    --borde:#E5D5BE;
+    --borde-fuerte:#D4BFA0;
+    --sombra-sm:0 1px 2px rgba(43,24,16,0.06);
+    --sombra-md:0 4px 14px rgba(43,24,16,0.10);
+    --sombra-lg:0 14px 36px rgba(43,24,16,0.14);
+    --radio-sm:10px;
+    --radio:14px;
+    --radio-lg:20px;
+    --radio-full:999px;
+    --font-display:'Bricolage Grotesque', Georgia, serif;
+    --font-body:'Inter', system-ui, -apple-system, sans-serif;
+    --font-hand:'Caveat', cursive;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; color-scheme:light;}
+  body{
+    background:var(--crema);
+    background-image:
+      radial-gradient(circle at 15% 5%, rgba(233,165,33,0.06) 0%, transparent 45%),
+      radial-gradient(circle at 85% 95%, rgba(199,57,43,0.05) 0%, transparent 45%);
+    color:var(--texto);
+    font-family:var(--font-body);
+    font-size:15px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:110px;
+    min-height:100vh;
+  }
+  img{max-width:100%; display:block;}
+  button, input, select, textarea{font:inherit; color:inherit;}
+  button{cursor:pointer; border:none; background:none;}
+  a{color:inherit; text-decoration:none;}
+  ::selection{background:var(--rojo-aji); color:#fff;}
+  h1,h2,h3,h4{font-family:var(--font-display); font-weight:700; letter-spacing:-0.025em; line-height:1.1; color:var(--carbon);}
+
+  .wrap{width:100%; max-width:1140px; margin:0 auto; padding:0 18px;}
+  @media (min-width:640px){ .wrap{padding:0 26px;} }
+  @media (min-width:960px){ .wrap{padding:0 34px;} }
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  .nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,244,232,0.9);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--borde);
+  }
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; height:64px; gap:12px;}
+  .brand{display:flex; align-items:center; gap:11px;}
+  .brand-mark{
+    width:38px; height:38px; border-radius:50%;
+    background:var(--rojo-aji); color:var(--miel-suave);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:800; font-size:17px;
+    flex-shrink:0;
+    border:2px solid var(--carbon);
+    box-shadow:2px 2px 0 var(--carbon);
+    transition:transform .15s;
+  }
+  .brand:hover .brand-mark{transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--carbon);}
+  .brand-name{font-family:var(--font-display); font-weight:700; font-size:17px; letter-spacing:-0.02em; color:var(--carbon); line-height:1;}
+  .brand-sub{font-size:11px; color:var(--texto-suave); font-weight:500; margin-top:2px; letter-spacing:0.02em;}
+  .nav-links{display:none; list-style:none; gap:28px;}
+  .nav-links a{font-size:14px; font-weight:500; color:var(--texto-suave); transition:color .15s; position:relative;}
+  .nav-links a:hover{color:var(--rojo-aji);}
+  @media (min-width:820px){ .nav-links{display:flex;} }
+  .nav-cta{
+    font-size:13.5px; font-weight:600;
+    background:var(--carbon); color:var(--crema);
+    padding:10px 18px; border-radius:var(--radio-full);
+    transition:all .15s; white-space:nowrap;
+    border:2px solid var(--carbon);
+    box-shadow:2px 2px 0 var(--carbon);
+  }
+  .nav-cta:hover{background:var(--rojo-aji); transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--carbon);}
+
+  /* ============================================================
+     SELLO / STICKER
+     ============================================================ */
+  .sello{
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:var(--font-hand); font-weight:700;
+    font-size:17px; letter-spacing:0.01em;
+    padding:6px 14px;
+    border-radius:var(--radio-full);
+    border:2px solid var(--carbon);
+    background:var(--miel-suave); color:var(--carbon);
+    transform:rotate(-2deg);
+    box-shadow:2px 2px 0 var(--carbon);
+    white-space:nowrap;
+  }
+  .sello.verde{background:var(--verde-culantro); color:#fff; border-color:var(--carbon);}
+  .sello.rojo{background:var(--rojo-aji); color:#fff;}
+  .sello.crema{background:var(--blanco); color:var(--carbon);}
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{padding:44px 0 36px; position:relative;}
+  @media (min-width:820px){ .hero{padding:72px 0 56px;} }
+  .hero-grid{display:grid; grid-template-columns:1fr; gap:36px; align-items:center;}
+  @media (min-width:900px){ .hero-grid{grid-template-columns:1.15fr 0.85fr; gap:56px;} }
+
+  .hero-sello{margin-bottom:22px;}
+  .hero h1{
+    font-size:clamp(34px, 6.4vw, 58px);
+    line-height:1.02; font-weight:800; color:var(--carbon);
+    margin-bottom:22px;
+    letter-spacing:-0.03em;
+  }
+  .hero h1 em{
+    font-style:italic; font-weight:600; color:var(--rojo-aji);
+    font-family:var(--font-display);
+  }
+  .hero h1 .destacado{
+    background:linear-gradient(180deg, transparent 62%, var(--miel-suave) 62%);
+    padding:0 4px;
+  }
+  .hero-lede{
+    font-size:16.5px; color:var(--texto-suave);
+    max-width:52ch; margin-bottom:30px; line-height:1.6;
+  }
+  @media (min-width:820px){ .hero-lede{font-size:17.5px;} }
+  .hero-actions{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:36px;}
+
+  .hero-datos{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
+    padding-top:26px; border-top:2px dashed var(--borde-fuerte);
+  }
+  .hero-dato b{
+    display:block; font-family:var(--font-display); font-weight:800;
+    font-size:26px; color:var(--rojo-aji); line-height:1; letter-spacing:-0.02em;
+  }
+  .hero-dato span{font-size:12.5px; color:var(--texto-suave); display:block; margin-top:6px; line-height:1.35;}
+
+  /* Ilustración hero (placeholder hasta que llegue la del cliente) */
+  .hero-ilu{
+    position:relative;
+    aspect-ratio:1/1;
+    max-width:420px; margin:0 auto;
+    display:none;
+  }
+  @media (min-width:900px){ .hero-ilu{display:block;} }
+  .hero-ilu-marco{
+    position:absolute; inset:0;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, var(--miel-suave), var(--naranja-zanah));
+    border:3px solid var(--carbon);
+    box-shadow:6px 6px 0 var(--carbon);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .hero-ilu-marco::after{
+    content:'';
+    position:absolute; inset:18px;
+    border-radius:50%;
+    border:2px dashed rgba(43,24,16,0.35);
+  }
+  .hero-ilu-texto{
+    position:relative; z-index:2;
+    font-family:var(--font-hand); font-weight:700;
+    font-size:28px; color:var(--carbon);
+    text-align:center; padding:0 30px;
+    line-height:1.15;
+    transform:rotate(-3deg);
+  }
+  .hero-ilu-texto small{display:block; font-size:16px; margin-top:8px; opacity:.7;}
+
+  /* ============================================================
+     BOTONES
+     ============================================================ */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:13px 24px; border-radius:var(--radio-full);
+    font-size:14.5px; font-weight:600;
+    transition:all .15s; white-space:nowrap;
+    border:2px solid var(--carbon);
+    box-shadow:2px 2px 0 var(--carbon);
+    font-family:var(--font-body);
+  }
+  .btn:hover{transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--carbon);}
+  .btn:active{transform:translate(1px,1px); box-shadow:1px 1px 0 var(--carbon);}
+  .btn-primary{background:var(--rojo-aji); color:#fff;}
+  .btn-primary:hover{background:var(--rojo-aji-osc);}
+  .btn-secondary{background:var(--blanco); color:var(--carbon);}
+  .btn-secondary:hover{background:var(--miel-suave);}
+  .btn-block{width:100%;}
+  .btn:disabled{opacity:0.45; cursor:not-allowed; transform:none; box-shadow:2px 2px 0 var(--carbon);}
+
+  /* ============================================================
+     SECCIONES
+     ============================================================ */
+  section{padding:60px 0;}
+  @media (min-width:820px){ section{padding:88px 0;} }
+  .section-head{margin-bottom:42px; max-width:640px;}
+  .section-head h2{font-size:clamp(28px, 4.4vw, 42px); margin-bottom:14px; line-height:1.05;}
+  .section-head h2 em{font-style:italic; font-weight:600; color:var(--rojo-aji);}
+  .section-head p{color:var(--texto-suave); font-size:16px; line-height:1.6;}
+  .section-eyebrow{
+    display:inline-block; font-family:var(--font-hand); font-weight:700;
+    font-size:18px; color:var(--naranja-zanah); margin-bottom:10px;
+    transform:rotate(-1deg);
+  }
+
+  /* ============================================================
+     POR QUÉ (4 tarjetas)
+     ============================================================ */
+  .porque-grid{
+    display:grid; grid-template-columns:1fr; gap:16px;
+    margin-top:8px;
+  }
+  @media (min-width:640px){ .porque-grid{grid-template-columns:1fr 1fr;} }
+  @media (min-width:960px){ .porque-grid{grid-template-columns:repeat(4,1fr);} }
+
+  .porque-card{
+    background:var(--blanco);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio);
+    padding:22px 20px;
+    box-shadow:3px 3px 0 var(--carbon);
+    transition:transform .15s;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .porque-card:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--carbon);}
+  .porque-card:nth-child(1){background:var(--miel-suave);}
+  .porque-card:nth-child(2){background:var(--crema-2);}
+  .porque-card:nth-child(3){background:#F4E2D8;}
+  .porque-card:nth-child(4){background:#E4EFDC;}
+
+  .porque-num{
+    font-family:var(--font-display); font-weight:800;
+    font-size:34px; color:var(--carbon); line-height:1;
+    letter-spacing:-0.03em;
+  }
+  .porque-card h4{
+    font-size:17px; font-weight:700; color:var(--carbon);
+    font-family:var(--font-display); letter-spacing:-0.02em;
+    line-height:1.2;
+  }
+  .porque-card p{font-size:13.5px; color:var(--texto); line-height:1.55;}
+
+  /* ============================================================
+     CATÁLOGO
+     ============================================================ */
+  #catalogo{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
+
+  .ronda-banner{
+    background:var(--carbon); color:var(--crema);
+    border-radius:var(--radio);
+    padding:16px 20px;
+    display:flex; align-items:center; gap:14px;
+    margin-bottom:32px;
+    font-size:14px; font-weight:500;
+    border:2px solid var(--carbon);
+    box-shadow:3px 3px 0 var(--rojo-aji);
+  }
+  .ronda-banner .dot{
+    width:10px; height:10px; border-radius:50%;
+    background:var(--miel); flex-shrink:0;
+    box-shadow:0 0 0 4px rgba(233,165,33,0.25);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 4px rgba(233,165,33,0.25);}
+    50%{box-shadow:0 0 0 8px rgba(233,165,33,0);}
+  }
+  .ronda-banner strong{font-weight:700; color:var(--miel);}
+
+  .grupo-titulo{
+    font-family:var(--font-display); font-weight:700;
+    font-size:22px; margin:34px 0 16px;
+    display:flex; align-items:baseline; gap:12px;
+    color:var(--carbon);
+  }
+  .grupo-titulo small{
+    font-family:var(--font-hand); font-size:18px;
+    color:var(--naranja-zanah); font-weight:700;
+    transform:rotate(-1deg);
+  }
+  .grupo-titulo:first-child{margin-top:0;}
+
+  .productos-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(155px, 1fr));
+    gap:12px;
+  }
+  @media (min-width:640px){
+    .productos-grid{grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px;}
+  }
+
+  .producto{
+    background:var(--crema);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio);
+    padding:16px 14px;
+    display:flex; flex-direction:column; gap:10px;
+    transition:all .15s;
+    box-shadow:2px 2px 0 var(--carbon);
+    position:relative;
+  }
+  .producto:hover{transform:translate(-2px,-2px); box-shadow:4px 4px 0 var(--carbon);}
+  .producto.en-carrito{
+    background:var(--miel-suave);
+    box-shadow:4px 4px 0 var(--rojo-aji);
+  }
+
+  .producto-nombre{font-size:14.5px; font-weight:700; line-height:1.25; color:var(--carbon);}
+  .producto-unidad{
+    font-family:var(--font-hand); font-size:15px;
+    color:var(--texto-suave); margin-top:0px; font-weight:600;
+  }
+  .producto-precio{
+    font-family:var(--font-display); font-size:22px; font-weight:800;
+    margin-top:auto; color:var(--rojo-aji); line-height:1;
+    letter-spacing:-0.02em;
+  }
+  .producto-precio small{
+    font-size:11.5px; color:var(--texto-suave);
+    font-family:var(--font-body); font-weight:500;
+    letter-spacing:0;
+  }
+
+  /* INPUT DE CANTIDAD */
+  .qty-wrap{
+    display:flex; align-items:center; gap:8px;
+    background:var(--blanco);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio-sm);
+    padding:6px 8px 6px 12px;
+    transition:all .15s;
+  }
+  .producto.en-carrito .qty-wrap{
+    background:var(--blanco);
+    border-color:var(--rojo-aji);
+  }
+  .qty-wrap label{
+    font-size:10.5px; font-weight:700; color:var(--texto-suave);
+    text-transform:uppercase; letter-spacing:0.06em;
+    flex-shrink:0;
+  }
+  .qty-input{
+    flex:1; width:100%; min-width:0;
+    border:none; background:transparent; outline:none;
+    font-size:16px; font-weight:700;
+    text-align:right; color:var(--carbon);
+    -moz-appearance:textfield;
+    appearance:textfield;
+    padding:4px 0;
+    font-family:var(--font-display);
+  }
+  .qty-input::-webkit-outer-spin-button,
+  .qty-input::-webkit-inner-spin-button{
+    -webkit-appearance:none; margin:0;
+  }
+  .qty-input::placeholder{color:#C9B79F; font-weight:500; font-family:var(--font-body);}
+  .qty-wrap .unit{
+    font-size:12.5px; font-weight:700; color:var(--texto-suave);
+    flex-shrink:0; padding-right:2px;
+    font-family:var(--font-hand);
+  }
+
+  /* ============================================================
+     CÓMO FUNCIONA
+     ============================================================ */
+  .como-grid{
+    display:grid; grid-template-columns:1fr; gap:16px;
+  }
+  @media (min-width:640px){ .como-grid{grid-template-columns:1fr 1fr;} }
+  @media (min-width:960px){ .como-grid{grid-template-columns:repeat(4,1fr);} }
+
+  .como-paso{
+    background:var(--blanco);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio);
+    padding:22px 20px;
+    box-shadow:3px 3px 0 var(--carbon);
+    display:flex; flex-direction:column; gap:12px;
+    position:relative;
+  }
+  .como-paso-num{
+    width:44px; height:44px; border-radius:50%;
+    background:var(--rojo-aji); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:800; font-size:20px;
+    border:2px solid var(--carbon);
+    box-shadow:2px 2px 0 var(--carbon);
+    flex-shrink:0;
+  }
+  .como-paso:nth-child(2) .como-paso-num{background:var(--naranja-zanah);}
+  .como-paso:nth-child(3) .como-paso-num{background:var(--miel); color:var(--carbon);}
+  .como-paso:nth-child(4) .como-paso-num{background:var(--verde-culantro);}
+  .como-paso h4{
+    font-size:16.5px; font-weight:700; color:var(--carbon);
+    font-family:var(--font-display); line-height:1.2;
+    letter-spacing:-0.02em;
+  }
+  .como-paso p{font-size:13.5px; color:var(--texto-suave); line-height:1.55;}
+
+  /* ============================================================
+     DÓNDE ESTAMOS
+     ============================================================ */
+  #donde{background:var(--crema-2); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
+  .donde-grid{display:grid; grid-template-columns:1fr; gap:32px;}
+  @media (min-width:820px){ .donde-grid{grid-template-columns:1fr 1fr; gap:56px;} }
+
+  .donde-info{display:flex; flex-direction:column; gap:14px;}
+  .donde-info .linea{
+    display:flex; gap:14px; align-items:flex-start;
+    padding:14px 0; border-bottom:1px dashed var(--borde-fuerte);
+  }
+  .donde-info .linea:last-child{border-bottom:none;}
+  .donde-info .linea b{
+    font-family:var(--font-hand); font-size:20px;
+    color:var(--naranja-zanah); flex-shrink:0; width:80px;
+    transform:rotate(-1deg);
+  }
+  .donde-info .linea span{font-size:14.5px; color:var(--texto); line-height:1.5;}
+  .donde-info .linea span strong{color:var(--carbon); font-weight:700;}
+
+  .zonas-lista{
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;
+  }
+  .zona-chip{
+    display:inline-block; padding:6px 12px;
+    background:var(--blanco); border:2px solid var(--carbon);
+    border-radius:var(--radio-full);
+    font-size:12.5px; font-weight:600; color:var(--carbon);
+    box-shadow:2px 2px 0 var(--carbon);
+  }
+  .zona-chip.a{background:var(--miel-suave);}
+  .zona-chip.b{background:#F4E2D8;}
+  .zona-chip.c{background:#E4EFDC;}
+
+  /* ============================================================
+     HABLEMOS
+     ============================================================ */
+  .hablemos{
+    background:var(--carbon); color:var(--crema);
+    border-radius:var(--radio-lg);
+    padding:44px 32px;
+    text-align:center;
+    border:3px solid var(--carbon);
+    box-shadow:6px 6px 0 var(--rojo-aji);
+    position:relative;
+    overflow:hidden;
+  }
+  .hablemos::before{
+    content:'';
+    position:absolute; top:-40px; right:-40px;
+    width:160px; height:160px; border-radius:50%;
+    background:var(--rojo-aji); opacity:.15;
+  }
+  .hablemos::after{
+    content:'';
+    position:absolute; bottom:-60px; left:-60px;
+    width:200px; height:200px; border-radius:50%;
+    background:var(--miel); opacity:.12;
+  }
+  .hablemos h2{
+    color:var(--crema); font-size:clamp(26px, 4vw, 36px);
+    margin-bottom:12px; position:relative; z-index:2;
+  }
+  .hablemos h2 em{color:var(--miel); font-style:italic;}
+  .hablemos p{
+    color:rgba(250,244,232,0.8); font-size:15px;
+    margin-bottom:24px; position:relative; z-index:2;
+  }
+  .hablemos .wa-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--miel); color:var(--carbon);
+    padding:14px 28px; border-radius:var(--radio-full);
+    font-size:15px; font-weight:700;
+    border:2px solid var(--carbon);
+    box-shadow:3px 3px 0 var(--rojo-aji);
+    transition:all .15s;
+    position:relative; z-index:2;
+    font-family:var(--font-body);
+  }
+  .hablemos .wa-btn:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--rojo-aji);}
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{
+    background:var(--crema-2);
+    border-top:2px solid var(--carbon);
+    padding:52px 0 28px;
+    margin-top:0;
+  }
+  .footer-grid{display:grid; grid-template-columns:1fr; gap:34px; margin-bottom:38px;}
+  @media (min-width:720px){ .footer-grid{grid-template-columns:1.4fr 1fr 1fr;} }
+  footer h4{
+    font-family:var(--font-display); font-size:13px; font-weight:700;
+    letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--rojo-aji); margin-bottom:16px;
+  }
+  footer ul{list-style:none; display:flex; flex-direction:column; gap:10px;}
+  footer ul li, footer p{font-size:13.5px; color:var(--texto); line-height:1.6;}
+  .footer-bottom{
+    border-top:1px dashed var(--borde-fuerte);
+    padding-top:22px; font-size:12px; color:var(--texto-suave);
+  }
+
+  /* ============================================================
+     BARRA FLOTANTE
+     ============================================================ */
+  .cart-bar{
+    position:fixed; left:14px; right:14px; bottom:14px;
+    z-index:80;
+    background:var(--carbon); color:var(--crema);
+    border-radius:var(--radio-full);
+    padding:12px 14px 12px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px;
+    box-shadow:5px 5px 0 var(--rojo-aji);
+    transform:translateY(160%);
+    transition:transform .28s cubic-bezier(.2,.9,.3,1);
+    cursor:pointer;
+    max-width:540px; margin:0 auto;
+    border:2px solid var(--carbon);
+  }
+  @media (min-width:820px){
+    .cart-bar{left:auto; right:26px; bottom:26px; width:auto; min-width:380px; margin:0;}
+  }
+  .cart-bar.visible{transform:translateY(0);}
+  .cart-bar-info{display:flex; align-items:center; gap:12px; font-size:14px; font-weight:500;}
+  .cart-bar-count{
+    background:var(--miel); color:var(--carbon);
+    min-width:28px; height:28px; padding:0 9px; border-radius:999px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:800;
+    font-family:var(--font-display);
+    border:2px solid var(--carbon);
+  }
+  .cart-bar-total{
+    font-weight:800; color:var(--miel); font-size:15px;
+    font-family:var(--font-display);
+    letter-spacing:-0.02em;
+  }
+  .cart-bar-cta{
+    background:var(--rojo-aji); color:#fff;
+    padding:9px 18px; border-radius:var(--radio-full);
+    font-size:13px; font-weight:700;
+    white-space:nowrap;
+    border:2px solid var(--carbon);
+  }
+
+  /* ============================================================
+     DRAWER
+     ============================================================ */
+  .drawer{position:fixed; inset:0; z-index:100; display:none;}
+  .drawer.open{display:block;}
+  .drawer-overlay{
+    position:absolute; inset:0;
+    background:rgba(43,24,16,0.5);
+    backdrop-filter:blur(3px);
+    animation:fadeIn .2s ease;
+  }
+  @keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
+  .drawer-panel{
+    position:absolute; right:0; top:0; bottom:0;
+    width:100%; max-width:500px;
+    background:var(--crema);
+    display:flex; flex-direction:column;
+    box-shadow:-20px 0 50px rgba(43,24,16,0.2);
+    animation:slideIn .28s cubic-bezier(.2,.9,.3,1);
+    border-left:3px solid var(--carbon);
+  }
+  @keyframes slideIn{from{transform:translateX(100%);} to{transform:translateX(0);}}
+  .drawer-head{
+    padding:20px 22px;
+    border-bottom:2px solid var(--carbon);
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--miel-suave); flex-shrink:0;
+  }
+  .drawer-head h3{font-size:19px; color:var(--carbon);}
+  .drawer-close{
+    width:38px; height:38px; border-radius:50%;
+    background:var(--blanco); border:2px solid var(--carbon);
+    font-size:20px; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--carbon);
+    transition:all .15s;
+    box-shadow:2px 2px 0 var(--carbon);
+  }
+  .drawer-close:hover{background:var(--rojo-aji); color:#fff; transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--carbon);}
+  .drawer-body{flex:1; overflow-y:auto; padding:22px; -webkit-overflow-scrolling:touch;}
+  .drawer-foot{
+    padding:16px 22px calc(16px + env(safe-area-inset-bottom));
+    border-top:2px solid var(--carbon);
+    background:var(--blanco);
+    flex-shrink:0;
+  }
+
+  /* ITEMS DEL DRAWER */
+  .cart-item{
+    display:flex; gap:14px; align-items:flex-start;
+    padding:16px 0;
+    border-bottom:1px dashed var(--borde-fuerte);
+  }
+  .cart-item:last-child{border-bottom:none;}
+  .cart-item-info{flex:1; min-width:0;}
+  .cart-item-nombre{font-size:14.5px; font-weight:700; line-height:1.3; color:var(--carbon);}
+  .cart-item-detalle{font-size:12.5px; color:var(--texto-suave); margin-top:3px;}
+  .cart-item-precio{
+    font-family:var(--font-display); font-size:17px; font-weight:800;
+    text-align:right; white-space:nowrap; color:var(--rojo-aji);
+    letter-spacing:-0.02em;
+  }
+  .cart-item-controls{display:flex; align-items:center; gap:6px; margin-top:10px;}
+  .qty-mini{
+    width:30px; height:30px; border-radius:8px;
+    background:var(--blanco); border:2px solid var(--carbon);
+    font-size:15px; font-weight:700; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .15s;
+    color:var(--carbon);
+  }
+  .qty-mini:hover{background:var(--carbon); color:var(--crema);}
+  .qty-mini-num{
+    font-size:13.5px; font-weight:800; min-width:38px; text-align:center;
+    font-family:var(--font-display);
+  }
+
+  /* RESUMEN */
+  .resumen{
+    background:var(--blanco);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio);
+    padding:16px 18px;
+    margin-top:16px;
+    box-shadow:3px 3px 0 var(--carbon);
+  }
+  .resumen-linea{
+    display:flex; justify-content:space-between;
+    font-size:13.5px; padding:6px 0;
+    color:var(--texto-suave); gap:12px;
+  }
+  .resumen-linea.total{
+    border-top:2px solid var(--carbon);
+    margin-top:10px; padding-top:14px;
+    font-size:15px; font-weight:700; color:var(--carbon);
+  }
+  .resumen-linea.total span:last-child{
+    font-family:var(--font-display); font-size:22px; color:var(--rojo-aji);
+    font-weight:800; letter-spacing:-0.02em;
+  }
+  .resumen-linea.descuento{color:var(--verde-culantro); font-weight:700;}
+
+  /* CAMPOS */
+  .campo{margin-bottom:16px;}
+  .campo label{
+    display:block; font-size:12.5px; font-weight:700;
+    color:var(--texto-suave); margin-bottom:7px;
+    text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .campo label .opt{color:var(--texto-muy-suave); font-weight:500; text-transform:none; letter-spacing:0; font-size:12px;}
+  .campo label .req{color:var(--rojo-aji);}
+  .campo input, .campo textarea{
+    width:100%; padding:12px 14px;
+    background:var(--blanco);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio-sm);
+    font-size:15px;
+    transition:all .15s;
+    outline:none;
+    color:var(--carbon);
+  }
+  .campo input:focus, .campo textarea:focus{
+    border-color:var(--rojo-aji);
+    box-shadow:3px 3px 0 var(--rojo-aji);
+    transform:translate(-1px,-1px);
+  }
+  .campo input.error{border-color:var(--rojo-aji); box-shadow:3px 3px 0 var(--rojo-aji);}
+  .campo textarea{resize:vertical; min-height:64px;}
+  .campo-hint{font-size:12px; color:var(--texto-suave); margin-top:6px; line-height:1.5;}
+  .campo-hint.verde{color:var(--verde-culantro); font-weight:600;}
+
+  /* ZONA INFO */
+  .zona-info{
+    background:var(--miel-suave);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio-sm);
+    padding:10px 14px;
+    margin-top:10px;
+    font-size:12.5px;
+    color:var(--carbon);
+    display:flex; align-items:center; gap:10px;
+    box-shadow:2px 2px 0 var(--carbon);
+  }
+  .zona-info .zi-icon{
+    font-family:var(--font-hand); font-weight:700;
+    font-size:18px; color:var(--naranja-zanah);
+  }
+  .zona-info strong{font-weight:800;}
+
+  /* CHECKBOX RECOJO */
+  .check-recojo{
+    display:flex; align-items:flex-start; gap:12px;
+    padding:14px 16px;
+    background:var(--blanco);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio);
+    cursor:pointer;
+    transition:all .15s;
+    margin-bottom:16px;
+    box-shadow:2px 2px 0 var(--carbon);
+  }
+  .check-recojo:hover{transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--carbon);}
+  .check-recojo.activo{
+    background:var(--verde-culantro);
+    color:#fff;
+  }
+  .check-recojo.activo .check-recojo-text strong{color:#fff;}
+  .check-recojo.activo .check-recojo-text span{color:rgba(255,255,255,0.85);}
+  .check-recojo input{
+    width:20px; height:20px;
+    accent-color:var(--rojo-aji);
+    margin-top:2px;
+    flex-shrink:0;
+    cursor:pointer;
+  }
+  .check-recojo-text{flex:1; min-width:0;}
+  .check-recojo-text strong{
+    display:block; font-size:14.5px; font-weight:700;
+    color:var(--carbon); margin-bottom:3px;
+    font-family:var(--font-display); letter-spacing:-0.01em;
+  }
+  .check-recojo-text span{font-size:12.5px; color:var(--texto-suave); line-height:1.5;}
+  .check-recojo-text span strong{display:inline; color:var(--rojo-aji); font-weight:800;}
+
+  /* AVISOS */
+  .aviso{
+    padding:12px 14px; border-radius:var(--radio-sm);
+    font-size:12.5px; font-weight:600;
+    display:flex; gap:10px; align-items:flex-start;
+    margin-top:12px; line-height:1.5;
+    border:2px solid var(--carbon);
+  }
+  .aviso-error{background:#FBE0DC; color:var(--rojo-aji-osc);}
+  .aviso-ok{background:#E4EFDC; color:var(--verde-hoja);}
+  .aviso-info{background:var(--miel-suave); color:var(--carbon);}
+
+  /* CONFIRMACIÓN */
+  .confirmacion{text-align:center; padding:30px 8px;}
+  .confirmacion-icon{
+    width:72px; height:72px; border-radius:50%;
+    background:var(--verde-culantro); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:32px; margin:0 auto 22px;
+    border:3px solid var(--carbon);
+    box-shadow:4px 4px 0 var(--carbon);
+    font-family:var(--font-display); font-weight:800;
+  }
+  .confirmacion h3{font-size:24px; margin-bottom:10px; color:var(--carbon);}
+  .confirmacion p{color:var(--texto-suave); font-size:14px; margin-bottom:14px; line-height:1.55;}
+
+  /* PREVIEW WHATSAPP */
+  .wa-preview{
+    background:#E4EFDC;
+    border:2px solid var(--carbon);
+    border-radius:var(--radio-sm);
+    padding:14px 16px;
+    font-size:12.5px;
+    line-height:1.6;
+    color:var(--carbon);
+    white-space:pre-wrap;
+    word-break:break-word;
+    font-family:'Inter', monospace;
+    max-height:280px;
+    overflow-y:auto;
+    box-shadow:2px 2px 0 var(--carbon);
+  }
+
+  .hidden{display:none !important;}
+
+  /* Scrollbar sutil */
+  ::-webkit-scrollbar{width:10px; height:10px;}
+  ::-webkit-scrollbar-track{background:var(--crema-2);}
+  ::-webkit-scrollbar-thumb{background:var(--borde-fuerte); border-radius:10px; border:2px solid var(--crema-2);}
+  ::-webkit-scrollbar-thumb:hover{background:var(--texto-suave);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Compra con Misti</div>
+        <div class="brand-sub">La despensa de El Misti</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#catalogo">Catálogo</a></li>
+      <li><a href="#como">Cómo funciona</a></li>
+      <li><a href="#donde">Dónde estamos</a></li>
+    </ul>
+    <a href="#catalogo" class="nav-cta">Armar mi canasta</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-sello">
+          <span class="sello">Ronda abierta · cierra viernes 5:00 pm</span>
+        </div>
+        <h1>Somos la cocina de <em>El Misti.</em><br>Ahora también <span class="destacado">para tu casa.</span></h1>
+        <p class="hero-lede">
+          Compra con Misti es la despensa del restaurante El Misti, abierta para tu hogar. Los mismos insumos que usa nuestra cocina criolla, al precio del mercado mayorista, entregados en tu puerta el domingo.
+        </p>
+        <div class="hero-actions">
+          <a href="#catalogo" class="btn btn-primary">Armar mi canasta</a>
+          <a href="#como" class="btn btn-secondary">Cómo funciona</a>
+        </div>
+        <div class="hero-datos">
+          <div class="hero-dato"><b>24</b><span>Productos esta ronda</span></div>
+          <div class="hero-dato"><b>0%</b><span>Costo de delivery</span></div>
+          <div class="hero-dato"><b>S/ 2–5</b><span>Descuento si recoges</span></div>
+        </div>
+      </div>
+      <div class="hero-ilu">
+        <div class="hero-ilu-marco">
+          <div class="hero-ilu-texto">
+            Cocina criolla<br>de verdad
+            <small>Desde El Misti</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- POR QUÉ -->
+<section id="porque">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">Lo que nos hace distintos</span>
+      <h2>Lo que entra a nuestra cocina, <em>entra a tu casa.</em></h2>
+      <p>No somos una tienda. No somos una bodega. Somos la compra del restaurante, abierta para tu hogar.</p>
+    </div>
+
+    <div class="porque-grid">
+      <div class="porque-card">
+        <div class="porque-num">01</div>
+        <h4>Calidad de restaurante</h4>
+        <p>Compramos con el mismo criterio que usa nuestra chef. No es producto de bodega, es producto de cocina criolla.</p>
+      </div>
+      <div class="porque-card">
+        <div class="porque-num">02</div>
+        <h4>Frescura del domingo</h4>
+        <p>Compramos temprano y entregamos el mismo domingo. Del mercado a tu olla, sin escalas.</p>
+      </div>
+      <div class="porque-card">
+        <div class="porque-num">03</div>
+        <h4>Precio congelado</h4>
+        <p>Fijamos el precio el lunes y no cambia hasta el viernes. Si el mercado sube, tú no pagas la diferencia.</p>
+      </div>
+      <div class="porque-card">
+        <div class="porque-num">04</div>
+        <h4>Delivery gratis, siempre</h4>
+        <p>Dentro de la zona de reparto, el envío está incluido. Si prefieres recoger en el local, te descontamos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATÁLOGO -->
+<section id="catalogo">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">Canasta de la semana</span>
+      <h2>Arma tu canasta</h2>
+      <p>Escribe la cantidad directamente en cada producto. Acepta medios y cuartos de kilo. Precios fijos hasta el viernes 5:00 pm.</p>
+    </div>
+
+    <div class="ronda-banner">
+      <span class="dot"></span>
+      <span><strong>Ronda abierta.</strong> Cierra el viernes a las 5:00 pm. Delivery gratis. Si recoges en el local: descuento de S/ 2 a S/ 5 según tu zona.</span>
+    </div>
+
+    <div id="catalogoCont"></div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section id="como">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">Una semana para pedir, un domingo para recibir</span>
+      <h2>Cómo funciona la ronda</h2>
+    </div>
+
+    <div class="como-grid">
+      <div class="como-paso">
+        <div class="como-paso-num">1</div>
+        <h4>Eliges tu canasta</h4>
+        <p>Del catálogo de la semana. Escribes la cantidad y listo, sin pasos extra.</p>
+      </div>
+      <div class="como-paso">
+        <div class="como-paso-num">2</div>
+        <h4>Confirmas por WhatsApp</h4>
+        <p>Te llega un resumen y coordinamos el pago (Yape o efectivo) y la entrega.</p>
+      </div>
+      <div class="como-paso">
+        <div class="como-paso-num">3</div>
+        <h4>Compramos el domingo</h4>
+        <p>Temprano, con el mismo criterio de siempre, aprovechando el volumen de varias familias.</p>
+      </div>
+      <div class="como-paso">
+        <div class="como-paso-num">4</div>
+        <h4>Recibes en tu casa</h4>
+        <p>Delivery gratis. Si recoges en el local, te descontamos según tu zona.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DÓNDE ESTAMOS -->
+<section id="donde">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">Base operativa</span>
+      <h2>Dónde estamos</h2>
+    </div>
+
+    <div class="donde-grid">
+      <div class="donde-info">
+        <div class="linea">
+          <b>Local</b>
+          <span><strong>Eduardo Bello 385</strong><br>Santa Catalina, La Victoria</span>
+        </div>
+        <div class="linea">
+          <b>Recojo</b>
+          <span>Ahí está El Misti. Ahí puedes recoger tu pedido y ahorrar S/ 2, S/ 3 o S/ 5 según tu zona.</span>
+        </div>
+        <div class="linea">
+          <b>Delivery</b>
+          <span>Gratis dentro de la zona de reparto. Fuera de la zona, coordinamos recojo en el local.</span>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-family:var(--font-display); font-size:14px; font-weight:700; color:var(--rojo-aji); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px;">Zonas de reparto</h4>
+        <div class="zonas-lista">
+          <span class="zona-chip a">La Victoria</span>
+          <span class="zona-chip a">Lince</span>
+          <span class="zona-chip a">Breña</span>
+          <span class="zona-chip a">Cercado</span>
+          <span class="zona-chip b">Jesús María</span>
+          <span class="zona-chip b">San Isidro</span>
+          <span class="zona-chip b">Miraflores</span>
+          <span class="zona-chip b">Surquillo</span>
+          <span class="zona-chip b">San Borja</span>
+          <span class="zona-chip c">San Miguel</span>
+          <span class="zona-chip c">Pueblo Libre</span>
+          <span class="zona-chip c">Ate</span>
+          <span class="zona-chip c">Santa Anita</span>
+          <span class="zona-chip c">San Luis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HABLEMOS -->
+<section id="hablemos">
+  <div class="wrap">
+    <div class="hablemos">
+      <h2>¿Dudas? <em>Escríbenos por WhatsApp.</em></h2>
+      <p>No hay bots. Responde el equipo de El Misti.</p>
+      <a href="https://wa.me/51977101608" target="_blank" class="wa-btn">
+        +51 977 101 608
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:16px;">
+          <div class="brand-mark">M</div>
+          <div>
+            <div class="brand-name">Compra con Misti</div>
+            <div class="brand-sub">La despensa de El Misti</div>
+          </div>
+        </div>
+        <p>La despensa de El Misti, abierta para tu casa. Insumos frescos al precio de comprar juntos.</p>
+      </div>
+      <div>
+        <h4>Base operativa</h4>
+        <ul>
+          <li>Eduardo Bello 385</li>
+          <li>Santa Catalina, La Victoria</li>
+          <li>Lima, Perú</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li>WhatsApp: +51 977 101 608</li>
+          <li>Lunes a viernes, 10–18h</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Compra con Misti — Hecho en Lima, para tu cocina.</div>
+  </div>
+</footer>
+
+<!-- BARRA FLOTANTE -->
+<div class="cart-bar" id="cartBar" role="button" tabindex="0" aria-label="Ver pedido">
+  <div class="cart-bar-info">
+    <span class="cart-bar-count" id="cartBarCount">0</span>
+    <span id="cartBarLabel">productos</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:14px;">
+    <span class="cart-bar-total" id="cartBarTotal">S/ 0.00</span>
+    <span class="cart-bar-cta">Ver pedido</span>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Confirmar pedido">
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <h3 id="drawerTitulo">Tu pedido</h3>
+      <button class="drawer-close" id="drawerClose" aria-label="Cerrar">×</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-foot" id="drawerFoot"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   PRODUCTOS
+   ============================================================ */
+const PRODUCTOS = [
+  { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básico',  unidad:'kg',     precio:2.50 },
+  { codigo:'PR-002', nombre:'Papa Canchán',      grupo:'Básico',  unidad:'kg',     precio:2.29 },
+  { codigo:'PR-003', nombre:'Papa Huayro',       grupo:'Básico',  unidad:'kg',     precio:2.57 },
+  { codigo:'PR-004', nombre:'Papa Negra Andina', grupo:'Básico',  unidad:'kg',     precio:3.00 },
+  { codigo:'PR-005', nombre:'Yuca Amarilla',     grupo:'Básico',  unidad:'kg',     precio:1.71 },
+  { codigo:'PR-006', nombre:'Camote Amarillo',   grupo:'Básico',  unidad:'kg',     precio:1.86 },
+  { codigo:'PR-007', nombre:'Olluco',            grupo:'Básico',  unidad:'kg',     precio:3.14 },
+  { codigo:'PR-008', nombre:'Choclo',            grupo:'Básico',  unidad:'unidad', precio:1.43 },
+  { codigo:'PR-009', nombre:'Ají Amarillo',      grupo:'Sazón',   unidad:'kg',     precio:6.92 },
+  { codigo:'PR-010', nombre:'Ají Panca',         grupo:'Sazón',   unidad:'kg',     precio:8.00 },
+  { codigo:'PR-011', nombre:'Ají Rocoto',        grupo:'Sazón',   unidad:'kg',     precio:5.85 },
+  { codigo:'PR-012', nombre:'Ají Escabeche',     grupo:'Sazón',   unidad:'kg',     precio:4.92 },
+  { codigo:'PR-013', nombre:'Huacatay',          grupo:'Sazón',   unidad:'atado',  precio:1.67 },
+  { codigo:'PR-014', nombre:'Culantro',          grupo:'Sazón',   unidad:'atado',  precio:2.00 },
+  { codigo:'PR-015', nombre:'Perejil',           grupo:'Sazón',   unidad:'atado',  precio:1.67 },
+  { codigo:'PR-016', nombre:'Ajo Criollo',       grupo:'Sazón',   unidad:'kg',     precio:8.57 },
+  { codigo:'PR-017', nombre:'Zapallo Loche',     grupo:'Especial',unidad:'kg',     precio:5.00 },
+  { codigo:'PR-018', nombre:'Maíz Morado',       grupo:'Especial',unidad:'kg',     precio:5.71 },
+  { codigo:'PR-019', nombre:'Cebolla Roja',      grupo:'Especial',unidad:'kg',     precio:2.14 },
+  { codigo:'PR-020', nombre:'Tomate',            grupo:'Especial',unidad:'kg',     precio:3.57 },
+  { codigo:'PR-021', nombre:'Zanahoria',         grupo:'Especial',unidad:'kg',     precio:1.71 },
+  { codigo:'PR-022', nombre:'Apio',              grupo:'Especial',unidad:'kg',     precio:2.57 },
+  { codigo:'PR-023', nombre:'Poro',              grupo:'Especial',unidad:'kg',     precio:2.86 },
+  { codigo:'PR-024', nombre:'Cebolla China',     grupo:'Especial',unidad:'kg',     precio:3.14 }
+];
+
+const WHATSAPP_NEGOCIO = '51977101608';
+const PEDIDO_MINIMO = 20.00;
+
+/* ============================================================
+   ZONAS Y DISTRITOS
+   ============================================================ */
+const ZONAS = {
+  A: { desc_recojo: 2 },
+  B: { desc_recojo: 3 },
+  C: { desc_recojo: 5 }
+};
+
+const DISTRITOS_LIMA = {
+  'la victoria':'A','lince':'A','breña':'A','cercado de lima':'A','cercado':'A',
+  'jesús maría':'B','jesus maria':'B','san isidro':'B','miraflores':'B','surquillo':'B','san borja':'B',
+  'san miguel':'C','pueblo libre':'C','ate':'C','santa anita':'C','san luis':'C','vitarte':'C','el agustino':'C','santa clara':'C'
+};
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+const LS_CARRITO = 'misti_carrito';
+const LS_CLIENTE = 'misti_cliente';
+const LS_PEDIDOS = 'misti_pedidos';
+
+let carrito = cargar(LS_CARRITO, {});
+let cliente = cargar(LS_CLIENTE, {
+  nombre:'', telefono:'', direccion:'', referencia:'',
+  distrito:'', zona:'A', lat:null, lng:null
+});
+let pedidos = cargar(LS_PEDIDOS, []);
+let recogerEnLocal = false;
+
+function cargar(key, fallback){
+  try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+  catch(e){ return fallback; }
+}
+function guardar(key, valor){
+  try{ localStorage.setItem(key, JSON.stringify(valor)); }catch(e){}
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const $ = (id) => document.getElementById(id);
+const soles = (n) => 'S/ ' + Number(n||0).toFixed(2);
+const escapar = (s) => String(s||'').replace(/[&<>"']/g, c => ({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+const soloDigitos = (s) => String(s||'').replace(/\D/g,'');
+const capitalizar = (s) => String(s||'').split(' ').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join(' ');
+const getProducto = (codigo) => PRODUCTOS.find(p => p.codigo === codigo);
+
+/* ============================================================
+   DEDUCIR ZONA
+   ============================================================ */
+function deducirZonaSync(direccion){
+  if (!direccion || !direccion.trim()) return { distrito:'', zona:'A', origen:'sin_direccion' };
+  const dirNorm = direccion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  for (const [distrito, zona] of Object.entries(DISTRITOS_LIMA)) {
+    const dNorm = distrito.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (dirNorm.includes(dNorm)) {
+      return { distrito: capitalizar(distrito), zona, origen: 'diccionario_local' };
+    }
+  }
+  return { distrito:'', zona:'A', origen:'fallback' };
+}
+
+async function deducirZonaAsync(direccion){
+  const sync = deducirZonaSync(direccion);
+  if (sync.origen === 'diccionario_local') return sync;
+  if (!direccion || !direccion.trim()) return sync;
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(direccion + ', Lima, Perú')}&format=json&addressdetails=1&limit=1&countrycodes=pe`;
+    const res = await fetch(url, { headers: { 'User-Agent': 'CompraConMisti/1.0' } });
+    const data = await res.json();
+    if (data && data.length > 0) {
+      const r = data[0];
+      const addr = r.address || {};
+      const distrito = addr.suburb || addr.city_district || addr.town || '';
+      let zona = 'A';
+      const dNorm = distrito.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      for (const [d, z] of Object.entries(DISTRITOS_LIMA)) {
+        const dl = d.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+        if (dNorm.includes(dl) || dl.includes(dNorm)) { zona = z; break; }
+      }
+      return {
+        distrito: distrito ? capitalizar(distrito) : '',
+        zona, lat: parseFloat(r.lat), lng: parseFloat(r.lon),
+        origen: 'nominatim'
+      };
+    }
+  } catch(e) { console.warn('Nominatim falló:', e); }
+  return sync;
+}
+
+/* ============================================================
+   CÁLCULOS
+   ============================================================ */
+function itemsCarrito(){
+  return Object.entries(carrito)
+    .filter(([_, v]) => v.qty > 0)
+    .map(([cod, v]) => {
+      const p = getProducto(cod);
+      return { ...p, qty: v.qty, subtotal: +(p.precio * v.qty).toFixed(2) };
+    });
+}
+const subtotalCarrito = () => itemsCarrito().reduce((s, i) => s + i.subtotal, 0);
+function descuentoAplicado(){
+  if (!recogerEnLocal) return 0;
+  const zona = cliente.zona || 'A';
+  return ZONAS[zona] ? ZONAS[zona].desc_recojo : 2;
+}
+const totalCarrito = () => Math.max(0, subtotalCarrito() - descuentoAplicado());
+const totalItems = () => itemsCarrito().reduce((s, i) => s + i.qty, 0);
+
+/* ============================================================
+   RENDER CATÁLOGO
+   ============================================================ */
+function renderCatalogo(){
+  const cont = $('catalogoCont');
+  const grupos = {};
+  PRODUCTOS.forEach(p => {
+    if (!grupos[p.grupo]) grupos[p.grupo] = [];
+    grupos[p.grupo].push(p);
+  });
+
+  let html = '';
+  ['Básico','Sazón','Especial'].forEach(g => {
+    if (!grupos[g]) return;
+    html += `<h3 class="grupo-titulo">${g} <small>${grupos[g].length} productos</small></h3>`;
+    html += `<div class="productos-grid">`;
+    grupos[g].forEach(p => {
+      const qty = (carrito[p.codigo] && carrito[p.codigo].qty) || 0;
+      const enCarrito = qty > 0;
+      const step = p.unidad === 'kg' ? '0.25' : '1';
+      html += `
+        <div class="producto ${enCarrito ? 'en-carrito' : ''}" data-codigo="${p.codigo}">
+          <div>
+            <div class="producto-nombre">${escapar(p.nombre)}</div>
+            <div class="producto-unidad">${escapar(p.unidad)}</div>
+          </div>
+          <div class="producto-precio">${soles(p.precio)} <small>/ ${escapar(p.unidad)}</small></div>
+          <div class="qty-wrap">
+            <label for="qty-${p.codigo}">Cant.</label>
+            <input
+              type="number" class="qty-input" id="qty-${p.codigo}"
+              data-qty="${p.codigo}" inputmode="decimal"
+              min="0" step="${step}" placeholder="0"
+              value="${qty > 0 ? qty : ''}"
+              aria-label="Cantidad de ${escapar(p.nombre)}"
+            >
+            <span class="unit">${escapar(p.unidad)}</span>
+          </div>
+        </div>
+      `;
+    });
+    html += `</div>`;
+  });
+  cont.innerHTML = html;
+  bindQtyInputs();
+}
+
+function bindQtyInputs(){
+  document.querySelectorAll('[data-qty]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const codigo = inp.dataset.qty;
+      let raw = inp.value.replace(',', '.');
+      raw = raw.replace(/[^\d.]/g, '');
+      const parts = raw.split('.');
+      if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('');
+      inp.value = raw;
+      const n = parseFloat(raw);
+      if (!isNaN(n) && n > 0) carrito[codigo] = { qty: +n.toFixed(2) };
+      else delete carrito[codigo];
+      guardar(LS_CARRITO, carrito);
+      marcarCard(codigo, n > 0);
+      renderCartBar();
+    });
+    inp.addEventListener('blur', () => {
+      const codigo = inp.dataset.qty;
+      const n = parseFloat(inp.value);
+      if (isNaN(n) || n <= 0) {
+        inp.value = '';
+        delete carrito[codigo];
+        guardar(LS_CARRITO, carrito);
+        marcarCard(codigo, false);
+        renderCartBar();
+      }
+    });
+    inp.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+  });
+}
+
+function marcarCard(codigo, activa){
+  const card = document.querySelector(`.producto[data-codigo="${codigo}"]`);
+  if (card) card.classList.toggle('en-carrito', activa);
+}
+
+/* ============================================================
+   BARRA FLOTANTE
+   ============================================================ */
+function renderCartBar(){
+  const count = totalItems();
+  $('cartBarCount').textContent = count;
+  $('cartBarLabel').textContent = count === 1 ? 'producto' : 'productos';
+  $('cartBarTotal').textContent = soles(totalCarrito());
+  $('cartBar').classList.toggle('visible', count > 0);
+}
+
+/* ============================================================
+   DRAWER
+   ============================================================ */
+function abrirDrawer(){
+  $('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderDrawer();
+}
+function cerrarDrawer(){
+  $('drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderDrawer(){
+  const body = $('drawerBody');
+  const foot = $('drawerFoot');
+  const items = itemsCarrito();
+  const subtotal = subtotalCarrito();
+  const descuento = descuentoAplicado();
+  const total = totalCarrito();
+
+  if (items.length === 0) {
+    $('drawerTitulo').textContent = 'Tu pedido';
+    body.innerHTML = `
+      <div style="text-align:center; padding:48px 20px; color:var(--texto-suave);">
+        <div style="font-family:var(--font-hand); font-size:48px; color:var(--naranja-zanah); margin-bottom:14px;">vacío</div>
+        <p style="font-size:15px; font-weight:600; color:var(--carbon);">Tu canasta está vacía.</p>
+        <p style="font-size:13px; margin-top:6px;">Agrega productos del catálogo para empezar.</p>
+      </div>`;
+    foot.innerHTML = `<button class="btn btn-secondary btn-block" id="btnCerrarVacio">Cerrar</button>`;
+    $('btnCerrarVacio').addEventListener('click', cerrarDrawer);
+    return;
+  }
+
+  $('drawerTitulo').textContent = `Tu pedido · ${totalItems()} ${totalItems() === 1 ? 'producto' : 'productos'}`;
+
+  const zona = cliente.zona || 'A';
+  const descZona = ZONAS[zona] ? ZONAS[zona].desc_recojo : 2;
+
+  body.innerHTML = `
+    <div>${items.map(i => `
+      <div class="cart-item">
+        <div class="cart-item-info">
+          <div class="cart-item-nombre">${escapar(i.nombre)}</div>
+          <div class="cart-item-detalle">${soles(i.precio)} / ${escapar(i.unidad)}</div>
+          <div class="cart-item-controls">
+            <button class="qty-mini" data-dec="${i.codigo}" aria-label="Quitar">−</button>
+            <span class="qty-mini-num">${i.qty}</span>
+            <button class="qty-mini" data-inc="${i.codigo}" aria-label="Agregar">+</button>
+            <button class="qty-mini" data-del="${i.codigo}" style="margin-left:auto; color:var(--rojo-aji);" aria-label="Eliminar">×</button>
+          </div>
+        </div>
+        <div class="cart-item-precio">${soles(i.subtotal)}</div>
+      </div>
+    `).join('')}</div>
+
+    <div class="resumen">
+      <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
+      <div class="resumen-linea"><span>Delivery</span><span style="color:var(--verde-culantro); font-weight:700;">Gratis</span></div>
+      ${recogerEnLocal ? `
+        <div class="resumen-linea descuento"><span>Recojo en local (zona ${zona})</span><span>− ${soles(descuento)}</span></div>
+      ` : ''}
+      <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
+      ${subtotal < PEDIDO_MINIMO ? `
+        <div class="aviso aviso-error">
+          <span>Pedido mínimo: <strong>${soles(PEDIDO_MINIMO)}</strong>. Te faltan <strong>${soles(PEDIDO_MINIMO - subtotal)}</strong>.</span>
+        </div>
+      ` : ''}
+    </div>
+
+    <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Tus datos</h4>
+
+    <div class="campo">
+      <label for="inpNombre">Nombre <span class="req">*</span></label>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="inpNombre" value="${escapar(cliente.nombre)}" placeholder="Ej: Lucía Delgado" autocomplete="name">
+        <button class="btn btn-secondary" id="btnGoogle" type="button" title="Autocompletar con Google" style="padding:12px 14px; flex-shrink:0; font-size:12px;">
+          Google
+        </button>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="inpTelefono">WhatsApp <span class="req">*</span></label>
+      <input type="tel" id="inpTelefono" inputmode="numeric" value="${escapar(cliente.telefono)}" placeholder="Ej: 905154382" maxlength="9" autocomplete="tel">
+      <div class="campo-hint">9 dígitos, empieza con 9.</div>
+    </div>
+
+    <label class="check-recojo ${recogerEnLocal ? 'activo' : ''}" id="checkRecojoWrap">
+      <input type="checkbox" id="checkRecojo" ${recogerEnLocal ? 'checked' : ''}>
+      <div class="check-recojo-text">
+        <strong>Quiero recoger en el local</strong>
+        <span>Eduardo Bello 385, Santa Catalina, La Victoria. Te descontamos <strong>S/ ${descZona}</strong> según tu zona.</span>
+      </div>
+    </label>
+
+    <div class="campo" id="campoDireccion" style="${recogerEnLocal ? 'display:none;' : ''}">
+      <label for="inpDireccion">Dirección <span class="req">*</span></label>
+      <input type="text" id="inpDireccion" value="${escapar(cliente.direccion)}" placeholder="Ej: Av. Petit Thouars 1116, San Borja" autocomplete="street-address">
+      <div class="campo-hint">Escribe calle, número y distrito. Con eso calculamos tu zona y el descuento.</div>
+      <div id="zonaInfo"></div>
+    </div>
+
+    <div class="campo" id="campoReferencia" style="${recogerEnLocal ? 'display:none;' : ''}">
+      <label for="inpReferencia">Referencia <span class="opt">(opcional)</span></label>
+      <input type="text" id="inpReferencia" value="${escapar(cliente.referencia)}" placeholder="Ej: Portero, edificio azul...">
+      <div class="campo-hint">Ayúdanos a ubicarte más rápido.</div>
+    </div>
+
+    <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Mensaje que enviaremos</h4>
+    <div class="wa-preview" id="waPreview">${escapar(construirMensajeWhatsApp())}</div>
+  `;
+
+  foot.innerHTML = `
+    <button class="btn btn-primary btn-block" id="btnConfirmar" ${subtotal < PEDIDO_MINIMO ? 'disabled' : ''}>
+      ${subtotal < PEDIDO_MINIMO ? 'Faltan productos para el mínimo' : 'Confirmar pedido por WhatsApp'}
+    </button>
+  `;
+
+  bindQtyButtons();
+  bindDrawerInputs();
+  actualizarZonaInfo();
+  $('btnGoogle').addEventListener('click', loginGoogleSimulado);
+  $('btnConfirmar').addEventListener('click', confirmarPedido);
+  $('checkRecojo').addEventListener('change', onToggleRecojo);
+}
+
+function bindQtyButtons(){
+  document.querySelectorAll('[data-inc]').forEach(b => b.addEventListener('click', () => cambiarQty(b.dataset.inc, +1)));
+  document.querySelectorAll('[data-dec]').forEach(b => b.addEventListener('click', () => cambiarQty(b.dataset.dec, -1)));
+  document.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => eliminar(b.dataset.del)));
+}
+
+function bindDrawerInputs(){
+  const campos = [
+    ['inpNombre','nombre'],
+    ['inpTelefono','telefono'],
+    ['inpDireccion','direccion'],
+    ['inpReferencia','referencia']
+  ];
+  campos.forEach(([id, key]) => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      cliente[key] = el.value;
+      guardar(LS_CLIENTE, cliente);
+      el.classList.remove('error');
+      if (key === 'direccion') onDireccionChange(el.value);
+      else if (key === 'telefono' || key === 'nombre') actualizarPreviewWhatsApp();
+    });
+  });
+}
+
+async function onDireccionChange(direccion){
+  const sync = deducirZonaSync(direccion);
+  if (sync.origen === 'diccionario_local') {
+    cliente.distrito = sync.distrito;
+    cliente.zona = sync.zona;
+    guardar(LS_CLIENTE, cliente);
+    actualizarZonaInfo();
+    actualizarResumenYPrecio();
+    return;
+  }
+  const zi = $('zonaInfo');
+  if (zi && direccion.trim()) zi.innerHTML = `<div class="zona-info"><span class="zi-icon">buscando</span><span>Buscando tu zona...</span></div>`;
+  const async_ = await deducirZonaAsync(direccion);
+  cliente.distrito = async_.distrito || sync.distrito;
+  cliente.zona = async_.zona || sync.zona;
+  cliente.lat = async_.lat || cliente.lat;
+  cliente.lng = async_.lng || cliente.lng;
+  guardar(LS_CLIENTE, cliente);
+  actualizarZonaInfo();
+  actualizarResumenYPrecio();
+}
+
+function actualizarZonaInfo(){
+  const zi = $('zonaInfo');
+  if (!zi) return;
+  const dir = cliente.direccion || '';
+  if (!dir.trim()) { zi.innerHTML = ''; return; }
+  const zona = cliente.zona || 'A';
+  const distrito = cliente.distrito || '';
+  const desc = ZONAS[zona] ? ZONAS[zona].desc_recojo : 2;
+  if (distrito) {
+    zi.innerHTML = `<div class="zona-info"><span class="zi-icon">listo</span><span>Detectamos <strong>${escapar(distrito)}</strong> → <strong>Zona ${zona}</strong> · Descuento recojo: <strong>S/ ${desc}</strong></span></div>`;
+  } else {
+    zi.innerHTML = `<div class="zona-info"><span class="zi-icon">nota</span><span>Asumimos <strong>Zona A</strong> · Descuento recojo: <strong>S/ 2</strong></span></div>`;
+  }
+}
+
+function actualizarResumenYPrecio(){
+  const subtotal = subtotalCarrito();
+  const descuento = descuentoAplicado();
+  const total = totalCarrito();
+  const resumenEl = document.querySelector('.drawer-body .resumen');
+  if (resumenEl) {
+    const zona = cliente.zona || 'A';
+    resumenEl.innerHTML = `
+      <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
+      <div class="resumen-linea"><span>Delivery</span><span style="color:var(--verde-culantro); font-weight:700;">Gratis</span></div>
+      ${recogerEnLocal ? `
+        <div class="resumen-linea descuento"><span>Recojo en local (zona ${zona})</span><span>− ${soles(descuento)}</span></div>
+      ` : ''}
+      <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
+      ${subtotal < PEDIDO_MINIMO ? `
+        <div class="aviso aviso-error">
+          <span>Pedido mínimo: <strong>${soles(PEDIDO_MINIMO)}</strong>. Te faltan <strong>${soles(PEDIDO_MINIMO - subtotal)}</strong>.</span>
+        </div>
+      ` : ''}
+    `;
+  }
+  const btn = $('btnConfirmar');
+  if (btn) {
+    if (subtotal < PEDIDO_MINIMO) {
+      btn.disabled = true;
+      btn.textContent = 'Faltan productos para el mínimo';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Confirmar pedido por WhatsApp';
+    }
+  }
+  actualizarPreviewWhatsApp();
+  renderCartBar();
+}
+
+function actualizarPreviewWhatsApp(){
+  const el = $('waPreview');
+  if (el) el.textContent = construirMensajeWhatsApp();
+}
+
+function onToggleRecojo(e){
+  recogerEnLocal = e.target.checked;
+  const wrap = $('checkRecojoWrap');
+  if (wrap) wrap.classList.toggle('activo', recogerEnLocal);
+  const cd = $('campoDireccion');
+  const cr = $('campoReferencia');
+  if (cd) cd.style.display = recogerEnLocal ? 'none' : '';
+  if (cr) cr.style.display = recogerEnLocal ? 'none' : '';
+  actualizarResumenYPrecio();
+}
+
+function cambiarQty(codigo, delta){
+  const actual = (carrito[codigo] && carrito[codigo].qty) || 0;
+  const nuevo = Math.max(0, +(actual + delta).toFixed(2));
+  if (nuevo === 0) delete carrito[codigo];
+  else carrito[codigo] = { qty: nuevo };
+  guardar(LS_CARRITO, carrito);
+  renderCatalogo();
+  renderCartBar();
+  renderDrawer();
+}
+
+function eliminar(codigo){
+  delete carrito[codigo];
+  guardar(LS_CARRITO, carrito);
+  renderCatalogo();
+  renderCartBar();
+  renderDrawer();
+}
+
+/* ============================================================
+   GOOGLE LOGIN SIMULADO
+   ============================================================ */
+function loginGoogleSimulado(){
+  const nombre = prompt('Simulación de Google Login.\n\nEscribe tu nombre completo:', cliente.nombre || '');
+  if (!nombre) return;
+  cliente.nombre = nombre.trim();
+  guardar(LS_CLIENTE, cliente);
+  renderDrawer();
+}
+
+/* ============================================================
+   MENSAJE WHATSAPP
+   ============================================================ */
+function construirMensajeWhatsApp(){
+  const items = itemsCarrito();
+  const subtotal = subtotalCarrito();
+  const descuento = descuentoAplicado();
+  const total = totalCarrito();
+  const tel = soloDigitos(cliente.telefono);
+  const idCliente = '001' + (tel || '000000000');
+  const zona = cliente.zona || 'A';
+  const distrito = cliente.distrito || '';
+
+  const productosTxt = items
+    .map(i => `${i.nombre} (x${i.qty} ${i.unidad}) - ${soles(i.subtotal)}`)
+    .join(' ▸ ');
+
+  const lineas = [
+    '🧺 PEDIDO - COMPRA CON MISTI',
+    `▸ Nombre: ${cliente.nombre || ''}`,
+    `▸ ID: ${idCliente}`
+  ];
+
+  if (recogerEnLocal) {
+    lineas.push('▸ Dirección: Recojo en local (Eduardo Bello 385)');
+  } else {
+    lineas.push(`▸ Dirección: ${cliente.direccion || ''}`);
+  }
+
+  if (distrito) lineas.push(`▸ Distrito: ${distrito}`);
+  lineas.push(`▸ Zona: ${zona}`);
+
+  if (!recogerEnLocal && cliente.referencia.trim()) {
+    lineas.push(`▸ Referencia: ${cliente.referencia.trim()}`);
+  }
+
+  lineas.push(`▸ Producto(s): ${productosTxt}`);
+  lineas.push(`▸ Subtotal: ${soles(subtotal)}`);
+  lineas.push(`▸ Descuento recojo: ${soles(descuento)}`);
+  lineas.push(`▸ TOTAL: ${soles(total)}`);
+  lineas.push(`▸ Solicitud: Confirmar día de entrega y coordinar pago.`);
+
+  return lineas.join('\n');
+}
+
+/* ============================================================
+   VALIDACIÓN
+   ============================================================ */
+function validarPedido(){
+  cliente.nombre = ($('inpNombre')?.value || cliente.nombre || '').trim();
+  cliente.telefono = ($('inpTelefono')?.value || cliente.telefono || '').trim();
+  cliente.direccion = ($('inpDireccion')?.value || cliente.direccion || '').trim();
+  cliente.referencia = ($('inpReferencia')?.value || cliente.referencia || '').trim();
+  guardar(LS_CLIENTE, cliente);
+
+  let ok = true, primerError = null;
+
+  if (itemsCarrito().length === 0) { alert('Tu canasta está vacía.'); return false; }
+  if (subtotalCarrito() < PEDIDO_MINIMO) {
+    alert(`Pedido mínimo: ${soles(PEDIDO_MINIMO)}. Te faltan ${soles(PEDIDO_MINIMO - subtotalCarrito())}.`);
+    return false;
+  }
+  if (!cliente.nombre) { $('inpNombre')?.classList.add('error'); primerError = primerError || $('inpNombre'); ok = false; }
+  const tel = soloDigitos(cliente.telefono);
+  if (tel.length !== 9 || !tel.startsWith('9')) { $('inpTelefono')?.classList.add('error'); primerError = primerError || $('inpTelefono'); ok = false; }
+  if (!recogerEnLocal && !cliente.direccion) { $('inpDireccion')?.classList.add('error'); primerError = primerError || $('inpDireccion'); ok = false; }
+
+  if (!ok) {
+    if (primerError) primerError.focus();
+    alert('Revisa los campos marcados en rojo.');
+    return false;
+  }
+  return true;
+}
+
+/* ============================================================
+   CONFIRMAR
+   ============================================================ */
+function confirmarPedido(){
+  if (!validarPedido()) return;
+
+  const items = itemsCarrito();
+  const subtotal = subtotalCarrito();
+  const descuento = descuentoAplicado();
+  const total = totalCarrito();
+  const tel = soloDigitos(cliente.telefono);
+  const idCliente = '001' + tel;
+  const mensaje = construirMensajeWhatsApp();
+  const url = `https://wa.me/${WHATSAPP_NEGOCIO}?text=${encodeURIComponent(mensaje)}`;
+
+  const pedido = {
+    cliente_id: idCliente,
+    fecha: new Date().toISOString(),
+    cliente: {
+      nombre: cliente.nombre, telefono: tel,
+      distrito: cliente.distrito || '', zona: cliente.zona || 'A',
+      direccion: recogerEnLocal ? '' : cliente.direccion,
+      referencia: recogerEnLocal ? '' : cliente.referencia,
+      recojo_local: recogerEnLocal,
+      lat: cliente.lat, lng: cliente.lng
+    },
+    items: items.map(i => ({
+      codigo: i.codigo, nombre: i.nombre, unidad: i.unidad,
+      cantidad: i.qty, precio_unitario: i.precio, subtotal: i.subtotal
+    })),
+    subtotal, descuento_recojo: descuento, total,
+    mensaje_enviado: mensaje
+  };
+  pedidos.unshift(pedido);
+  guardar(LS_PEDIDOS, pedidos);
+
+  window.open(url, '_blank');
+
+  $('drawerTitulo').textContent = 'Pedido enviado';
+  $('drawerBody').innerHTML = `
+    <div class="confirmacion">
+      <div class="confirmacion-icon">✓</div>
+      <h3>¡Pedido listo!</h3>
+      <p>Se abrió WhatsApp con el resumen. Envíalo para confirmar tu pedido.</p>
+      <p style="font-size:13px;">Coordinaremos la entrega y el pago por WhatsApp.</p>
+      ${descuento > 0 ? `
+        <div class="aviso aviso-ok" style="text-align:left; margin-top:18px;">
+          <span>Se aplicó el descuento de <strong>− ${soles(descuento)}</strong> por recojo en local.</span>
+        </div>
+      ` : ''}
+    </div>
+  `;
+  $('drawerFoot').innerHTML = `
+    <a href="${url}" target="_blank" class="btn btn-primary btn-block" style="margin-bottom:10px;">Reabrir WhatsApp</a>
+    <button class="btn btn-secondary btn-block" id="btnFinalizar">Finalizar</button>
+  `;
+  $('btnFinalizar').addEventListener('click', finalizarPedido);
+}
+
+function finalizarPedido(){
+  carrito = {};
+  recogerEnLocal = false;
+  guardar(LS_CARRITO, carrito);
+  cerrarDrawer();
+  renderCatalogo();
+  renderCartBar();
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  renderCatalogo();
+  renderCartBar();
+
+  $('cartBar').addEventListener('click', abrirDrawer);
+  $('cartBar').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirDrawer(); }
+  });
+  $('drawerClose').addEventListener('click', cerrarDrawer);
+  $('drawerOverlay').addEventListener('click', cerrarDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && $('drawer').classList.contains('open')) cerrarDrawer();
+  });
+}
+
+init();
+</script>
+</body>
+</html>
