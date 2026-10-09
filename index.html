@@ -160,7 +160,6 @@
   .btn-secondary{background:var(--blanco); color:var(--carbon);}
   .btn-secondary:hover{background:var(--miel-suave);}
   .btn-block{width:100%;}
-  .btn:disabled{opacity:0.45; cursor:not-allowed; transform:none; box-shadow:2px 2px 0 var(--carbon);}
 
   /* SECCIONES */
   section{padding:60px 0;}
@@ -242,7 +241,6 @@
   .producto:hover{transform:translate(-2px,-2px); box-shadow:4px 4px 0 var(--carbon);}
   .producto.en-carrito{background:var(--miel-suave); box-shadow:4px 4px 0 var(--rojo-aji);}
 
-  /* FOTO CON CSS SPRITE */
   .producto-foto{
     width:100%;
     aspect-ratio:1/1;
@@ -266,7 +264,6 @@
   .producto-precio{font-family:var(--font-display); font-size:22px; font-weight:800; color:var(--rojo-aji); line-height:1; letter-spacing:-0.02em; margin-top:auto;}
   .producto-precio small{font-size:11.5px; color:var(--texto-suave); font-family:var(--font-body); font-weight:500; letter-spacing:0;}
 
-  /* INPUT DE CANTIDAD */
   .qty-wrap{
     display:flex; align-items:center; gap:8px;
     background:var(--blanco);
@@ -443,24 +440,60 @@
   .drawer-body{flex:1; overflow-y:auto; padding:22px; -webkit-overflow-scrolling:touch;}
   .drawer-foot{padding:16px 22px calc(16px + env(safe-area-inset-bottom)); border-top:2px solid var(--carbon); background:var(--blanco); flex-shrink:0;}
 
-  /* ITEMS DEL DRAWER */
-  .cart-item{display:flex; gap:14px; align-items:flex-start; padding:16px 0; border-bottom:1px dashed var(--borde-fuerte);}
+  /* ITEMS DEL DRAWER — diseño compacto en una sola línea */
+  .cart-item{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px 12px;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px dashed var(--borde-fuerte);
+  }
   .cart-item:last-child{border-bottom:none;}
-  .cart-item-info{flex:1; min-width:0;}
-  .cart-item-nombre{font-size:14.5px; font-weight:700; line-height:1.3; color:var(--carbon);}
-  .cart-item-detalle{font-size:12.5px; color:var(--texto-suave); margin-top:3px;}
-  .cart-item-precio{font-family:var(--font-display); font-size:17px; font-weight:800; text-align:right; white-space:nowrap; color:var(--rojo-aji); letter-spacing:-0.02em;}
-  .cart-item-controls{display:flex; align-items:center; gap:6px; margin-top:10px;}
+  .cart-item-nombre{
+    font-size:14.5px; font-weight:700; color:var(--carbon);
+    line-height:1.2;
+    display:flex; align-items:baseline; gap:6px; flex-wrap:wrap;
+  }
+  .cart-item-nombre .unidad{
+    font-family:var(--font-hand); font-size:14px;
+    color:var(--texto-suave); font-weight:600;
+  }
+  .cart-item-precio{
+    font-family:var(--font-display); font-size:16px; font-weight:800;
+    color:var(--rojo-aji); white-space:nowrap;
+    letter-spacing:-0.02em; text-align:right;
+  }
+  .cart-item-controls{
+    display:flex; align-items:center; gap:6px;
+    grid-column:1 / -1;
+  }
   .qty-mini{
-    width:30px; height:30px; border-radius:8px;
+    width:28px; height:28px; border-radius:7px;
     background:var(--blanco); border:2px solid var(--carbon);
-    font-size:15px; font-weight:700; line-height:1;
+    font-size:14px; font-weight:700; line-height:1;
     display:flex; align-items:center; justify-content:center;
     transition:all .15s;
     color:var(--carbon);
+    flex-shrink:0;
   }
   .qty-mini:hover{background:var(--carbon); color:var(--crema);}
-  .qty-mini-num{font-size:13.5px; font-weight:800; min-width:38px; text-align:center; font-family:var(--font-display);}
+  .qty-mini-num{
+    font-size:13.5px; font-weight:800; min-width:34px; text-align:center;
+    font-family:var(--font-display);
+    color:var(--carbon);
+  }
+  .qty-mini-del{
+    margin-left:auto;
+    width:28px; height:28px; border-radius:7px;
+    background:transparent; border:none;
+    font-size:16px; font-weight:700; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--rojo-aji);
+    transition:all .15s;
+    flex-shrink:0;
+  }
+  .qty-mini-del:hover{background:#FBE0DC;}
 
   /* RESUMEN */
   .resumen{background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:16px 18px; margin-top:16px; box-shadow:3px 3px 0 var(--carbon);}
@@ -492,7 +525,6 @@
   .campo input.error{border-color:var(--rojo-aji); box-shadow:3px 3px 0 var(--rojo-aji);}
   .campo textarea{resize:vertical; min-height:64px;}
   .campo-hint{font-size:12px; color:var(--texto-suave); margin-top:6px; line-height:1.5;}
-  .campo-hint.verde{color:var(--verde-culantro); font-weight:600;}
 
   .zona-info{
     background:var(--miel-suave);
@@ -532,7 +564,6 @@
   .aviso{padding:12px 14px; border-radius:var(--radio-sm); font-size:12.5px; font-weight:600; display:flex; gap:10px; align-items:flex-start; margin-top:12px; line-height:1.5; border:2px solid var(--carbon);}
   .aviso-error{background:#FBE0DC; color:var(--rojo-aji-osc);}
   .aviso-ok{background:#E4EFDC; color:var(--verde-hoja);}
-  .aviso-info{background:var(--miel-suave); color:var(--carbon);}
 
   .confirmacion{text-align:center; padding:30px 8px;}
   .confirmacion-icon{
@@ -546,22 +577,6 @@
   }
   .confirmacion h3{font-size:24px; margin-bottom:10px; color:var(--carbon);}
   .confirmacion p{color:var(--texto-suave); font-size:14px; margin-bottom:14px; line-height:1.55;}
-
-  .wa-preview{
-    background:#E4EFDC;
-    border:2px solid var(--carbon);
-    border-radius:var(--radio-sm);
-    padding:14px 16px;
-    font-size:12.5px;
-    line-height:1.6;
-    color:var(--carbon);
-    white-space:pre-wrap;
-    word-break:break-word;
-    font-family:'Inter', monospace;
-    max-height:280px;
-    overflow-y:auto;
-    box-shadow:2px 2px 0 var(--carbon);
-  }
 
   .hidden{display:none !important;}
 
@@ -831,35 +846,26 @@
 
 <script>
 /* ============================================================
-   PRODUCTOS — sin Ají Amarillo (PR-009 eliminado)
-   Las posiciones del sprite se mantienen intactas
+   PRODUCTOS — sin Ají Amarillo
    ============================================================ */
 const PRODUCTOS = [
-  // FILA 0 — Papas + tubérculos
   { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básico',  unidad:'kg',     precio:2.50, bgPos:'0% 0%' },
   { codigo:'PR-002', nombre:'Papa Canchán',      grupo:'Básico',  unidad:'kg',     precio:2.29, bgPos:'20% 0%' },
   { codigo:'PR-003', nombre:'Papa Huayro',       grupo:'Básico',  unidad:'kg',     precio:2.57, bgPos:'40% 0%' },
   { codigo:'PR-004', nombre:'Papa Negra Andina', grupo:'Básico',  unidad:'kg',     precio:3.00, bgPos:'60% 0%' },
   { codigo:'PR-005', nombre:'Yuca Amarilla',     grupo:'Básico',  unidad:'kg',     precio:1.71, bgPos:'80% 0%' },
   { codigo:'PR-006', nombre:'Camote Amarillo',   grupo:'Básico',  unidad:'kg',     precio:1.86, bgPos:'100% 0%' },
-  
-  // FILA 1 — Tubérculos + ajíes (sin Ají Amarillo)
   { codigo:'PR-007', nombre:'Olluco',            grupo:'Básico',  unidad:'kg',     precio:3.14, bgPos:'0% 33.333%' },
   { codigo:'PR-008', nombre:'Choclo',            grupo:'Básico',  unidad:'unidad', precio:1.43, bgPos:'20% 33.333%' },
-  // PR-009 Ají Amarillo ELIMINADO
   { codigo:'PR-010', nombre:'Ají Panca',         grupo:'Sazón',   unidad:'kg',     precio:8.00, bgPos:'60% 33.333%' },
   { codigo:'PR-011', nombre:'Ají Rocoto',        grupo:'Sazón',   unidad:'kg',     precio:5.85, bgPos:'80% 33.333%' },
   { codigo:'PR-012', nombre:'Ají Escabeche',     grupo:'Sazón',   unidad:'kg',     precio:4.92, bgPos:'100% 33.333%' },
-  
-  // FILA 2 — Hierbas + especiales
   { codigo:'PR-013', nombre:'Huacatay',          grupo:'Sazón',   unidad:'atado',  precio:1.67, bgPos:'0% 66.666%' },
   { codigo:'PR-014', nombre:'Culantro',          grupo:'Sazón',   unidad:'atado',  precio:2.00, bgPos:'20% 66.666%' },
   { codigo:'PR-015', nombre:'Perejil',           grupo:'Sazón',   unidad:'atado',  precio:1.67, bgPos:'40% 66.666%' },
   { codigo:'PR-016', nombre:'Ajo Criollo',       grupo:'Sazón',   unidad:'kg',     precio:8.57, bgPos:'60% 66.666%' },
   { codigo:'PR-017', nombre:'Zapallo Loche',     grupo:'Especial',unidad:'kg',     precio:5.00, bgPos:'80% 66.666%' },
   { codigo:'PR-018', nombre:'Maíz Morado',       grupo:'Especial',unidad:'kg',     precio:5.71, bgPos:'100% 66.666%' },
-  
-  // FILA 3 — Especiales
   { codigo:'PR-019', nombre:'Cebolla Roja',      grupo:'Especial',unidad:'kg',     precio:2.14, bgPos:'0% 100%' },
   { codigo:'PR-020', nombre:'Tomate',            grupo:'Especial',unidad:'kg',     precio:3.57, bgPos:'20% 100%' },
   { codigo:'PR-021', nombre:'Zanahoria',         grupo:'Especial',unidad:'kg',     precio:1.71, bgPos:'40% 100%' },
@@ -869,7 +875,6 @@ const PRODUCTOS = [
 ];
 
 const WHATSAPP_NEGOCIO = '51977101608';
-const PEDIDO_MINIMO = 20.00;
 
 /* ============================================================
    ZONAS Y DISTRITOS
@@ -1121,17 +1126,14 @@ function renderDrawer(){
   body.innerHTML = `
     <div>${items.map(i => `
       <div class="cart-item">
-        <div class="cart-item-info">
-          <div class="cart-item-nombre">${escapar(i.nombre)}</div>
-          <div class="cart-item-detalle">${soles(i.precio)} / ${escapar(i.unidad)}</div>
-          <div class="cart-item-controls">
-            <button class="qty-mini" data-dec="${i.codigo}" aria-label="Quitar">−</button>
-            <span class="qty-mini-num">${i.qty}</span>
-            <button class="qty-mini" data-inc="${i.codigo}" aria-label="Agregar">+</button>
-            <button class="qty-mini" data-del="${i.codigo}" style="margin-left:auto; color:var(--rojo-aji);" aria-label="Eliminar">×</button>
-          </div>
-        </div>
+        <div class="cart-item-nombre">${escapar(i.nombre)} <span class="unidad">· ${escapar(i.unidad)}</span></div>
         <div class="cart-item-precio">${soles(i.subtotal)}</div>
+        <div class="cart-item-controls">
+          <button class="qty-mini" data-dec="${i.codigo}" aria-label="Quitar">−</button>
+          <span class="qty-mini-num">${i.qty}</span>
+          <button class="qty-mini" data-inc="${i.codigo}" aria-label="Agregar">+</button>
+          <button class="qty-mini-del" data-del="${i.codigo}" aria-label="Eliminar">×</button>
+        </div>
       </div>
     `).join('')}</div>
 
@@ -1142,11 +1144,6 @@ function renderDrawer(){
         <div class="resumen-linea descuento"><span>Recojo en local (zona ${zona})</span><span>− ${soles(descuento)}</span></div>
       ` : ''}
       <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
-      ${subtotal < PEDIDO_MINIMO ? `
-        <div class="aviso aviso-error">
-          <span>Pedido mínimo: <strong>${soles(PEDIDO_MINIMO)}</strong>. Te faltan <strong>${soles(PEDIDO_MINIMO - subtotal)}</strong>.</span>
-        </div>
-      ` : ''}
     </div>
 
     <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Tus datos</h4>
@@ -1187,15 +1184,10 @@ function renderDrawer(){
       <input type="text" id="inpReferencia" value="${escapar(cliente.referencia)}" placeholder="Ej: Portero, edificio azul...">
       <div class="campo-hint">Ayúdanos a ubicarte más rápido.</div>
     </div>
-
-    <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Mensaje que enviaremos</h4>
-    <div class="wa-preview" id="waPreview">${escapar(construirMensajeWhatsApp())}</div>
   `;
 
   foot.innerHTML = `
-    <button class="btn btn-primary btn-block" id="btnConfirmar" ${subtotal < PEDIDO_MINIMO ? 'disabled' : ''}>
-      ${subtotal < PEDIDO_MINIMO ? 'Faltan productos para el mínimo' : 'Confirmar pedido por WhatsApp'}
-    </button>
+    <button class="btn btn-primary btn-block" id="btnConfirmar">Confirmar pedido por WhatsApp</button>
   `;
 
   bindQtyButtons();
@@ -1227,7 +1219,6 @@ function bindDrawerInputs(){
       guardar(LS_CLIENTE, cliente);
       el.classList.remove('error');
       if (key === 'direccion') onDireccionChange(el.value);
-      else if (key === 'telefono' || key === 'nombre') actualizarPreviewWhatsApp();
     });
   });
 }
@@ -1283,30 +1274,9 @@ function actualizarResumenYPrecio(){
         <div class="resumen-linea descuento"><span>Recojo en local (zona ${zona})</span><span>− ${soles(descuento)}</span></div>
       ` : ''}
       <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
-      ${subtotal < PEDIDO_MINIMO ? `
-        <div class="aviso aviso-error">
-          <span>Pedido mínimo: <strong>${soles(PEDIDO_MINIMO)}</strong>. Te faltan <strong>${soles(PEDIDO_MINIMO - subtotal)}</strong>.</span>
-        </div>
-      ` : ''}
     `;
   }
-  const btn = $('btnConfirmar');
-  if (btn) {
-    if (subtotal < PEDIDO_MINIMO) {
-      btn.disabled = true;
-      btn.textContent = 'Faltan productos para el mínimo';
-    } else {
-      btn.disabled = false;
-      btn.textContent = 'Confirmar pedido por WhatsApp';
-    }
-  }
-  actualizarPreviewWhatsApp();
   renderCartBar();
-}
-
-function actualizarPreviewWhatsApp(){
-  const el = $('waPreview');
-  if (el) el.textContent = construirMensajeWhatsApp();
 }
 
 function onToggleRecojo(e){
@@ -1408,10 +1378,6 @@ function validarPedido(){
   let ok = true, primerError = null;
 
   if (itemsCarrito().length === 0) { alert('Tu canasta está vacía.'); return false; }
-  if (subtotalCarrito() < PEDIDO_MINIMO) {
-    alert(`Pedido mínimo: ${soles(PEDIDO_MINIMO)}. Te faltan ${soles(PEDIDO_MINIMO - subtotalCarrito())}.`);
-    return false;
-  }
   if (!cliente.nombre) { $('inpNombre')?.classList.add('error'); primerError = primerError || $('inpNombre'); ok = false; }
   const tel = soloDigitos(cliente.telefono);
   if (tel.length !== 9 || !tel.startsWith('9')) { $('inpTelefono')?.classList.add('error'); primerError = primerError || $('inpTelefono'); ok = false; }
