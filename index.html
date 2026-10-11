@@ -985,7 +985,7 @@
           <a href="#como" class="btn btn-secondary">Cómo funciona</a>
         </div>
         <div class="hero-datos">
-          <div class="hero-dato"><b>23</b><span>Productos esta ronda</span></div>
+          <div class="hero-dato"><b>21</b><span>Productos esta ronda</span></div>
           <div class="hero-dato"><b>S/ 0</b><span>Delivery en zona</span></div>
           <div class="hero-dato"><b>S/ 2–5</b><span>Descuento si recoges</span></div>
         </div>
@@ -1388,35 +1388,37 @@
 
 <script>
 /* ============================================================
-   PRODUCTOS (fallback hardcoded — se sobreescriben con precios
-   en vivo desde Firestore cuando están disponibles)
+   PRODUCTOS — códigos alineados con el ADMIN (Firestore)
+   Los precios son fallback; se sobreescriben con los de
+   Firestore cuando están disponibles.
    ============================================================ */
 const PRODUCTOS = [
-  { codigo:'PR-002', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:2.29, bgPos:'20% 0%' },
-  { codigo:'PR-019', nombre:'Cebolla Roja',      grupo:'Básicos',  unidad:'kg',     precio:2.14, bgPos:'0% 100%' },
-  { codigo:'PR-020', nombre:'Tomate',            grupo:'Básicos',  unidad:'kg',     precio:3.57, bgPos:'20% 100%' },
-  { codigo:'PR-021', nombre:'Zanahoria',         grupo:'Básicos',  unidad:'kg',     precio:1.71, bgPos:'40% 100%' },
-  { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:2.50, bgPos:'0% 0%' },
-  { codigo:'PR-006', nombre:'Camote Amarillo',   grupo:'Básicos',  unidad:'kg',     precio:1.86, bgPos:'100% 0%' },
-  { codigo:'PR-005', nombre:'Yuca Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:1.71, bgPos:'80% 0%' },
-  { codigo:'PR-008', nombre:'Choclo',            grupo:'Básicos',  unidad:'unidad', precio:1.43, bgPos:'20% 33.333%' },
+  // ---- BÁSICOS ----
+  { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:5.84,  bgPos:'0% 0%' },
+  { codigo:'PR-003', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:4.37,  bgPos:'20% 0%' },
+  { codigo:'PR-005', nombre:'Cebolla Roja',      grupo:'Básicos',  unidad:'kg',     precio:3.74,  bgPos:'0% 100%' },
+  { codigo:'PR-004', nombre:'Tomate',            grupo:'Básicos',  unidad:'kg',     precio:8.80,  bgPos:'20% 100%' },
+  { codigo:'PR-006', nombre:'Zanahoria',         grupo:'Básicos',  unidad:'kg',     precio:3.70,  bgPos:'40% 100%' },
+  { codigo:'PR-008', nombre:'Camote Amarillo',   grupo:'Básicos',  unidad:'kg',     precio:2.84,  bgPos:'100% 0%' },
+  { codigo:'PR-009', nombre:'Yuca Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:4.40,  bgPos:'80% 0%' },
+  { codigo:'PR-007', nombre:'Choclo',            grupo:'Básicos',  unidad:'unidad', precio:4.04,  bgPos:'20% 33.333%' },
 
-  { codigo:'PR-016', nombre:'Ajo Criollo',       grupo:'Sazón',    unidad:'kg',     precio:8.57, bgPos:'60% 66.666%' },
-  { codigo:'PR-012', nombre:'Ají Escabeche',     grupo:'Sazón',    unidad:'kg',     precio:4.92, bgPos:'100% 33.333%' },
-  { codigo:'PR-010', nombre:'Ají Panca',         grupo:'Sazón',    unidad:'kg',     precio:8.00, bgPos:'60% 33.333%' },
-  { codigo:'PR-014', nombre:'Culantro',          grupo:'Sazón',    unidad:'atado',  precio:2.00, bgPos:'20% 66.666%' },
-  { codigo:'PR-015', nombre:'Perejil',           grupo:'Sazón',    unidad:'atado',  precio:1.67, bgPos:'40% 66.666%' },
-  { codigo:'PR-013', nombre:'Huacatay',          grupo:'Sazón',    unidad:'atado',  precio:1.67, bgPos:'0% 66.666%' },
-  { codigo:'PR-011', nombre:'Ají Rocoto',        grupo:'Sazón',    unidad:'kg',     precio:5.85, bgPos:'80% 33.333%' },
+  // ---- SAZÓN ----
+  { codigo:'PR-014', nombre:'Ajo Criollo',       grupo:'Sazón',    unidad:'kg',     precio:12.94, bgPos:'60% 66.666%' },
+  { codigo:'PR-017', nombre:'Ají Panca',         grupo:'Sazón',    unidad:'kg',     precio:14.65, bgPos:'60% 33.333%' },
+  { codigo:'PR-018', nombre:'Ají Rocoto',        grupo:'Sazón',    unidad:'kg',     precio:13.55, bgPos:'80% 33.333%' },
+  { codigo:'PR-020', nombre:'Culantro',          grupo:'Sazón',    unidad:'atado',  precio:1.43,  bgPos:'20% 66.666%' },
+  { codigo:'PR-021', nombre:'Perejil',           grupo:'Sazón',    unidad:'atado',  precio:1.43,  bgPos:'40% 66.666%' },
+  { codigo:'PR-019', nombre:'Huacatay',          grupo:'Sazón',    unidad:'atado',  precio:1.43,  bgPos:'0% 66.666%' },
 
-  { codigo:'PR-003', nombre:'Papa Huayro',       grupo:'Especiales', unidad:'kg',   precio:2.57, bgPos:'40% 0%' },
-  { codigo:'PR-007', nombre:'Olluco',            grupo:'Especiales', unidad:'kg',   precio:3.14, bgPos:'0% 33.333%' },
-  { codigo:'PR-004', nombre:'Papa Negra Andina', grupo:'Especiales', unidad:'kg',   precio:3.00, bgPos:'60% 0%' },
-  { codigo:'PR-017', nombre:'Zapallo Loche',     grupo:'Especiales', unidad:'kg',   precio:5.00, bgPos:'80% 66.666%' },
-  { codigo:'PR-022', nombre:'Apio',              grupo:'Especiales', unidad:'kg',   precio:2.57, bgPos:'60% 100%' },
-  { codigo:'PR-023', nombre:'Poro',              grupo:'Especiales', unidad:'kg',   precio:2.86, bgPos:'80% 100%' },
-  { codigo:'PR-024', nombre:'Cebolla China',     grupo:'Especiales', unidad:'kg',   precio:3.14, bgPos:'100% 100%' },
-  { codigo:'PR-018', nombre:'Maíz Morado',       grupo:'Especiales', unidad:'kg',   precio:5.71, bgPos:'100% 66.666%' }
+  // ---- ESPECIALES ----
+  { codigo:'PR-011', nombre:'Papa Huayro',       grupo:'Especiales', unidad:'kg',   precio:7.47,  bgPos:'40% 0%' },
+  { codigo:'PR-012', nombre:'Papa Negra Andina', grupo:'Especiales', unidad:'kg',   precio:6.84,  bgPos:'60% 0%' },
+  { codigo:'PR-016', nombre:'Ají Amarillo',      grupo:'Especiales', unidad:'kg',   precio:13.17, bgPos:'100% 33.333%' },
+  { codigo:'PR-013', nombre:'Cebolla China',     grupo:'Especiales', unidad:'atado', precio:12.90, bgPos:'100% 100%' },
+  { codigo:'PR-022', nombre:'Apio',              grupo:'Especiales', unidad:'kg',   precio:6.64,  bgPos:'60% 100%' },
+  { codigo:'PR-023', nombre:'Poro',              grupo:'Especiales', unidad:'kg',   precio:12.20, bgPos:'80% 100%' },
+  { codigo:'PR-024', nombre:'Maíz Morado',       grupo:'Especiales', unidad:'kg',   precio:6.64,  bgPos:'100% 66.666%' }
 ];
 
 const ORDEN_GRUPOS = ['Básicos','Sazón','Especiales'];
@@ -2577,15 +2579,21 @@ async function cargarPreciosDeLaRonda(){
 
     // 3. Pisar precios hardcoded con los de Firestore
     let actualizados = 0;
+    let faltantes = [];
     PRODUCTOS.forEach(prod => {
       const pr = preciosMap[prod.codigo];
       if (pr && typeof pr.precio_venta === "number"){
         prod.precio = pr.precio_venta;
         actualizados++;
+      } else {
+        faltantes.push(prod.codigo);
       }
     });
 
     console.log(`✓ Precios en vivo: ${actualizados}/${PRODUCTOS.length} (ronda ${rondaActiva})`);
+    if (faltantes.length) {
+      console.warn(`⚠️ Sin precio en Firestore: ${faltantes.join(", ")}`);
+    }
 
     // 4. Actualizar el número de ronda visible en toda la página
     document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaActiva);
