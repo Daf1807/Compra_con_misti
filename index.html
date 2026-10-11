@@ -1,4 +1,4 @@
-<!DOCTYPE html>
++<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -86,10 +86,10 @@
   .brand:hover .brand-mark{transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--carbon);}
   .brand-name{font-family:var(--font-display); font-weight:700; font-size:17px; letter-spacing:-0.02em; color:var(--carbon); line-height:1;}
   .brand-sub{font-size:11px; color:var(--texto-suave); font-weight:500; margin-top:2px; letter-spacing:0.02em;}
-  .nav-links{display:none; list-style:none; gap:28px;}
+  .nav-links{display:none; list-style:none; gap:26px;}
   .nav-links a{font-size:14px; font-weight:500; color:var(--texto-suave); transition:color .15s;}
   .nav-links a:hover{color:var(--rojo-aji);}
-  @media (min-width:820px){ .nav-links{display:flex;} }
+  @media (min-width:900px){ .nav-links{display:flex;} }
   .nav-cta{
     font-size:13.5px; font-weight:600;
     background:var(--carbon); color:var(--crema);
@@ -120,14 +120,15 @@
   .hero-grid{display:grid; grid-template-columns:1fr; gap:36px; align-items:center;}
   @media (min-width:900px){ .hero-grid{grid-template-columns:1.15fr 0.85fr; gap:56px;} }
   .hero-sello{margin-bottom:22px;}
-  .hero h1{font-size:clamp(34px, 6.4vw, 58px); line-height:1.02; font-weight:800; color:var(--carbon); margin-bottom:22px; letter-spacing:-0.03em;}
+  .hero h1{font-size:clamp(32px, 6vw, 54px); line-height:1.04; font-weight:800; color:var(--carbon); margin-bottom:22px; letter-spacing:-0.03em;}
   .hero h1 em{font-style:italic; font-weight:600; color:var(--rojo-aji); font-family:var(--font-display);}
   .hero h1 .destacado{background:linear-gradient(180deg, transparent 62%, var(--miel-suave) 62%); padding:0 4px;}
-  .hero-lede{font-size:16.5px; color:var(--texto-suave); max-width:52ch; margin-bottom:30px; line-height:1.6;}
+  .hero-lede{font-size:16.5px; color:var(--texto-suave); max-width:54ch; margin-bottom:22px; line-height:1.6;}
   @media (min-width:820px){ .hero-lede{font-size:17.5px;} }
-  .hero-actions{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:36px;}
+  .hero-lede + .hero-lede{margin-top:-6px;}
+  .hero-actions{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:36px; margin-top:26px;}
   .hero-datos{display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; padding-top:26px; border-top:2px dashed var(--borde-fuerte);}
-  .hero-dato b{display:block; font-family:var(--font-display); font-weight:800; font-size:26px; color:var(--rojo-aji); line-height:1; letter-spacing:-0.02em;}
+  .hero-dato b{display:block; font-family:var(--font-display); font-weight:800; font-size:24px; color:var(--rojo-aji); line-height:1.1; letter-spacing:-0.02em;}
   .hero-dato span{font-size:12.5px; color:var(--texto-suave); display:block; margin-top:6px; line-height:1.35;}
 
   .hero-ilu{position:relative; aspect-ratio:1/1; max-width:420px; margin:0 auto; display:none;}
@@ -164,10 +165,11 @@
   /* SECCIONES */
   section{padding:60px 0;}
   @media (min-width:820px){ section{padding:88px 0;} }
-  .section-head{margin-bottom:42px; max-width:640px;}
+  .section-head{margin-bottom:42px; max-width:720px;}
   .section-head h2{font-size:clamp(28px, 4.4vw, 42px); margin-bottom:14px; line-height:1.05;}
   .section-head h2 em{font-style:italic; font-weight:600; color:var(--rojo-aji);}
   .section-head p{color:var(--texto-suave); font-size:16px; line-height:1.6;}
+  .section-head p + p{margin-top:12px;}
   .section-eyebrow{display:inline-block; font-family:var(--font-hand); font-weight:700; font-size:18px; color:var(--naranja-zanah); margin-bottom:10px; transform:rotate(-1deg);}
 
   /* POR QUÉ */
@@ -190,6 +192,16 @@
   .porque-card h4{font-size:17px; font-weight:700; color:var(--carbon); font-family:var(--font-display); letter-spacing:-0.02em; line-height:1.2;}
   .porque-card p{font-size:13.5px; color:var(--texto); line-height:1.55;}
 
+  /* HISTORIA */
+  #historia{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
+  .historia-text{max-width:720px; display:flex; flex-direction:column; gap:16px;}
+  .historia-text p{font-size:16.5px; line-height:1.7; color:var(--texto);}
+  .historia-text p.lead{font-size:18.5px; color:var(--carbon); font-weight:500;}
+  .historia-text p.final{
+    font-family:var(--font-hand); font-weight:700; font-size:22px;
+    color:var(--rojo-aji); line-height:1.4; margin-top:8px;
+  }
+
   /* CATÁLOGO */
   #catalogo{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .ronda-banner{
@@ -211,6 +223,29 @@
   }
   .ronda-banner strong{font-weight:700; color:var(--miel);}
 
+  .como-armar{
+    background:var(--crema-2);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio);
+    padding:18px 22px;
+    margin-bottom:32px;
+    box-shadow:3px 3px 0 var(--carbon);
+  }
+  .como-armar h4{
+    font-family:var(--font-display); font-size:16px; font-weight:700;
+    color:var(--carbon); margin-bottom:12px;
+  }
+  .como-armar ul{list-style:none; display:grid; grid-template-columns:1fr; gap:8px;}
+  @media (min-width:640px){ .como-armar ul{grid-template-columns:1fr 1fr;} }
+  .como-armar li{
+    font-size:14px; color:var(--texto); line-height:1.5;
+    padding-left:22px; position:relative;
+  }
+  .como-armar li::before{
+    content:'→'; position:absolute; left:0; top:0;
+    color:var(--rojo-aji); font-weight:800;
+  }
+
   .grupo-titulo{
     font-family:var(--font-display); font-weight:700;
     font-size:22px; margin:34px 0 16px;
@@ -218,6 +253,11 @@
   }
   .grupo-titulo small{font-family:var(--font-hand); font-size:18px; color:var(--naranja-zanah); font-weight:700; transform:rotate(-1deg);}
   .grupo-titulo:first-child{margin-top:0;}
+
+  .grupo-desc{
+    font-size:14.5px; color:var(--texto-suave); line-height:1.55;
+    margin:-8px 0 18px; max-width:640px;
+  }
 
   .productos-grid{
     display:grid;
@@ -316,8 +356,8 @@
   .donde-info{display:flex; flex-direction:column; gap:14px;}
   .donde-info .linea{display:flex; gap:14px; align-items:flex-start; padding:14px 0; border-bottom:1px dashed var(--borde-fuerte);}
   .donde-info .linea:last-child{border-bottom:none;}
-  .donde-info .linea b{font-family:var(--font-hand); font-size:20px; color:var(--naranja-zanah); flex-shrink:0; width:80px; transform:rotate(-1deg);}
-  .donde-info .linea span{font-size:14.5px; color:var(--texto); line-height:1.5;}
+  .donde-info .linea b{font-family:var(--font-hand); font-size:20px; color:var(--naranja-zanah); flex-shrink:0; width:90px; transform:rotate(-1deg);}
+  .donde-info .linea span{font-size:14.5px; color:var(--texto); line-height:1.55;}
   .donde-info .linea span strong{color:var(--carbon); font-weight:700;}
   .zonas-lista{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
   .zona-chip{
@@ -331,39 +371,108 @@
   .zona-chip.b{background:#F4E2D8;}
   .zona-chip.c{background:#E4EFDC;}
 
-  /* HABLEMOS */
-  .hablemos{
+  /* ACUERDO */
+  #acuerdo{background:var(--carbon); color:var(--crema);}
+  #acuerdo .section-head h2{color:var(--crema);}
+  #acuerdo .section-head h2 em{color:var(--miel);}
+  #acuerdo .section-head p{color:rgba(250,244,232,0.75);}
+  #acuerdo .section-eyebrow{color:var(--miel);}
+  .acuerdo-bloque{max-width:760px; display:flex; flex-direction:column; gap:18px; margin-bottom:32px;}
+  .acuerdo-bloque p{font-size:16.5px; line-height:1.7; color:rgba(250,244,232,0.9);}
+  .acuerdo-bloque p strong{color:var(--miel); font-weight:700;}
+  .acuerdo-bloque h3{
+    font-family:var(--font-display); font-size:18px; font-weight:700;
+    color:var(--miel); margin-top:12px; letter-spacing:-0.01em;
+  }
+  .acuerdo-clausula{
+    background:rgba(250,244,232,0.06);
+    border-left:4px solid var(--miel);
+    padding:18px 22px;
+    font-size:16px;
+    line-height:1.65;
+    color:var(--crema);
+    margin:8px 0;
+  }
+  .acuerdo-cierre{
+    font-family:var(--font-display);
+    font-size:22px; font-weight:700; line-height:1.3;
+    color:var(--miel); margin-top:18px;
+  }
+
+  /* MERCADO (cambios) */
+  #mercado{background:var(--crema);}
+  .escenarios{display:grid; grid-template-columns:1fr; gap:14px; margin-top:8px;}
+  @media (min-width:720px){ .escenarios{grid-template-columns:1fr 1fr;} }
+  .escenario{
+    background:var(--blanco); border:2px solid var(--carbon);
+    border-radius:var(--radio); padding:22px 22px;
+    box-shadow:3px 3px 0 var(--carbon);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .escenario-num{
+    font-family:var(--font-display); font-weight:800;
+    font-size:13px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--rojo-aji);
+  }
+  .escenario h4{
+    font-family:var(--font-display); font-size:17px; font-weight:700;
+    line-height:1.25; color:var(--carbon); letter-spacing:-0.02em;
+  }
+  .escenario p{font-size:14px; line-height:1.6; color:var(--texto);}
+  .escenario.s-estable{background:#E4EFDC;}
+  .escenario.s-baja{background:var(--miel-suave);}
+  .escenario.s-sube{background:var(--crema-2);}
+  .escenario.s-extremo{background:#F4E2D8;}
+
+  .mercado-cierre{
+    font-family:var(--font-display);
+    font-size:22px; font-weight:700; line-height:1.3;
+    color:var(--rojo-aji); margin-top:32px; max-width:720px;
+  }
+
+  /* FAQ */
+  #faq{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
+  .faq-list{max-width:820px; display:flex; flex-direction:column;}
+  .faq-item{border-top:2px solid var(--carbon); padding:22px 0;}
+  .faq-list .faq-item:last-child{border-bottom:2px solid var(--carbon);}
+  .faq-item summary{
+    font-size:17.5px; font-weight:700; list-style:none;
+    display:flex; justify-content:space-between; align-items:center;
+    cursor:pointer; gap:16px;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:"+"; font-size:24px; color:var(--rojo-aji); font-weight:400; flex-shrink:0;}
+  .faq-item[open] summary::after{content:"–";}
+  .faq-item p{font-size:15.5px; margin-top:14px; max-width:680px; line-height:1.65; color:var(--texto);}
+
+  /* CIERRE */
+  #cierre{padding:60px 0; background:var(--crema-2); border-top:2px solid var(--carbon);}
+  .cierre-card{
     background:var(--carbon); color:var(--crema);
     border-radius:var(--radio-lg); padding:44px 32px;
     text-align:center; border:3px solid var(--carbon);
     box-shadow:6px 6px 0 var(--rojo-aji);
     position:relative; overflow:hidden;
   }
-  .hablemos::before{content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; border-radius:50%; background:var(--rojo-aji); opacity:.15;}
-  .hablemos::after{content:''; position:absolute; bottom:-60px; left:-60px; width:200px; height:200px; border-radius:50%; background:var(--miel); opacity:.12;}
-  .hablemos h2{color:var(--crema); font-size:clamp(26px, 4vw, 36px); margin-bottom:12px; position:relative; z-index:2;}
-  .hablemos h2 em{color:var(--miel); font-style:italic;}
-  .hablemos p{color:rgba(250,244,232,0.8); font-size:15px; margin-bottom:24px; position:relative; z-index:2;}
-  .hablemos .wa-btn{
-    display:inline-flex; align-items:center; gap:10px;
-    background:var(--miel); color:var(--carbon);
-    padding:14px 28px; border-radius:var(--radio-full);
-    font-size:15px; font-weight:700;
-    border:2px solid var(--carbon);
-    box-shadow:3px 3px 0 var(--rojo-aji);
-    transition:all .15s;
-    position:relative; z-index:2;
-    font-family:var(--font-body);
-  }
-  .hablemos .wa-btn:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--rojo-aji);}
+  .cierre-card::before{content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; border-radius:50%; background:var(--rojo-aji); opacity:.15;}
+  .cierre-card::after{content:''; position:absolute; bottom:-60px; left:-60px; width:200px; height:200px; border-radius:50%; background:var(--miel); opacity:.12;}
+  .cierre-card h2{color:var(--crema); font-size:clamp(26px, 4vw, 38px); margin-bottom:14px; position:relative; z-index:2; line-height:1.1;}
+  .cierre-card h2 em{color:var(--miel); font-style:italic;}
+  .cierre-card p{color:rgba(250,244,232,0.85); font-size:15.5px; margin-bottom:14px; position:relative; z-index:2; max-width:560px; margin-left:auto; margin-right:auto; line-height:1.6;}
+  .cierre-actions{display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:26px; position:relative; z-index:2;}
+  .cierre-card .btn-primary{background:var(--miel); color:var(--carbon); border-color:var(--carbon); box-shadow:3px 3px 0 var(--rojo-aji);}
+  .cierre-card .btn-primary:hover{background:var(--miel-suave); transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--rojo-aji);}
+  .cierre-card .btn-secondary{background:transparent; color:var(--crema); border-color:var(--crema); box-shadow:3px 3px 0 var(--crema);}
+  .cierre-card .btn-secondary:hover{background:var(--crema); color:var(--carbon);}
 
   /* FOOTER */
-  footer{background:var(--crema-2); border-top:2px solid var(--carbon); padding:52px 0 28px; margin-top:0;}
+  footer{background:var(--crema-2); border-top:2px solid var(--carbon); padding:52px 0 28px;}
   .footer-grid{display:grid; grid-template-columns:1fr; gap:34px; margin-bottom:38px;}
   @media (min-width:720px){ .footer-grid{grid-template-columns:1.4fr 1fr 1fr;} }
   footer h4{font-family:var(--font-display); font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--rojo-aji); margin-bottom:16px;}
   footer ul{list-style:none; display:flex; flex-direction:column; gap:10px;}
   footer ul li, footer p{font-size:13.5px; color:var(--texto); line-height:1.6;}
+  footer ul li a:hover{color:var(--rojo-aji);}
   .footer-bottom{border-top:1px dashed var(--borde-fuerte); padding-top:22px; font-size:12px; color:var(--texto-suave);}
 
   /* BARRA FLOTANTE */
@@ -562,6 +671,14 @@
   .aviso{padding:12px 14px; border-radius:var(--radio-sm); font-size:12.5px; font-weight:600; display:flex; gap:10px; align-items:flex-start; margin-top:12px; line-height:1.5; border:2px solid var(--carbon);}
   .aviso-error{background:#FBE0DC; color:var(--rojo-aji-osc);}
   .aviso-ok{background:#E4EFDC; color:var(--verde-hoja);}
+  .aviso-condiciones{
+    background:var(--crema-2);
+    color:var(--texto);
+    font-weight:500;
+    font-size:12.5px;
+    line-height:1.55;
+  }
+  .aviso-condiciones strong{color:var(--carbon); font-weight:700;}
 
   .confirmacion{text-align:center; padding:30px 8px;}
   .confirmacion-icon{
@@ -599,7 +716,9 @@
     <ul class="nav-links">
       <li><a href="#catalogo">Catálogo</a></li>
       <li><a href="#como">Cómo funciona</a></li>
-      <li><a href="#donde">Dónde estamos</a></li>
+      <li><a href="#acuerdo">Acuerdo</a></li>
+      <li><a href="#mercado">Precio fijado</a></li>
+      <li><a href="#faq">Preguntas</a></li>
     </ul>
     <a href="#catalogo" class="nav-cta">Armar mi canasta</a>
   </div>
@@ -611,11 +730,17 @@
     <div class="hero-grid">
       <div>
         <div class="hero-sello">
-          <span class="sello">Ronda abierta · cierra viernes 5:00 pm</span>
+          <span class="sello">Ronda <span class="rondaId"></span> · Pedidos hasta el viernes, 5:00 p. m.</span>
         </div>
-        <h1>Somos la cocina de <em>El Misti.</em><br>Ahora también <span class="destacado">para tu casa.</span></h1>
+        <h1>De la cocina de <em>El Misti</em><br>a tu mesa.</h1>
         <p class="hero-lede">
-          Compra con Misti es la despensa del restaurante El Misti, abierta para tu hogar. Los mismos insumos que usa nuestra cocina criolla, al precio del mercado mayorista, entregados en tu puerta el domingo.
+          Los productos frescos que forman parte de nuestra cocina criolla, ahora también en tu casa.
+        </p>
+        <p class="hero-lede">
+          Elige lo que necesitas, conoce los precios desde el inicio y haz tu pedido por WhatsApp. Nosotros organizamos la compra con nuestros proveedores y preparamos los pedidos para la entrega del domingo.
+        </p>
+        <p class="hero-lede" style="font-weight:600; color:var(--carbon);">
+          Alimentos frescos del mercado, con la experiencia de El Misti.
         </p>
         <div class="hero-actions">
           <a href="#catalogo" class="btn btn-primary">Armar mi canasta</a>
@@ -623,7 +748,7 @@
         </div>
         <div class="hero-datos">
           <div class="hero-dato"><b>23</b><span>Productos esta ronda</span></div>
-          <div class="hero-dato"><b>0%</b><span>Costo de delivery</span></div>
+          <div class="hero-dato"><b>S/ 0</b><span>Delivery en zona</span></div>
           <div class="hero-dato"><b>S/ 2–5</b><span>Descuento si recoges</span></div>
         </div>
       </div>
@@ -643,32 +768,50 @@
 <section id="porque">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-eyebrow">Lo que nos hace distintos</span>
-      <h2>Lo que entra a nuestra cocina, <em>entra a tu casa.</em></h2>
-      <p>No somos una tienda. No somos una bodega. Somos la compra del restaurante, abierta para tu hogar.</p>
+      <span class="section-eyebrow">Lo que nos diferencia</span>
+      <h2>Tu compra de la semana, <em>con la confianza de siempre.</em></h2>
     </div>
 
     <div class="porque-grid">
       <div class="porque-card">
         <div class="porque-num">01</div>
-        <h4>Calidad de restaurante</h4>
-        <p>Compramos con el mismo criterio que usa nuestra chef. No es producto de bodega, es producto de cocina criolla.</p>
+        <h4>Los productos que conocemos</h4>
+        <p>En la cocina de El Misti trabajamos diariamente con papas, cebollas, tomates, ajíes, hierbas y otros ingredientes de nuestra cocina criolla. Conocemos estos productos y sabemos lo importante que es elegirlos bien.</p>
       </div>
       <div class="porque-card">
         <div class="porque-num">02</div>
-        <h4>Frescura del domingo</h4>
-        <p>Compramos temprano y entregamos el mismo domingo. Del mercado a tu olla, sin escalas.</p>
+        <h4>Compra directa en el mercado</h4>
+        <p>Organizamos los pedidos de las familias y coordinamos el abastecimiento con nuestros proveedores. Así puedes encargar tus alimentos sin recorrer puestos, hacer colas ni cargar bolsas.</p>
       </div>
       <div class="porque-card">
         <div class="porque-num">03</div>
-        <h4>Precio congelado</h4>
-        <p>Fijamos el precio el lunes y no cambia hasta el viernes. Si el mercado sube, tú no pagas la diferencia.</p>
+        <h4>Precios claros desde el inicio</h4>
+        <p>Cada producto tiene un precio visible en el catálogo. Los precios de la ronda se fijan para el periodo de pedidos, de modo que puedas conocer el importe de tu compra antes de confirmarla.</p>
       </div>
       <div class="porque-card">
         <div class="porque-num">04</div>
-        <h4>Delivery gratis, siempre</h4>
-        <p>Dentro de la zona de reparto, el envío está incluido. Si prefieres recoger en el local, te descontamos.</p>
+        <h4>Recibe en casa o recoge en El Misti</h4>
+        <p>Recibe tu pedido el domingo, según la coordinación realizada por WhatsApp. Dentro de nuestra zona de reparto, el delivery es gratuito. También puedes recogerlo en nuestro local y acceder al descuento correspondiente.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORIA -->
+<section id="historia">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">De El Misti para tu mesa</span>
+      <h2>Cocina criolla, de verdad.</h2>
+    </div>
+
+    <div class="historia-text">
+      <p class="lead">El Misti es un restaurante familiar de comida criolla. Cada día trabajamos con alimentos frescos para preparar los platos que compartimos con nuestros clientes.</p>
+      <p>Compra con Misti nace de una idea sencilla: si organizamos nuestras compras para abastecer la cocina, también podemos reunir los pedidos de otras familias y coordinar una compra conjunta de alimentos en el mercado.</p>
+      <p>Al reunir la demanda de varias familias con las compras habituales del restaurante, podemos organizar el abastecimiento directamente con nuestros proveedores.</p>
+      <p>Tú eliges los alimentos que necesitas y nosotros nos encargamos de organizar la compra y la entrega. Así puedes abastecer tu hogar sin tener que ir al mercado ni cargar tus bolsas.</p>
+      <p>No necesitas comprar una canasta idéntica a la de otra familia. Puedes elegir los productos y las cantidades disponibles en el catálogo según tus necesidades.</p>
+      <p class="final">Compra con Misti acerca la experiencia de compra de nuestro restaurante a tu hogar: una forma práctica de organizar tus alimentos de la semana, con precios claros y la confianza de El Misti.</p>
     </div>
   </div>
 </section>
@@ -677,14 +820,25 @@
 <section id="catalogo">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-eyebrow">Canasta de la semana</span>
-      <h2>Arma tu canasta</h2>
-      <p>Escribe la cantidad directamente en cada producto. Acepta medios y cuartos de kilo. Precios fijos hasta el viernes 5:00 pm.</p>
+      <span class="section-eyebrow">Catálogo de la ronda</span>
+      <h2>Arma tu canasta <em>a tu manera.</em></h2>
+      <p>Elige los productos que necesitas y escribe la cantidad que deseas comprar. Puedes combinar distintos alimentos y ajustar tu pedido a tu presupuesto.</p>
+      <p>Los precios que aparecen en el catálogo corresponden a la ronda vigente. Una vez fijados, se mantienen durante el periodo de pedidos.</p>
+    </div>
+
+    <div class="como-armar">
+      <h4>¿Cómo armar tu canasta?</h4>
+      <ul>
+        <li>Selecciona los productos que necesitas.</li>
+        <li>Indica la cantidad de cada uno.</li>
+        <li>Revisa el importe de tu selección.</li>
+        <li>Envía tu pedido por WhatsApp para confirmar los detalles.</li>
+      </ul>
     </div>
 
     <div class="ronda-banner">
       <span class="dot"></span>
-      <span><strong>Ronda abierta.</strong> Cierra el viernes a las 5:00 pm. Delivery gratis. Si recoges en el local: descuento de S/ 2 a S/ 5 según tu zona.</span>
+      <span><strong>Ronda <span class="rondaId"></span> abierta.</strong> Cierra el viernes a las 5:00 pm. Delivery gratis en zona. Si recoges en el local: descuento de S/ 2 a S/ 5 según tu zona.</span>
     </div>
 
     <div id="catalogoCont"></div>
@@ -695,30 +849,30 @@
 <section id="como">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-eyebrow">Una semana para pedir, un domingo para recibir</span>
-      <h2>Cómo funciona la ronda</h2>
+      <span class="section-eyebrow">Cuatro pasos, sin complicaciones</span>
+      <h2>Tú eliges. <em>Nosotros organizamos la compra.</em></h2>
     </div>
 
     <div class="como-grid">
       <div class="como-paso">
         <div class="como-paso-num">1</div>
-        <h4>Eliges tu canasta</h4>
-        <p>Del catálogo de la semana. Escribes la cantidad y listo, sin pasos extra.</p>
+        <h4>Arma tu canasta</h4>
+        <p>Explora el catálogo, selecciona los productos que necesitas e indica las cantidades. Puedes combinar alimentos según tus preferencias y tu presupuesto.</p>
       </div>
       <div class="como-paso">
         <div class="como-paso-num">2</div>
-        <h4>Confirmas por WhatsApp</h4>
-        <p>Te llega un resumen y coordinamos el pago (Yape o efectivo) y la entrega.</p>
+        <h4>Confirma por WhatsApp</h4>
+        <p>Envía tu selección y revisa el resumen del pedido. Coordinamos contigo el importe, la modalidad de entrega y el pago.</p>
       </div>
       <div class="como-paso">
         <div class="como-paso-num">3</div>
         <h4>Compramos el domingo</h4>
-        <p>Temprano, con el mismo criterio de siempre, aprovechando el volumen de varias familias.</p>
+        <p>Reunimos los pedidos y coordinamos el abastecimiento con nuestros proveedores. Organizamos la compra teniendo en cuenta las necesidades de las familias y las compras habituales de la cocina de El Misti.</p>
       </div>
       <div class="como-paso">
         <div class="como-paso-num">4</div>
-        <h4>Recibes en tu casa</h4>
-        <p>Delivery gratis. Si recoges en el local, te descontamos según tu zona.</p>
+        <h4>Recibe tu pedido</h4>
+        <p>Entregamos los pedidos el domingo, según la coordinación por WhatsApp. Puedes recibirlos en tu domicilio dentro de nuestra zona de reparto o recogerlos en nuestro local.</p>
       </div>
     </div>
   </div>
@@ -728,23 +882,24 @@
 <section id="donde">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-eyebrow">Base operativa</span>
-      <h2>Dónde estamos</h2>
+      <span class="section-eyebrow">Nuestro punto de operaciones</span>
+      <h2>Estamos en El Misti.</h2>
+      <p>Desde nuestro local organizamos los pedidos y coordinamos las entregas de Compra con Misti.</p>
     </div>
 
     <div class="donde-grid">
       <div class="donde-info">
         <div class="linea">
-          <b>Local</b>
-          <span><strong>Eduardo Bello 385</strong><br>Santa Catalina, La Victoria</span>
-        </div>
-        <div class="linea">
-          <b>Recojo</b>
-          <span>Ahí está El Misti. Ahí puedes recoger tu pedido y ahorrar S/ 2, S/ 3 o S/ 5 según tu zona.</span>
+          <b>Dirección</b>
+          <span><strong>Eduardo Bello 385</strong><br>Santa Catalina, La Victoria, Lima.</span>
         </div>
         <div class="linea">
           <b>Delivery</b>
-          <span>Gratis dentro de la zona de reparto. Fuera de la zona, coordinamos recojo en el local.</span>
+          <span>El envío es gratuito dentro de nuestra zona de reparto. Antes de confirmar tu pedido, verificamos si tu dirección está cubierta.</span>
+        </div>
+        <div class="linea">
+          <b>Recojo</b>
+          <span>También puedes recoger tu compra en El Misti. Si eliges esta opción, consulta el descuento aplicable, que puede variar entre <strong>S/ 2 y S/ 5</strong> según tu zona.</span>
         </div>
       </div>
       <div>
@@ -770,15 +925,146 @@
   </div>
 </section>
 
-<!-- HABLEMOS -->
-<section id="hablemos">
+<!-- ACUERDO -->
+<section id="acuerdo">
   <div class="wrap">
-    <div class="hablemos">
-      <h2>¿Dudas? <em>Escríbenos por WhatsApp.</em></h2>
-      <p>No hay bots. Responde el equipo de El Misti.</p>
-      <a href="https://wa.me/51977101608" target="_blank" class="wa-btn">
-        +51 977 101 608
-      </a>
+    <div class="section-head">
+      <span class="section-eyebrow">Transparencia desde el primer pedido</span>
+      <h2>Un precio claro. <em>Una compra organizada.</em></h2>
+    </div>
+
+    <div class="acuerdo-bloque">
+      <p>Cuando confirmas tu pedido, conoces los productos, las cantidades y los precios establecidos para la ronda. Los precios se mantienen durante el periodo de pedidos, hasta el viernes a las 5:00 p. m.</p>
+      <p>Compramos el domingo por la mañana, coordinando el abastecimiento con nuestros proveedores para atender los pedidos de las familias. Nuestra planificación combina la compra colectiva con el abastecimiento habitual de la cocina de El Misti.</p>
+
+      <h3>Asumimos las variaciones habituales del mercado</h3>
+      <p>Los precios de compra pueden cambiar durante la semana. En condiciones normales, mantenemos los precios acordados y asumimos las variaciones habituales dentro de los márgenes previstos para la operación, incluso cuando esto reduce nuestro margen económico.</p>
+
+      <h3>Si los precios suben extraordinariamente</h3>
+      <p>Si se produce una subida excepcional que supera nuestra capacidad de asumirla, las cantidades que podemos adquirir se ajustan al presupuesto disponible para alimentos y a los costos reales de compra.</p>
+      <p>En ese escenario, el presupuesto destinado a alimentos determina cuánto podemos comprar. El objetivo es mantener el abastecimiento dentro de los recursos disponibles, sin trasladar automáticamente a las familias todo el incremento extraordinario de los precios.</p>
+
+      <h3>Cómo se organiza tu compra</h3>
+      <p>El importe de tu pedido contempla el presupuesto destinado a los alimentos y los costos de operación del servicio. Las cantidades que podemos ofrecer dependen de ese presupuesto y de los precios efectivos de compra.</p>
+
+      <div class="acuerdo-clausula">
+        Nuestro compromiso es organizar la compra con responsabilidad, asumir las variaciones habituales del mercado y utilizar el presupuesto destinado a alimentos de acuerdo con los costos reales de abastecimiento.
+      </div>
+
+      <p class="acuerdo-cierre">Tú decides qué comprar. Nosotros organizamos la compra y coordinamos la entrega.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ OCURRE CUANDO CAMBIA EL MERCADO -->
+<section id="mercado">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">Cómo funciona el precio fijado</span>
+      <h2>Tu compra no cambia <em>con cada movimiento del mercado.</em></h2>
+      <p>Los precios de los alimentos pueden subir o bajar durante la semana. En Compra con Misti fijamos los precios de la ronda para que puedas organizar tu presupuesto con anticipación.</p>
+    </div>
+
+    <div class="escenarios">
+      <div class="escenario s-estable">
+        <span class="escenario-num">01 · Estable</span>
+        <h4>Si los precios se mantienen</h4>
+        <p>El presupuesto permite adquirir las cantidades previstas para tu pedido y organizar su entrega.</p>
+      </div>
+
+      <div class="escenario s-baja">
+        <span class="escenario-num">02 · Bajan</span>
+        <h4>Si los precios bajan</h4>
+        <p>Los precios de tu pedido se mantienen según lo confirmado. Si conseguimos mejores condiciones de compra, la diferencia contribuye al resultado de la operación y a la sostenibilidad del servicio.</p>
+      </div>
+
+      <div class="escenario s-sube">
+        <span class="escenario-num">03 · Suben dentro de lo previsto</span>
+        <h4>Si los precios suben dentro de lo previsto</h4>
+        <p>Asumimos las variaciones habituales contempladas en la operación y mantenemos las condiciones acordadas con las familias.</p>
+      </div>
+
+      <div class="escenario s-extremo">
+        <span class="escenario-num">04 · Suben extraordinariamente</span>
+        <h4>Si los precios suben extraordinariamente</h4>
+        <p>Cuando ocurre una subida excepcional, el presupuesto destinado a los alimentos determina las cantidades que podemos adquirir.</p>
+        <p>En lugar de aumentar automáticamente el precio confirmado, ajustamos las cantidades a los costos reales de compra, manteniendo cubiertos los costos operativos previstos.</p>
+        <p>Así podemos continuar organizando el abastecimiento sin asumir compromisos de cantidades que el presupuesto disponible ya no permite sostener.</p>
+      </div>
+    </div>
+
+    <p class="mercado-cierre">El precio organiza el presupuesto; el costo real de compra determina cuánto alimento puede adquirirse.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">Preguntas frecuentes</span>
+      <h2>Lo que necesitas saber antes de comprar.</h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>¿Cuándo puedo hacer mi pedido?</summary>
+        <p>Puedes realizarlo durante el periodo de la ronda, desde la publicación del catálogo hasta el viernes a las 5:00 p. m.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cuándo compran los productos?</summary>
+        <p>La compra se realiza el domingo por la mañana y las entregas se coordinan para ese mismo día.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Los precios cambian después de confirmar?</summary>
+        <p>Los precios de la ronda se mantienen durante el periodo de pedidos. Si se produce una subida extraordinaria, las cantidades que podemos adquirir dependen del presupuesto destinado a alimentos y de los costos reales de compra.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué determina la cantidad de alimentos que recibo?</summary>
+        <p>Las cantidades dependen de los productos elegidos, del presupuesto destinado a alimentos y de los precios efectivos de compra. En condiciones normales, organizamos la compra para cumplir las cantidades previstas.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué sucede si los precios suben demasiado?</summary>
+        <p>Si ocurre una subida extraordinaria, ajustamos las cantidades que podemos adquirir al presupuesto disponible para alimentos y a los costos reales de compra. Esta condición forma parte de las reglas de la ronda.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Tengo que comprar una canasta predeterminada?</summary>
+        <p>No necesariamente. Puedes elegir los productos y las cantidades disponibles en el catálogo, según las condiciones de compra de la ronda.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cuánto cuesta el delivery?</summary>
+        <p>El delivery es gratuito dentro de nuestra zona de reparto. Confirmaremos si tu dirección está cubierta antes de cerrar el pedido.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Puedo recoger mi pedido?</summary>
+        <p>Sí. Puedes recogerlo en El Misti, en Eduardo Bello 385, Santa Catalina, La Victoria. Consulta el descuento aplicable, que puede variar entre S/ 2 y S/ 5 según tu zona.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cómo puedo pagar?</summary>
+        <p>El pago se coordina por WhatsApp al confirmar el pedido. Allí te indicaremos los medios de pago disponibles y las condiciones correspondientes.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cómo sé cuánto costará mi pedido?</summary>
+        <p>El catálogo muestra los precios unitarios. Al seleccionar los productos y las cantidades, puedes revisar el importe correspondiente antes de confirmar.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Compra con Misti es una donación, un préstamo o una inversión?</summary>
+        <p>No. Compra con Misti es un servicio de compra de alimentos. Realizas un pedido para adquirir productos destinados a tu hogar; no estás realizando una donación ni entregando dinero como inversión o préstamo.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CIERRE -->
+<section id="cierre">
+  <div class="wrap">
+    <div class="cierre-card">
+      <h2>Tu compra de la semana <em>empieza aquí.</em></h2>
+      <p>Elige los alimentos que necesitas, revisa los precios y organiza tu pedido desde casa.</p>
+      <p>Compra con Misti reúne la experiencia de compra de El Misti con una forma práctica de organizar el abastecimiento de tu hogar.</p>
+      <div class="cierre-actions">
+        <a href="#catalogo" class="btn btn-primary">Ver catálogo y comprar</a>
+        <a href="https://wa.me/51977101608" target="_blank" class="btn btn-secondary">Consultar por WhatsApp</a>
+      </div>
     </div>
   </div>
 </section>
@@ -795,7 +1081,7 @@
             <div class="brand-sub">La despensa de El Misti</div>
           </div>
         </div>
-        <p>La despensa de El Misti, abierta para tu casa. Insumos frescos al precio de comprar juntos.</p>
+        <p>La despensa de El Misti, ahora también para tu casa.</p>
       </div>
       <div>
         <h4>Base operativa</h4>
@@ -809,7 +1095,8 @@
         <h4>Contacto</h4>
         <ul>
           <li>WhatsApp: +51 977 101 608</li>
-          <li>Lunes a viernes, 10–18h</li>
+          <li>Pedidos hasta el viernes, 5:00 p. m.</li>
+          <li>Compra y entrega el domingo</li>
         </ul>
       </div>
     </div>
@@ -844,35 +1131,62 @@
 
 <script>
 /* ============================================================
-   PRODUCTOS — sin Ají Amarillo
+   PRODUCTOS — reordenados en 3 grupos, con bgPos intactos
    ============================================================ */
 const PRODUCTOS = [
-  { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básico',  unidad:'kg',     precio:2.50, bgPos:'0% 0%' },
-  { codigo:'PR-002', nombre:'Papa Canchán',      grupo:'Básico',  unidad:'kg',     precio:2.29, bgPos:'20% 0%' },
-  { codigo:'PR-003', nombre:'Papa Huayro',       grupo:'Básico',  unidad:'kg',     precio:2.57, bgPos:'40% 0%' },
-  { codigo:'PR-004', nombre:'Papa Negra Andina', grupo:'Básico',  unidad:'kg',     precio:3.00, bgPos:'60% 0%' },
-  { codigo:'PR-005', nombre:'Yuca Amarilla',     grupo:'Básico',  unidad:'kg',     precio:1.71, bgPos:'80% 0%' },
-  { codigo:'PR-006', nombre:'Camote Amarillo',   grupo:'Básico',  unidad:'kg',     precio:1.86, bgPos:'100% 0%' },
-  { codigo:'PR-007', nombre:'Olluco',            grupo:'Básico',  unidad:'kg',     precio:3.14, bgPos:'0% 33.333%' },
-  { codigo:'PR-008', nombre:'Choclo',            grupo:'Básico',  unidad:'unidad', precio:1.43, bgPos:'20% 33.333%' },
-  { codigo:'PR-010', nombre:'Ají Panca',         grupo:'Sazón',   unidad:'kg',     precio:8.00, bgPos:'60% 33.333%' },
-  { codigo:'PR-011', nombre:'Ají Rocoto',        grupo:'Sazón',   unidad:'kg',     precio:5.85, bgPos:'80% 33.333%' },
-  { codigo:'PR-012', nombre:'Ají Escabeche',     grupo:'Sazón',   unidad:'kg',     precio:4.92, bgPos:'100% 33.333%' },
-  { codigo:'PR-013', nombre:'Huacatay',          grupo:'Sazón',   unidad:'atado',  precio:1.67, bgPos:'0% 66.666%' },
-  { codigo:'PR-014', nombre:'Culantro',          grupo:'Sazón',   unidad:'atado',  precio:2.00, bgPos:'20% 66.666%' },
-  { codigo:'PR-015', nombre:'Perejil',           grupo:'Sazón',   unidad:'atado',  precio:1.67, bgPos:'40% 66.666%' },
-  { codigo:'PR-016', nombre:'Ajo Criollo',       grupo:'Sazón',   unidad:'kg',     precio:8.57, bgPos:'60% 66.666%' },
-  { codigo:'PR-017', nombre:'Zapallo Loche',     grupo:'Especial',unidad:'kg',     precio:5.00, bgPos:'80% 66.666%' },
-  { codigo:'PR-018', nombre:'Maíz Morado',       grupo:'Especial',unidad:'kg',     precio:5.71, bgPos:'100% 66.666%' },
-  { codigo:'PR-019', nombre:'Cebolla Roja',      grupo:'Especial',unidad:'kg',     precio:2.14, bgPos:'0% 100%' },
-  { codigo:'PR-020', nombre:'Tomate',            grupo:'Especial',unidad:'kg',     precio:3.57, bgPos:'20% 100%' },
-  { codigo:'PR-021', nombre:'Zanahoria',         grupo:'Especial',unidad:'kg',     precio:1.71, bgPos:'40% 100%' },
-  { codigo:'PR-022', nombre:'Apio',              grupo:'Especial',unidad:'kg',     precio:2.57, bgPos:'60% 100%' },
-  { codigo:'PR-023', nombre:'Poro',              grupo:'Especial',unidad:'kg',     precio:2.86, bgPos:'80% 100%' },
-  { codigo:'PR-024', nombre:'Cebolla China',     grupo:'Especial',unidad:'kg',     precio:3.14, bgPos:'100% 100%' }
+  /* BÁSICOS — 8 */
+  { codigo:'PR-002', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:2.29, bgPos:'20% 0%' },
+  { codigo:'PR-019', nombre:'Cebolla Roja',      grupo:'Básicos',  unidad:'kg',     precio:2.14, bgPos:'0% 100%' },
+  { codigo:'PR-020', nombre:'Tomate',            grupo:'Básicos',  unidad:'kg',     precio:3.57, bgPos:'20% 100%' },
+  { codigo:'PR-021', nombre:'Zanahoria',         grupo:'Básicos',  unidad:'kg',     precio:1.71, bgPos:'40% 100%' },
+  { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:2.50, bgPos:'0% 0%' },
+  { codigo:'PR-006', nombre:'Camote Amarillo',   grupo:'Básicos',  unidad:'kg',     precio:1.86, bgPos:'100% 0%' },
+  { codigo:'PR-005', nombre:'Yuca Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:1.71, bgPos:'80% 0%' },
+  { codigo:'PR-008', nombre:'Choclo',            grupo:'Básicos',  unidad:'unidad', precio:1.43, bgPos:'20% 33.333%' },
+
+  /* SAZÓN — 7 */
+  { codigo:'PR-016', nombre:'Ajo Criollo',       grupo:'Sazón',    unidad:'kg',     precio:8.57, bgPos:'60% 66.666%' },
+  { codigo:'PR-012', nombre:'Ají Escabeche',     grupo:'Sazón',    unidad:'kg',     precio:4.92, bgPos:'100% 33.333%' },
+  { codigo:'PR-010', nombre:'Ají Panca',         grupo:'Sazón',    unidad:'kg',     precio:8.00, bgPos:'60% 33.333%' },
+  { codigo:'PR-014', nombre:'Culantro',          grupo:'Sazón',    unidad:'atado',  precio:2.00, bgPos:'20% 66.666%' },
+  { codigo:'PR-015', nombre:'Perejil',           grupo:'Sazón',    unidad:'atado',  precio:1.67, bgPos:'40% 66.666%' },
+  { codigo:'PR-013', nombre:'Huacatay',          grupo:'Sazón',    unidad:'atado',  precio:1.67, bgPos:'0% 66.666%' },
+  { codigo:'PR-011', nombre:'Ají Rocoto',        grupo:'Sazón',    unidad:'kg',     precio:5.85, bgPos:'80% 33.333%' },
+
+  /* ESPECIALES — 8 */
+  { codigo:'PR-003', nombre:'Papa Huayro',       grupo:'Especiales', unidad:'kg',   precio:2.57, bgPos:'40% 0%' },
+  { codigo:'PR-007', nombre:'Olluco',            grupo:'Especiales', unidad:'kg',   precio:3.14, bgPos:'0% 33.333%' },
+  { codigo:'PR-004', nombre:'Papa Negra Andina', grupo:'Especiales', unidad:'kg',   precio:3.00, bgPos:'60% 0%' },
+  { codigo:'PR-017', nombre:'Zapallo Loche',     grupo:'Especiales', unidad:'kg',   precio:5.00, bgPos:'80% 66.666%' },
+  { codigo:'PR-022', nombre:'Apio',              grupo:'Especiales', unidad:'kg',   precio:2.57, bgPos:'60% 100%' },
+  { codigo:'PR-023', nombre:'Poro',              grupo:'Especiales', unidad:'kg',   precio:2.86, bgPos:'80% 100%' },
+  { codigo:'PR-024', nombre:'Cebolla China',     grupo:'Especiales', unidad:'kg',   precio:3.14, bgPos:'100% 100%' },
+  { codigo:'PR-018', nombre:'Maíz Morado',       grupo:'Especiales', unidad:'kg',   precio:5.71, bgPos:'100% 66.666%' }
 ];
 
+const ORDEN_GRUPOS = ['Básicos','Sazón','Especiales'];
+const DESCRIPCION_GRUPOS = {
+  'Básicos':    'Los alimentos que más ayudan a resolver la compra cotidiana de una familia.',
+  'Sazón':      'Ingredientes para preparar aderezos, guisos y platos criollos.',
+  'Especiales': 'Productos complementarios y variedades que diferencian tu canasta.'
+};
+
 const WHATSAPP_NEGOCIO = '51977101608';
+
+/* ============================================================
+   RONDA DINÁMICA — lunes de la semana actual
+   ============================================================ */
+function getRondaId(){
+  const hoy = new Date();
+  const dia = hoy.getDay(); // 0=dom, 1=lun...
+  const diff = (dia === 0) ? -6 : 1 - dia;
+  const lunes = new Date(hoy);
+  lunes.setDate(hoy.getDate() + diff);
+  const y = lunes.getFullYear();
+  const m = String(lunes.getMonth()+1).padStart(2,'0');
+  const d = String(lunes.getDate()).padStart(2,'0');
+  return `R-${y}-${m}-${d}`;
+}
 
 /* ============================================================
    ZONAS Y DISTRITOS
@@ -926,23 +1240,16 @@ const getProducto = (codigo) => PRODUCTOS.find(p => p.codigo === codigo);
 
 /* ============================================================
    FILTRAR INPUT DE CANTIDAD
-   Solo permite: dígitos y UN punto decimal
-   La coma se convierte a punto
    ============================================================ */
 function filtrarCantidad(raw){
   if (raw == null) return '';
-  // Convertir coma a punto
   let s = String(raw).replace(/,/g, '.');
-  // Quitar todo lo que no sea dígito o punto
   s = s.replace(/[^\d.]/g, '');
-  // Si hay más de un punto, quedarse solo con el primero
   const parts = s.split('.');
   if (parts.length > 2) {
     s = parts[0] + '.' + parts.slice(1).join('');
   }
-  // Si empieza con punto, agregar 0
   if (s.startsWith('.')) s = '0' + s;
-  // Máximo 2 decimales
   const p = s.split('.');
   if (p.length === 2 && p[1].length > 2) {
     s = p[0] + '.' + p[1].slice(0, 2);
@@ -950,10 +1257,6 @@ function filtrarCantidad(raw){
   return s;
 }
 
-/* ============================================================
-   NORMALIZAR CANTIDAD (al salir del campo)
-   Devuelve número o null
-   ============================================================ */
 function normalizarCantidad(raw){
   const s = filtrarCantidad(raw);
   if (!s) return null;
@@ -1013,8 +1316,10 @@ function itemsCarrito(){
     .filter(([_, v]) => v.qty > 0)
     .map(([cod, v]) => {
       const p = getProducto(cod);
+      if (!p) return null;
       return { ...p, qty: v.qty, subtotal: +(p.precio * v.qty).toFixed(2) };
-    });
+    })
+    .filter(Boolean);
 }
 const subtotalCarrito = () => itemsCarrito().reduce((s, i) => s + i.subtotal, 0);
 function descuentoAplicado(){
@@ -1026,7 +1331,7 @@ const totalCarrito = () => Math.max(0, subtotalCarrito() - descuentoAplicado());
 const totalItems = () => itemsCarrito().reduce((s, i) => s + i.qty, 0);
 
 /* ============================================================
-   RENDER CATÁLOGO
+   RENDER CATÁLOGO — reordenado en 3 grupos
    ============================================================ */
 function renderCatalogo(){
   const cont = $('catalogoCont');
@@ -1037,9 +1342,12 @@ function renderCatalogo(){
   });
 
   let html = '';
-  ['Básico','Sazón','Especial'].forEach(g => {
+  ORDEN_GRUPOS.forEach(g => {
     if (!grupos[g]) return;
     html += `<h3 class="grupo-titulo">${g} <small>${grupos[g].length} productos</small></h3>`;
+    if (DESCRIPCION_GRUPOS[g]) {
+      html += `<p class="grupo-desc">${DESCRIPCION_GRUPOS[g]}</p>`;
+    }
     html += `<div class="productos-grid">`;
     grupos[g].forEach(p => {
       const qty = (carrito[p.codigo] && carrito[p.codigo].qty) || 0;
@@ -1077,21 +1385,17 @@ function renderCatalogo(){
 
 function bindQtyInputs(){
   document.querySelectorAll('[data-qty]').forEach(inp => {
-    // Al escribir: filtrar en vivo (letras se bloquean, coma se convierte a punto)
     inp.addEventListener('input', () => {
       const antes = inp.value;
       const filtrado = filtrarCantidad(antes);
       if (filtrado !== antes) {
-        // Guardar posición del cursor
         const pos = inp.selectionStart;
         const diff = antes.length - filtrado.length;
         inp.value = filtrado;
-        // Reposicionar el cursor
         try {
           inp.setSelectionRange(Math.max(0, pos - diff), Math.max(0, pos - diff));
         } catch(e) {}
       }
-      // Actualizar estado
       const codigo = inp.dataset.qty;
       const n = normalizarCantidad(inp.value);
       if (n !== null) {
@@ -1105,7 +1409,6 @@ function bindQtyInputs(){
       renderCartBar();
     });
 
-    // Al salir del campo: normalizar (ej: ".5" → "0.5", "1." → "1")
     inp.addEventListener('blur', () => {
       const codigo = inp.dataset.qty;
       const n = normalizarCantidad(inp.value);
@@ -1122,10 +1425,8 @@ function bindQtyInputs(){
       renderCartBar();
     });
 
-    // Evitar que la rueda del mouse cambie el valor
     inp.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
 
-    // Enter = salir del campo
     inp.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -1133,17 +1434,13 @@ function bindQtyInputs(){
       }
     });
 
-    // Bloquear teclas que no sean dígitos, punto, coma, o teclas de control
     inp.addEventListener('keypress', (e) => {
       const key = e.key;
-      // Permitir teclas de control (backspace, delete, arrows, tab, etc.)
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-      if (key.length > 1) return; // teclas especiales
-      // Permitir solo dígitos, punto y coma
+      if (key.length > 1) return;
       if (!/[\d.,]/.test(key)) {
         e.preventDefault();
       }
-      // Bloquear un segundo punto si ya hay uno
       if ((key === '.' || key === ',') && inp.value.includes('.')) {
         e.preventDefault();
       }
@@ -1233,12 +1530,7 @@ function renderDrawer(){
 
     <div class="campo">
       <label for="inpNombre">Nombre <span class="req">*</span></label>
-      <div style="display:flex; gap:8px;">
-        <input type="text" id="inpNombre" value="${escapar(cliente.nombre)}" placeholder="Ej: Lucía Delgado" autocomplete="name">
-        <button class="btn btn-secondary" id="btnGoogle" type="button" title="Autocompletar con Google" style="padding:12px 14px; flex-shrink:0; font-size:12px;">
-          Google
-        </button>
-      </div>
+      <input type="text" id="inpNombre" value="${escapar(cliente.nombre)}" placeholder="Ej: Lucía Delgado" autocomplete="name">
     </div>
 
     <div class="campo">
@@ -1258,7 +1550,7 @@ function renderDrawer(){
     <div class="campo" id="campoDireccion" style="${recogerEnLocal ? 'display:none;' : ''}">
       <label for="inpDireccion">Dirección <span class="req">*</span></label>
       <input type="text" id="inpDireccion" value="${escapar(cliente.direccion)}" placeholder="Ej: Av. Petit Thouars 1116, San Borja" autocomplete="street-address">
-      <div class="campo-hint">Escribe calle, número y distrito. Con eso calculamos tu zona y el descuento.</div>
+      <div class="campo-hint">Escribe calle, número y distrito. Con eso verificamos si tu dirección está dentro de la zona de reparto.</div>
       <div id="zonaInfo"></div>
     </div>
 
@@ -1266,6 +1558,10 @@ function renderDrawer(){
       <label for="inpReferencia">Referencia <span class="opt">(opcional)</span></label>
       <input type="text" id="inpReferencia" value="${escapar(cliente.referencia)}" placeholder="Ej: Portero, edificio azul...">
       <div class="campo-hint">Ayúdanos a ubicarte más rápido.</div>
+    </div>
+
+    <div class="aviso aviso-condiciones">
+      <span><strong>Importante sobre los precios fijados:</strong> el precio que ves es el que pagas. Si el mercado sube de forma extraordinaria durante la semana (una subida excepcional que supere nuestra capacidad de asumirla), las cantidades que podemos adquirir se ajustan al presupuesto destinado a alimentos. En condiciones normales, recibes exactamente lo que pediste.</span>
     </div>
   `;
 
@@ -1276,7 +1572,6 @@ function renderDrawer(){
   bindQtyButtons();
   bindDrawerInputs();
   actualizarZonaInfo();
-  $('btnGoogle').addEventListener('click', loginGoogleSimulado);
   $('btnConfirmar').addEventListener('click', confirmarPedido);
   $('checkRecojo').addEventListener('change', onToggleRecojo);
 }
@@ -1317,7 +1612,7 @@ async function onDireccionChange(direccion){
     return;
   }
   const zi = $('zonaInfo');
-  if (zi && direccion.trim()) zi.innerHTML = `<div class="zona-info"><span class="zi-icon">buscando</span><span>Buscando tu zona...</span></div>`;
+  if (zi && direccion.trim()) zi.innerHTML = `<div class="zona-info"><span class="zi-icon">buscando</span><span>Verificando cobertura...</span></div>`;
   const async_ = await deducirZonaAsync(direccion);
   cliente.distrito = async_.distrito || sync.distrito;
   cliente.zona = async_.zona || sync.zona;
@@ -1337,9 +1632,9 @@ function actualizarZonaInfo(){
   const distrito = cliente.distrito || '';
   const desc = ZONAS[zona] ? ZONAS[zona].desc_recojo : 2;
   if (distrito) {
-    zi.innerHTML = `<div class="zona-info"><span class="zi-icon">listo</span><span>Detectamos <strong>${escapar(distrito)}</strong> → <strong>Zona ${zona}</strong> · Descuento recojo: <strong>S/ ${desc}</strong></span></div>`;
+    zi.innerHTML = `<div class="zona-info"><span class="zi-icon">listo</span><span>Detectamos <strong>${escapar(distrito)}</strong> · Zona ${zona} · Descuento si recoges: <strong>S/ ${desc}</strong></span></div>`;
   } else {
-    zi.innerHTML = `<div class="zona-info"><span class="zi-icon">nota</span><span>Asumimos <strong>Zona A</strong> · Descuento recojo: <strong>S/ 2</strong></span></div>`;
+    zi.innerHTML = `<div class="zona-info"><span class="zi-icon">nota</span><span>Confirmaremos la cobertura de tu dirección por WhatsApp. Descuento referencial si recoges: <strong>S/ 2</strong></span></div>`;
   }
 }
 
@@ -1393,17 +1688,6 @@ function eliminar(codigo){
 }
 
 /* ============================================================
-   GOOGLE LOGIN SIMULADO
-   ============================================================ */
-function loginGoogleSimulado(){
-  const nombre = prompt('Simulación de Google Login.\n\nEscribe tu nombre completo:', cliente.nombre || '');
-  if (!nombre) return;
-  cliente.nombre = nombre.trim();
-  guardar(LS_CLIENTE, cliente);
-  renderDrawer();
-}
-
-/* ============================================================
    MENSAJE WHATSAPP
    ============================================================ */
 function construirMensajeWhatsApp(){
@@ -1415,6 +1699,7 @@ function construirMensajeWhatsApp(){
   const idCliente = '001' + (tel || '000000000');
   const zona = cliente.zona || 'A';
   const distrito = cliente.distrito || '';
+  const ronda = getRondaId();
 
   const productosTxt = items
     .map(i => `${i.nombre} (x${i.qty} ${i.unidad}) - ${soles(i.subtotal)}`)
@@ -1422,6 +1707,7 @@ function construirMensajeWhatsApp(){
 
   const lineas = [
     '🧺 PEDIDO - COMPRA CON MISTI',
+    `▸ Ronda: ${ronda}`,
     `▸ Nombre: ${cliente.nombre || ''}`,
     `▸ ID: ${idCliente}`
   ];
@@ -1441,7 +1727,7 @@ function construirMensajeWhatsApp(){
 
   lineas.push(`▸ Producto(s): ${productosTxt}`);
   lineas.push(`▸ Subtotal: ${soles(subtotal)}`);
-  lineas.push(`▸ Descuento recojo: ${soles(descuento)}`);
+  if (descuento > 0) lineas.push(`▸ Descuento recojo: ${soles(descuento)}`);
   lineas.push(`▸ TOTAL: ${soles(total)}`);
   lineas.push(`▸ Solicitud: Confirmar día de entrega y coordinar pago.`);
 
@@ -1486,11 +1772,13 @@ function confirmarPedido(){
   const total = totalCarrito();
   const tel = soloDigitos(cliente.telefono);
   const idCliente = '001' + tel;
+  const ronda = getRondaId();
   const mensaje = construirMensajeWhatsApp();
   const url = `https://wa.me/${WHATSAPP_NEGOCIO}?text=${encodeURIComponent(mensaje)}`;
 
   const pedido = {
     cliente_id: idCliente,
+    ronda: ronda,
     fecha: new Date().toISOString(),
     cliente: {
       nombre: cliente.nombre, telefono: tel,
@@ -1546,6 +1834,10 @@ function finalizarPedido(){
    INIT
    ============================================================ */
 function init(){
+  // Ronda dinámica
+  const ronda = getRondaId();
+  document.querySelectorAll('.rondaId').forEach(el => el.textContent = ronda);
+
   renderCatalogo();
   renderCartBar();
 
