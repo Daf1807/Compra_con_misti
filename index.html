@@ -815,6 +815,128 @@
     color:var(--texto-suave); margin-left:6px;
     text-transform:uppercase; letter-spacing:0.04em;
   }
+
+  /* ============================================================
+     RELOJ DE RONDA (cuenta regresiva)
+     ============================================================ */
+  .reloj-ronda{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:stretch;
+    background:var(--carbon);
+    color:var(--crema);
+    border:3px solid var(--carbon);
+    border-radius:var(--radio-lg);
+    box-shadow:6px 6px 0 var(--rojo-aji);
+    margin-top:30px;
+    overflow:hidden;
+    transition:box-shadow .4s ease;
+  }
+  .reloj-ronda.cerrada{ box-shadow:6px 6px 0 var(--borde-fuerte); }
+  .reloj-ronda.urgente{ box-shadow:6px 6px 0 var(--miel); }
+
+  .reloj-bloque{
+    padding:22px 26px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    min-width:0;
+  }
+  .reloj-divisor{ width:2px; background:rgba(250,244,232,0.15); }
+
+  .reloj-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--miel);
+    display:flex;
+    align-items:center;
+    gap:6px;
+    line-height:1.2;
+  }
+  .reloj-ronda.cerrada .reloj-label{ color:var(--borde-fuerte); }
+
+  .reloj-tiempo{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:clamp(34px, 5.5vw, 52px);
+    letter-spacing:-0.03em;
+    line-height:1;
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    font-variant-numeric:tabular-nums;
+    color:var(--crema);
+  }
+  .reloj-par{
+    display:inline-flex;
+    align-items:baseline;
+    margin-right:12px;
+  }
+  .reloj-par:last-child{ margin-right:0; }
+  .reloj-num{
+    min-width:1.5ch;
+    display:inline-block;
+    text-align:center;
+  }
+  .reloj-unit{
+    font-size:0.42em;
+    color:var(--miel);
+    margin-left:4px;
+    font-weight:700;
+    letter-spacing:0;
+  }
+  .reloj-ronda.urgente .reloj-num{ color:var(--miel); }
+  .reloj-ronda.urgente .reloj-unit{ color:var(--miel-suave); }
+
+  .reloj-fecha{
+    font-family:var(--font-hand);
+    font-size:clamp(24px, 3.6vw, 34px);
+    font-weight:700;
+    color:var(--miel-suave);
+    line-height:1.05;
+  }
+  .reloj-cerrado-msg{
+    font-family:var(--font-display);
+    font-size:clamp(20px, 3vw, 26px);
+    font-weight:800;
+    color:var(--miel);
+    line-height:1.15;
+    letter-spacing:-0.02em;
+  }
+
+  @media (max-width:640px){
+    .reloj-ronda{
+      grid-template-columns:1fr;
+      border-radius:18px;
+      box-shadow:5px 5px 0 var(--rojo-aji);
+    }
+    .reloj-ronda.cerrada{ box-shadow:5px 5px 0 var(--borde-fuerte); }
+    .reloj-ronda.urgente{ box-shadow:5px 5px 0 var(--miel); }
+
+    .reloj-bloque{
+      padding:22px 18px;
+      align-items:center;
+      text-align:center;
+      gap:10px;
+    }
+    .reloj-bloque:last-child{
+      padding:16px 18px 20px;
+      background:rgba(250,244,232,0.04);
+    }
+    .reloj-divisor{ width:auto; height:2px; }
+
+    .reloj-tiempo{
+      justify-content:center;
+      font-size:clamp(34px, 11vw, 46px);
+      gap:2px 0;
+    }
+    .reloj-par{ margin-right:8px; }
+    .reloj-unit{ font-size:0.4em; margin-left:2px; }
+
+    .reloj-label{ justify-content:center; }
+  }
 </style>
 </head>
 <body>
@@ -866,6 +988,25 @@
           <div class="hero-dato"><b>23</b><span>Productos esta ronda</span></div>
           <div class="hero-dato"><b>S/ 0</b><span>Delivery en zona</span></div>
           <div class="hero-dato"><b>S/ 2–5</b><span>Descuento si recoges</span></div>
+        </div>
+
+        <!-- RELOJ DE RONDA -->
+        <div class="reloj-ronda" id="relojRonda">
+          <div class="reloj-bloque">
+            <div class="reloj-label">⏳ Cierra en</div>
+            <div class="reloj-tiempo" id="relojTiempo">
+              <span class="reloj-par"><span class="reloj-num" id="relojDias">0</span><span class="reloj-unit">d</span></span>
+              <span class="reloj-par"><span class="reloj-num" id="relojHoras">00</span><span class="reloj-unit">h</span></span>
+              <span class="reloj-par"><span class="reloj-num" id="relojMin">00</span><span class="reloj-unit">m</span></span>
+              <span class="reloj-par"><span class="reloj-num" id="relojSeg">00</span><span class="reloj-unit">s</span></span>
+            </div>
+            <div class="reloj-cerrado-msg hidden" id="relojCerrado">Ronda cerrada</div>
+          </div>
+          <div class="reloj-divisor"></div>
+          <div class="reloj-bloque">
+            <div class="reloj-label">🛒 Compra y entrega</div>
+            <div class="reloj-fecha" id="relojFecha">—</div>
+          </div>
         </div>
       </div>
       <div class="hero-ilu">
@@ -1302,6 +1443,83 @@ function getRondaId(){
 }
 
 /* ============================================================
+   RELOJ DE RONDA (cuenta regresiva)
+   ============================================================ */
+const DIAS_ES  = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+function getFechasRonda(){
+  const hoy  = new Date();
+  const dia  = hoy.getDay();
+  const diff = (dia === 0) ? -6 : 1 - dia;
+  const lunes = new Date(hoy);
+  lunes.setDate(hoy.getDate() + diff);
+  lunes.setHours(0,0,0,0);
+
+  const viernes = new Date(lunes);
+  viernes.setDate(lunes.getDate() + 4);
+  viernes.setHours(17, 0, 0, 0);
+
+  const domingo = new Date(lunes);
+  domingo.setDate(lunes.getDate() + 6);
+  domingo.setHours(0,0,0,0);
+
+  return { lunes, viernes, domingo };
+}
+
+function formatearFechaRonda(d){
+  return `${DIAS_ES[d.getDay()]} ${d.getDate()} de ${MESES_ES[d.getMonth()]}`;
+}
+
+function actualizarRelojRonda(){
+  const reloj = $('relojRonda');
+  if (!reloj) return;
+
+  const { viernes, domingo } = getFechasRonda();
+  const ahora = new Date();
+
+  const fechaEl = $('relojFecha');
+  if (fechaEl) fechaEl.textContent = formatearFechaRonda(domingo);
+
+  const restante = viernes.getTime() - ahora.getTime();
+  const tiempoEl = $('relojTiempo');
+  const cerradoEl = $('relojCerrado');
+
+  if (restante <= 0){
+    reloj.classList.add('cerrada');
+    reloj.classList.remove('urgente');
+    if (tiempoEl) tiempoEl.classList.add('hidden');
+    if (cerradoEl){
+      cerradoEl.classList.remove('hidden');
+      const hoyIni = new Date(ahora);   hoyIni.setHours(0,0,0,0);
+      const domIni = new Date(domingo); domIni.setHours(0,0,0,0);
+      const dias = Math.round((domIni - hoyIni) / 86400000);
+      if (dias === 0)      cerradoEl.textContent = '¡Hoy es día de compra! 🎉';
+      else if (dias === 1) cerradoEl.textContent = 'Ronda cerrada · compra mañana';
+      else                 cerradoEl.textContent = 'Ronda cerrada · compra el domingo';
+    }
+    return;
+  }
+
+  reloj.classList.remove('cerrada');
+  if (tiempoEl) tiempoEl.classList.remove('hidden');
+  if (cerradoEl) cerradoEl.classList.add('hidden');
+
+  reloj.classList.toggle('urgente', restante < 24 * 3600 * 1000);
+
+  const segs   = Math.floor(restante / 1000);
+  const dias   = Math.floor(segs / 86400);
+  const horas  = Math.floor((segs % 86400) / 3600);
+  const mins   = Math.floor((segs % 3600) / 60);
+  const segsR  = segs % 60;
+
+  const elD = $('relojDias');  if (elD) elD.textContent = dias;
+  const elH = $('relojHoras'); if (elH) elH.textContent = String(horas).padStart(2,'0');
+  const elM = $('relojMin');   if (elM) elM.textContent = String(mins).padStart(2,'0');
+  const elS = $('relojSeg');   if (elS) elS.textContent = String(segsR).padStart(2,'0');
+}
+
+/* ============================================================
    ZONAS
    ============================================================ */
 const ZONAS = {
@@ -1330,7 +1548,6 @@ let cliente = cargar(LS_CLIENTE, {
   distrito:'', zona:'A', lat:null, lng:null
 });
 
-// Asegurar que existan los campos nuevos
 if (!cliente.calle)      cliente.calle = '';
 if (!cliente.numero)     cliente.numero = '';
 if (!cliente.referencia) cliente.referencia = '';
@@ -1342,7 +1559,6 @@ if (cliente.lng == null) cliente.lng = null;
 let pedidos = cargar(LS_PEDIDOS, []);
 let recogerEnLocal = false;
 
-// Estado del mapa/búsqueda
 let mapaDrawer = null;
 let marcadorDrawer = null;
 let debounceDir = null;
@@ -1513,7 +1729,6 @@ function seleccionarSugerencia(r){
   cliente.lat = +parseFloat(r.lat).toFixed(6);
   cliente.lng = +parseFloat(r.lon).toFixed(6);
 
-  // Intentar deducir zona desde el distrito
   const zi = deducirZonaSync(dist);
   if (zi.zona) cliente.zona = zi.zona;
 
@@ -1774,7 +1989,6 @@ function cerrarDrawer(){
 }
 
 function renderDrawer(){
-  // Destruir mapa previo para evitar duplicados
   destruirMapaDrayerSafe();
 
   const body = $('drawerBody');
@@ -1853,7 +2067,6 @@ function renderDrawer(){
     <div id="bloqueDireccion" style="${recogerEnLocal ? 'display:none;' : ''}">
       <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:6px 0 14px;">Tu dirección de entrega</h4>
 
-      <!-- Campo 1: Calle -->
       <div class="campo">
         <label for="inpCalle">1. Calle o avenida <span class="req">*</span></label>
         <div class="dir-search">
@@ -1866,7 +2079,6 @@ function renderDrawer(){
         <div class="estado-busqueda" id="estadoBusqueda"></div>
       </div>
 
-      <!-- Campo 2: Número -->
       <div class="campo">
         <label for="inpNumero">2. Número de casa <span class="req">*</span></label>
         <input type="text" id="inpNumero" value="${escapar(cliente.numero)}"
@@ -1876,7 +2088,6 @@ function renderDrawer(){
         <div class="campo-hint">Solo el número. Si no tiene, escribe <strong>S/N</strong>.</div>
       </div>
 
-      <!-- Campo 3: Referencia -->
       <div class="campo">
         <label for="inpReferencia">3. Dpto / piso / referencia <span class="opt">(opcional)</span></label>
         <input type="text" id="inpReferencia" value="${escapar(cliente.referencia)}"
@@ -1887,7 +2098,6 @@ function renderDrawer(){
         <div class="campo-hint">Si tienes dpto, piso o un dato que ayude a ubicarte, escríbelo aquí.</div>
       </div>
 
-      <!-- Mapa -->
       <div class="mapa-caja-drawer ${calleOk ? 'visible' : ''}" id="mapaCajaDrawer">
         <div id="mapaDrawer"></div>
         <div class="mapa-ayuda-drawer">
@@ -1896,10 +2106,8 @@ function renderDrawer(){
         </div>
       </div>
 
-      <!-- Zona info -->
       <div id="zonaInfo"></div>
 
-      <!-- Checklist -->
       <div class="checklist-dir" id="checklistDir">
         <strong>Estado del formulario:</strong>
         <ul>
@@ -1925,7 +2133,6 @@ function renderDrawer(){
   actualizarChecklistDir();
   actualizarBotonConfirmar();
 
-  // Si hay lat/lng guardadas, mostrar el mapa con el pin
   if (!recogerEnLocal && cliente.lat != null && cliente.lng != null){
     mostrarMapaDrawer();
   }
@@ -1949,7 +2156,6 @@ function bindQtyButtons(){
 }
 
 function bindDrawerInputs(){
-  // Nombre
   const inpNombre = $('inpNombre');
   if (inpNombre){
     inpNombre.addEventListener('input', () => {
@@ -1960,7 +2166,6 @@ function bindDrawerInputs(){
     });
   }
 
-  // Teléfono (solo dígitos, 9)
   const inpTelefono = $('inpTelefono');
   if (inpTelefono){
     inpTelefono.addEventListener('input', () => {
@@ -1972,12 +2177,10 @@ function bindDrawerInputs(){
     });
   }
 
-  // Calle
   const inpCalle = $('inpCalle');
   if (inpCalle){
     inpCalle.addEventListener('input', () => {
       const q = inpCalle.value.trim();
-      // Si cambia el texto, invalidar lat/lng previos
       if (cliente.lat != null){
         cliente.lat = null;
         cliente.lng = null;
@@ -2009,13 +2212,11 @@ function bindDrawerInputs(){
     });
   }
 
-  // Número
   const inpNumero = $('inpNumero');
   if (inpNumero){
     inpNumero.addEventListener('input', () => {
       let v = inpNumero.value.toUpperCase();
       if (/^S\/?N?$/.test(v)){
-        // permitir S/N
       } else {
         v = v.replace(/[^0-9]/g, '');
       }
@@ -2041,7 +2242,6 @@ function bindDrawerInputs(){
     });
   }
 
-  // Referencia
   const inpReferencia = $('inpReferencia');
   if (inpReferencia){
     inpReferencia.addEventListener('input', () => {
@@ -2297,7 +2497,6 @@ function finalizarPedido(){
    INIT
    ============================================================ */
 function init(){
-  // Leaflet: referrerPolicy en tiles
   if (window.L && L.TileLayer && L.TileLayer.prototype && L.TileLayer.prototype.options){
     L.TileLayer.prototype.options.referrerPolicy = 'strict-origin-when-cross-origin';
   }
@@ -2318,10 +2517,13 @@ function init(){
     if (e.key === 'Escape' && $('drawer').classList.contains('open')) cerrarDrawer();
   });
 
-  // Cerrar sugerencias al hacer click fuera
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.dir-search')) ocultarSugerencias();
   });
+
+  // Reloj de ronda
+  actualizarRelojRonda();
+  setInterval(actualizarRelojRonda, 1000);
 }
 
 init();
