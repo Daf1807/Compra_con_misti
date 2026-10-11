@@ -1,4 +1,4 @@
-+<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -8,6 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <style>
   :root{
     --rojo-aji:#C7392B;
@@ -26,9 +31,6 @@
     --texto-muy-suave:#A88A72;
     --borde:#E5D5BE;
     --borde-fuerte:#D4BFA0;
-    --sombra-sm:0 1px 2px rgba(43,24,16,0.06);
-    --sombra-md:0 4px 14px rgba(43,24,16,0.10);
-    --sombra-lg:0 14px 36px rgba(43,24,16,0.14);
     --radio-sm:10px;
     --radio:14px;
     --radio-lg:20px;
@@ -100,7 +102,6 @@
   }
   .nav-cta:hover{background:var(--rojo-aji); transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--carbon);}
 
-  /* SELLO */
   .sello{
     display:inline-flex; align-items:center; gap:7px;
     font-family:var(--font-hand); font-weight:700;
@@ -114,7 +115,6 @@
     white-space:nowrap;
   }
 
-  /* HERO */
   .hero{padding:44px 0 36px;}
   @media (min-width:820px){ .hero{padding:72px 0 56px;} }
   .hero-grid{display:grid; grid-template-columns:1fr; gap:36px; align-items:center;}
@@ -122,7 +122,6 @@
   .hero-sello{margin-bottom:22px;}
   .hero h1{font-size:clamp(32px, 6vw, 54px); line-height:1.04; font-weight:800; color:var(--carbon); margin-bottom:22px; letter-spacing:-0.03em;}
   .hero h1 em{font-style:italic; font-weight:600; color:var(--rojo-aji); font-family:var(--font-display);}
-  .hero h1 .destacado{background:linear-gradient(180deg, transparent 62%, var(--miel-suave) 62%); padding:0 4px;}
   .hero-lede{font-size:16.5px; color:var(--texto-suave); max-width:54ch; margin-bottom:22px; line-height:1.6;}
   @media (min-width:820px){ .hero-lede{font-size:17.5px;} }
   .hero-lede + .hero-lede{margin-top:-6px;}
@@ -144,7 +143,6 @@
   .hero-ilu-texto{position:relative; z-index:2; font-family:var(--font-hand); font-weight:700; font-size:28px; color:var(--carbon); text-align:center; padding:0 30px; line-height:1.15; transform:rotate(-3deg);}
   .hero-ilu-texto small{display:block; font-size:16px; margin-top:8px; opacity:.7;}
 
-  /* BOTONES */
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:8px;
     padding:13px 24px; border-radius:var(--radio-full);
@@ -156,13 +154,19 @@
   }
   .btn:hover{transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--carbon);}
   .btn:active{transform:translate(1px,1px); box-shadow:1px 1px 0 var(--carbon);}
+  .btn:disabled{
+    background:#E0D5C5; color:#A88A72;
+    border-color:#A88A72;
+    box-shadow:2px 2px 0 #A88A72;
+    cursor:not-allowed;
+    transform:none !important;
+  }
   .btn-primary{background:var(--rojo-aji); color:#fff;}
-  .btn-primary:hover{background:var(--rojo-aji-osc);}
+  .btn-primary:hover:not(:disabled){background:var(--rojo-aji-osc);}
   .btn-secondary{background:var(--blanco); color:var(--carbon);}
   .btn-secondary:hover{background:var(--miel-suave);}
   .btn-block{width:100%;}
 
-  /* SECCIONES */
   section{padding:60px 0;}
   @media (min-width:820px){ section{padding:88px 0;} }
   .section-head{margin-bottom:42px; max-width:720px;}
@@ -172,7 +176,6 @@
   .section-head p + p{margin-top:12px;}
   .section-eyebrow{display:inline-block; font-family:var(--font-hand); font-weight:700; font-size:18px; color:var(--naranja-zanah); margin-bottom:10px; transform:rotate(-1deg);}
 
-  /* POR QUÉ */
   .porque-grid{display:grid; grid-template-columns:1fr; gap:16px; margin-top:8px;}
   @media (min-width:640px){ .porque-grid{grid-template-columns:1fr 1fr;} }
   @media (min-width:960px){ .porque-grid{grid-template-columns:repeat(4,1fr);} }
@@ -192,7 +195,6 @@
   .porque-card h4{font-size:17px; font-weight:700; color:var(--carbon); font-family:var(--font-display); letter-spacing:-0.02em; line-height:1.2;}
   .porque-card p{font-size:13.5px; color:var(--texto); line-height:1.55;}
 
-  /* HISTORIA */
   #historia{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .historia-text{max-width:720px; display:flex; flex-direction:column; gap:16px;}
   .historia-text p{font-size:16.5px; line-height:1.7; color:var(--texto);}
@@ -202,7 +204,6 @@
     color:var(--rojo-aji); line-height:1.4; margin-top:8px;
   }
 
-  /* CATÁLOGO */
   #catalogo{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .ronda-banner{
     background:var(--carbon); color:var(--crema);
@@ -324,7 +325,6 @@
   .qty-input::placeholder{color:#C9B79F; font-weight:500; font-family:var(--font-body);}
   .qty-wrap .unit{font-size:12.5px; font-weight:700; color:var(--texto-suave); flex-shrink:0; padding-right:2px; font-family:var(--font-hand);}
 
-  /* CÓMO FUNCIONA */
   .como-grid{display:grid; grid-template-columns:1fr; gap:16px;}
   @media (min-width:640px){ .como-grid{grid-template-columns:1fr 1fr;} }
   @media (min-width:960px){ .como-grid{grid-template-columns:repeat(4,1fr);} }
@@ -349,7 +349,6 @@
   .como-paso h4{font-size:16.5px; font-weight:700; color:var(--carbon); font-family:var(--font-display); line-height:1.2; letter-spacing:-0.02em;}
   .como-paso p{font-size:13.5px; color:var(--texto-suave); line-height:1.55;}
 
-  /* DÓNDE ESTAMOS */
   #donde{background:var(--crema-2); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .donde-grid{display:grid; grid-template-columns:1fr; gap:32px;}
   @media (min-width:820px){ .donde-grid{grid-template-columns:1fr 1fr; gap:56px;} }
@@ -371,7 +370,6 @@
   .zona-chip.b{background:#F4E2D8;}
   .zona-chip.c{background:#E4EFDC;}
 
-  /* ACUERDO */
   #acuerdo{background:var(--carbon); color:var(--crema);}
   #acuerdo .section-head h2{color:var(--crema);}
   #acuerdo .section-head h2 em{color:var(--miel);}
@@ -388,10 +386,7 @@
     background:rgba(250,244,232,0.06);
     border-left:4px solid var(--miel);
     padding:18px 22px;
-    font-size:16px;
-    line-height:1.65;
-    color:var(--crema);
-    margin:8px 0;
+    font-size:16px; line-height:1.65; color:var(--crema); margin:8px 0;
   }
   .acuerdo-cierre{
     font-family:var(--font-display);
@@ -399,7 +394,6 @@
     color:var(--miel); margin-top:18px;
   }
 
-  /* MERCADO (cambios) */
   #mercado{background:var(--crema);}
   .escenarios{display:grid; grid-template-columns:1fr; gap:14px; margin-top:8px;}
   @media (min-width:720px){ .escenarios{grid-template-columns:1fr 1fr;} }
@@ -430,7 +424,6 @@
     color:var(--rojo-aji); margin-top:32px; max-width:720px;
   }
 
-  /* FAQ */
   #faq{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .faq-list{max-width:820px; display:flex; flex-direction:column;}
   .faq-item{border-top:2px solid var(--carbon); padding:22px 0;}
@@ -445,7 +438,6 @@
   .faq-item[open] summary::after{content:"–";}
   .faq-item p{font-size:15.5px; margin-top:14px; max-width:680px; line-height:1.65; color:var(--texto);}
 
-  /* CIERRE */
   #cierre{padding:60px 0; background:var(--crema-2); border-top:2px solid var(--carbon);}
   .cierre-card{
     background:var(--carbon); color:var(--crema);
@@ -465,7 +457,6 @@
   .cierre-card .btn-secondary{background:transparent; color:var(--crema); border-color:var(--crema); box-shadow:3px 3px 0 var(--crema);}
   .cierre-card .btn-secondary:hover{background:var(--crema); color:var(--carbon);}
 
-  /* FOOTER */
   footer{background:var(--crema-2); border-top:2px solid var(--carbon); padding:52px 0 28px;}
   .footer-grid{display:grid; grid-template-columns:1fr; gap:34px; margin-bottom:38px;}
   @media (min-width:720px){ .footer-grid{grid-template-columns:1.4fr 1fr 1fr;} }
@@ -475,7 +466,6 @@
   footer ul li a:hover{color:var(--rojo-aji);}
   .footer-bottom{border-top:1px dashed var(--borde-fuerte); padding-top:22px; font-size:12px; color:var(--texto-suave);}
 
-  /* BARRA FLOTANTE */
   .cart-bar{
     position:fixed; left:14px; right:14px; bottom:14px;
     z-index:80;
@@ -513,7 +503,6 @@
     border:2px solid var(--carbon);
   }
 
-  /* DRAWER */
   .drawer{position:fixed; inset:0; z-index:100; display:none;}
   .drawer.open{display:block;}
   .drawer-overlay{position:absolute; inset:0; background:rgba(43,24,16,0.5); backdrop-filter:blur(3px); animation:fadeIn .2s ease;}
@@ -547,7 +536,6 @@
   .drawer-body{flex:1; overflow-y:auto; padding:22px; -webkit-overflow-scrolling:touch;}
   .drawer-foot{padding:16px 22px calc(16px + env(safe-area-inset-bottom)); border-top:2px solid var(--carbon); background:var(--blanco); flex-shrink:0;}
 
-  /* ITEMS DEL DRAWER */
   .cart-item{
     display:grid;
     grid-template-columns:1fr auto;
@@ -602,14 +590,12 @@
   }
   .qty-mini-del:hover{background:#FBE0DC;}
 
-  /* RESUMEN */
   .resumen{background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:16px 18px; margin-top:16px; box-shadow:3px 3px 0 var(--carbon);}
   .resumen-linea{display:flex; justify-content:space-between; font-size:13.5px; padding:6px 0; color:var(--texto-suave); gap:12px;}
   .resumen-linea.total{border-top:2px solid var(--carbon); margin-top:10px; padding-top:14px; font-size:15px; font-weight:700; color:var(--carbon);}
   .resumen-linea.total span:last-child{font-family:var(--font-display); font-size:22px; color:var(--rojo-aji); font-weight:800; letter-spacing:-0.02em;}
   .resumen-linea.descuento{color:var(--verde-culantro); font-weight:700;}
 
-  /* CAMPOS */
   .campo{margin-bottom:16px;}
   .campo label{display:block; font-size:12.5px; font-weight:700; color:var(--texto-suave); margin-bottom:7px; text-transform:uppercase; letter-spacing:0.04em;}
   .campo label .opt{color:var(--texto-muy-suave); font-weight:500; text-transform:none; letter-spacing:0; font-size:12px;}
@@ -630,6 +616,7 @@
     transform:translate(-1px,-1px);
   }
   .campo input.error{border-color:var(--rojo-aji); box-shadow:3px 3px 0 var(--rojo-aji);}
+  .campo input.ok{border-color:var(--verde-culantro);}
   .campo textarea{resize:vertical; min-height:64px;}
   .campo-hint{font-size:12px; color:var(--texto-suave); margin-top:6px; line-height:1.5;}
 
@@ -699,6 +686,135 @@
   ::-webkit-scrollbar-track{background:var(--crema-2);}
   ::-webkit-scrollbar-thumb{background:var(--borde-fuerte); border-radius:10px; border:2px solid var(--crema-2);}
   ::-webkit-scrollbar-thumb:hover{background:var(--texto-suave);}
+
+  /* ============================================================
+     NUEVO: búsqueda de dirección, mapa, feedback, checklist
+     ============================================================ */
+  .dir-search{position:relative;}
+  .sugerencias{
+    position:absolute;
+    top:calc(100% + 6px);
+    left:0; right:0;
+    background:var(--blanco);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio-sm);
+    box-shadow:4px 4px 0 var(--carbon);
+    max-height:240px;
+    overflow-y:auto;
+    z-index:100;
+    display:none;
+  }
+  .sugerencias.open{display:block;}
+  .sugerencias button{
+    display:block; width:100%; text-align:left;
+    padding:12px 14px;
+    background:none; border:none;
+    border-bottom:1px dashed var(--borde-fuerte);
+    font-family:var(--font-body); font-size:14px;
+    color:var(--texto); cursor:pointer;
+    line-height:1.35;
+    transition:background .1s;
+  }
+  .sugerencias button:last-child{border-bottom:none;}
+  .sugerencias button:hover,
+  .sugerencias button:focus{background:var(--miel-suave); outline:none;}
+  .sugerencias button strong{
+    display:block; color:var(--carbon); font-weight:700; margin-bottom:2px;
+  }
+  .sugerencias button span{font-size:12px; color:var(--texto-suave);}
+  .sugerencias .vacio{
+    padding:14px; font-size:13px; color:var(--texto-suave); font-style:italic;
+  }
+
+  .input-feedback{
+    font-size:12px; margin-top:6px; font-weight:600;
+    display:none; align-items:center; gap:6px;
+  }
+  .input-feedback.visible{display:flex;}
+  .input-feedback.ok{color:var(--verde-culantro);}
+  .input-feedback.error{color:var(--rojo-aji);}
+
+  .mapa-caja-drawer{
+    margin-top:14px;
+    border:2px solid var(--carbon);
+    border-radius:var(--radio-sm);
+    overflow:hidden;
+    box-shadow:3px 3px 0 var(--carbon);
+    display:none;
+  }
+  .mapa-caja-drawer.visible{display:block;}
+  #mapaDrawer{width:100%; height:260px; background:var(--crema-2);}
+  .mapa-ayuda-drawer{
+    padding:9px 14px;
+    background:var(--miel-suave);
+    font-size:12px; font-weight:600; color:var(--carbon);
+    border-top:2px solid var(--carbon);
+    display:flex; align-items:center; gap:8px;
+    line-height:1.4;
+  }
+  .mapa-ayuda-drawer .dot-pulse{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--verde-culantro); flex-shrink:0;
+    animation:pulseMap 2s ease-in-out infinite;
+  }
+  @keyframes pulseMap{
+    0%,100%{box-shadow:0 0 0 4px rgba(63,125,63,0.25);}
+    50%{box-shadow:0 0 0 8px rgba(63,125,63,0);}
+  }
+
+  .estado-busqueda{margin-top:10px; display:none;}
+  .estado-busqueda.visible{display:block;}
+  .estado-busqueda .msg{
+    border:2px solid var(--carbon);
+    border-radius:var(--radio-sm);
+    padding:9px 13px; font-size:12.5px; font-weight:600;
+    box-shadow:2px 2px 0 var(--carbon);
+    display:flex; align-items:center; gap:9px; line-height:1.4;
+  }
+  .estado-busqueda .msg.loading{background:var(--crema-2); color:var(--texto);}
+  .estado-busqueda .msg.ok{background:var(--miel-suave); color:var(--carbon);}
+  .estado-busqueda .msg.error{background:#FBE0DC; color:var(--rojo-aji-osc);}
+  .spinner-sm{
+    width:13px; height:13px; border:2px solid var(--borde-fuerte);
+    border-top-color:var(--naranja-zanah); border-radius:50%;
+    animation:spin 0.7s linear infinite; flex-shrink:0;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .checklist-dir{
+    background:var(--crema-2);
+    border:2px solid var(--carbon);
+    border-radius:var(--radio-sm);
+    padding:12px 14px;
+    margin-top:14px;
+    font-size:12.5px;
+    color:var(--texto);
+    line-height:1.6;
+  }
+  .checklist-dir strong{
+    display:block; margin-bottom:6px; color:var(--carbon);
+    font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase;
+  }
+  .checklist-dir ul{list-style:none; padding:0;}
+  .checklist-dir li{
+    padding-left:20px; position:relative; margin-bottom:3px;
+  }
+  .checklist-dir li::before{
+    content:'○'; position:absolute; left:0; top:-1px;
+    font-size:14px; color:var(--texto-muy-suave); font-weight:700;
+  }
+  .checklist-dir li.hecho{color:var(--verde-culantro);}
+  .checklist-dir li.hecho::before{content:'✓'; color:var(--verde-culantro); font-size:13px;}
+  .checklist-dir li.pendiente{color:var(--carbon);}
+  .checklist-dir li.pendiente::before{color:var(--texto-suave);}
+  .checklist-dir li.opcional{color:var(--texto-suave);}
+  .checklist-dir li .tag{
+    display:inline-block; font-size:10px; font-weight:700;
+    padding:1px 6px; border-radius:999px;
+    background:var(--blanco); border:1px solid var(--borde-fuerte);
+    color:var(--texto-suave); margin-left:6px;
+    text-transform:uppercase; letter-spacing:0.04em;
+  }
 </style>
 </head>
 <body>
@@ -956,7 +1072,7 @@
   </div>
 </section>
 
-<!-- QUÉ OCURRE CUANDO CAMBIA EL MERCADO -->
+<!-- MERCADO -->
 <section id="mercado">
   <div class="wrap">
     <div class="section-head">
@@ -1131,10 +1247,9 @@
 
 <script>
 /* ============================================================
-   PRODUCTOS — reordenados en 3 grupos, con bgPos intactos
+   PRODUCTOS
    ============================================================ */
 const PRODUCTOS = [
-  /* BÁSICOS — 8 */
   { codigo:'PR-002', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:2.29, bgPos:'20% 0%' },
   { codigo:'PR-019', nombre:'Cebolla Roja',      grupo:'Básicos',  unidad:'kg',     precio:2.14, bgPos:'0% 100%' },
   { codigo:'PR-020', nombre:'Tomate',            grupo:'Básicos',  unidad:'kg',     precio:3.57, bgPos:'20% 100%' },
@@ -1144,7 +1259,6 @@ const PRODUCTOS = [
   { codigo:'PR-005', nombre:'Yuca Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:1.71, bgPos:'80% 0%' },
   { codigo:'PR-008', nombre:'Choclo',            grupo:'Básicos',  unidad:'unidad', precio:1.43, bgPos:'20% 33.333%' },
 
-  /* SAZÓN — 7 */
   { codigo:'PR-016', nombre:'Ajo Criollo',       grupo:'Sazón',    unidad:'kg',     precio:8.57, bgPos:'60% 66.666%' },
   { codigo:'PR-012', nombre:'Ají Escabeche',     grupo:'Sazón',    unidad:'kg',     precio:4.92, bgPos:'100% 33.333%' },
   { codigo:'PR-010', nombre:'Ají Panca',         grupo:'Sazón',    unidad:'kg',     precio:8.00, bgPos:'60% 33.333%' },
@@ -1153,7 +1267,6 @@ const PRODUCTOS = [
   { codigo:'PR-013', nombre:'Huacatay',          grupo:'Sazón',    unidad:'atado',  precio:1.67, bgPos:'0% 66.666%' },
   { codigo:'PR-011', nombre:'Ají Rocoto',        grupo:'Sazón',    unidad:'kg',     precio:5.85, bgPos:'80% 33.333%' },
 
-  /* ESPECIALES — 8 */
   { codigo:'PR-003', nombre:'Papa Huayro',       grupo:'Especiales', unidad:'kg',   precio:2.57, bgPos:'40% 0%' },
   { codigo:'PR-007', nombre:'Olluco',            grupo:'Especiales', unidad:'kg',   precio:3.14, bgPos:'0% 33.333%' },
   { codigo:'PR-004', nombre:'Papa Negra Andina', grupo:'Especiales', unidad:'kg',   precio:3.00, bgPos:'60% 0%' },
@@ -1174,11 +1287,11 @@ const DESCRIPCION_GRUPOS = {
 const WHATSAPP_NEGOCIO = '51977101608';
 
 /* ============================================================
-   RONDA DINÁMICA — lunes de la semana actual
+   RONDA DINÁMICA
    ============================================================ */
 function getRondaId(){
   const hoy = new Date();
-  const dia = hoy.getDay(); // 0=dom, 1=lun...
+  const dia = hoy.getDay();
   const diff = (dia === 0) ? -6 : 1 - dia;
   const lunes = new Date(hoy);
   lunes.setDate(hoy.getDate() + diff);
@@ -1189,7 +1302,7 @@ function getRondaId(){
 }
 
 /* ============================================================
-   ZONAS Y DISTRITOS
+   ZONAS
    ============================================================ */
 const ZONAS = {
   A: { desc_recojo: 2 },
@@ -1212,11 +1325,28 @@ const LS_PEDIDOS = 'misti_pedidos';
 
 let carrito = cargar(LS_CARRITO, {});
 let cliente = cargar(LS_CLIENTE, {
-  nombre:'', telefono:'', direccion:'', referencia:'',
+  nombre:'', telefono:'',
+  calle:'', numero:'', referencia:'',
   distrito:'', zona:'A', lat:null, lng:null
 });
+
+// Asegurar que existan los campos nuevos
+if (!cliente.calle)      cliente.calle = '';
+if (!cliente.numero)     cliente.numero = '';
+if (!cliente.referencia) cliente.referencia = '';
+if (!cliente.distrito)   cliente.distrito = '';
+if (!cliente.zona)       cliente.zona = 'A';
+if (cliente.lat == null) cliente.lat = null;
+if (cliente.lng == null) cliente.lng = null;
+
 let pedidos = cargar(LS_PEDIDOS, []);
 let recogerEnLocal = false;
+
+// Estado del mapa/búsqueda
+let mapaDrawer = null;
+let marcadorDrawer = null;
+let debounceDir = null;
+let sugerenciasCache = [];
 
 function cargar(key, fallback){
   try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
@@ -1239,7 +1369,7 @@ const capitalizar = (s) => String(s||'').split(' ').map(w => w ? w[0].toUpperCas
 const getProducto = (codigo) => PRODUCTOS.find(p => p.codigo === codigo);
 
 /* ============================================================
-   FILTRAR INPUT DE CANTIDAD
+   FILTROS CANTIDAD
    ============================================================ */
 function filtrarCantidad(raw){
   if (raw == null) return '';
@@ -1256,7 +1386,6 @@ function filtrarCantidad(raw){
   }
   return s;
 }
-
 function normalizarCantidad(raw){
   const s = filtrarCantidad(raw);
   if (!s) return null;
@@ -1266,7 +1395,7 @@ function normalizarCantidad(raw){
 }
 
 /* ============================================================
-   DEDUCIR ZONA
+   ZONAS — deducir
    ============================================================ */
 function deducirZonaSync(direccion){
   if (!direccion || !direccion.trim()) return { distrito:'', zona:'A', origen:'sin_direccion' };
@@ -1278,34 +1407,6 @@ function deducirZonaSync(direccion){
     }
   }
   return { distrito:'', zona:'A', origen:'fallback' };
-}
-
-async function deducirZonaAsync(direccion){
-  const sync = deducirZonaSync(direccion);
-  if (sync.origen === 'diccionario_local') return sync;
-  if (!direccion || !direccion.trim()) return sync;
-  try {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(direccion + ', Lima, Perú')}&format=json&addressdetails=1&limit=1&countrycodes=pe`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'CompraConMisti/1.0' } });
-    const data = await res.json();
-    if (data && data.length > 0) {
-      const r = data[0];
-      const addr = r.address || {};
-      const distrito = addr.suburb || addr.city_district || addr.town || '';
-      let zona = 'A';
-      const dNorm = distrito.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-      for (const [d, z] of Object.entries(DISTRITOS_LIMA)) {
-        const dl = d.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-        if (dNorm.includes(dl) || dl.includes(dNorm)) { zona = z; break; }
-      }
-      return {
-        distrito: distrito ? capitalizar(distrito) : '',
-        zona, lat: parseFloat(r.lat), lng: parseFloat(r.lon),
-        origen: 'nominatim'
-      };
-    }
-  } catch(e) { console.warn('Nominatim falló:', e); }
-  return sync;
 }
 
 /* ============================================================
@@ -1331,7 +1432,211 @@ const totalCarrito = () => Math.max(0, subtotalCarrito() - descuentoAplicado());
 const totalItems = () => itemsCarrito().reduce((s, i) => s + i.qty, 0);
 
 /* ============================================================
-   RENDER CATÁLOGO — reordenado en 3 grupos
+   VALIDACIONES DIRECCIÓN
+   ============================================================ */
+function validarNumeroCasa(v){
+  v = String(v||'').trim();
+  if (!v) return { ok:false, msg:'Falta el número.' };
+  if (/^s\/?n$/i.test(v)) return { ok:true, msg:'S/N registrado.' };
+  if (/^\d{1,6}$/.test(v)) return { ok:true, msg:'Número válido.' };
+  return { ok:false, msg:'Solo dígitos (máx 6) o S/N.' };
+}
+function validarReferencia(v){
+  v = String(v||'').trim();
+  if (!v) return { ok:true, vacio:true, msg:'' };
+  if (v.length < 3) return { ok:false, msg:'Mínimo 3 caracteres.' };
+  return { ok:true, msg:'Referencia válida.' };
+}
+function validarCalle(){
+  return !!(cliente.calle && cliente.lat != null && cliente.lng != null);
+}
+
+/* ============================================================
+   NOMINATIM — autocompletado
+   ============================================================ */
+async function buscarDireccion(q){
+  mostrarEstadoBusqueda('loading');
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q + ', Lima, Perú')}&format=json&addressdetails=1&limit=6&countrycodes=pe`;
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    sugerenciasCache = data || [];
+    renderSugerencias(sugerenciasCache);
+    if (sugerenciasCache.length === 0) mostrarEstadoBusqueda('empty');
+    else mostrarEstadoBusqueda('idle');
+  } catch (e) {
+    console.warn('Nominatim error:', e);
+    mostrarEstadoBusqueda('error');
+  }
+}
+
+function renderSugerencias(lista){
+  const box = $('sugerencias');
+  if (!box) return;
+  if (!lista || lista.length === 0){
+    box.innerHTML = `<div class="vacio">Sin resultados. Prueba con otro nombre o agrega el distrito.</div>`;
+    box.classList.add('open');
+    return;
+  }
+  box.innerHTML = lista.map((r, i) => {
+    const a = r.address || {};
+    const via = a.road || a.pedestrian || a.neighbourhood || '';
+    const dist = a.suburb || a.city_district || a.town || a.city || '';
+    const titulo = via || r.display_name.split(',')[0];
+    const sub = [dist, 'Lima'].filter(Boolean).join(', ');
+    return `<button type="button" data-idx="${i}">
+      <strong>${escapar(titulo)}</strong>
+      <span>${escapar(sub)}</span>
+    </button>`;
+  }).join('');
+  box.classList.add('open');
+  box.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => seleccionarSugerencia(sugerenciasCache[+b.dataset.idx]));
+  });
+}
+
+function ocultarSugerencias(){
+  const box = $('sugerencias');
+  if (box) box.classList.remove('open');
+}
+
+function seleccionarSugerencia(r){
+  if (!r) return;
+  const a = r.address || {};
+  const via = a.road || a.pedestrian || a.neighbourhood || '';
+  const dist = a.suburb || a.city_district || a.town || a.city || '';
+  const calleLimpia = via || r.display_name.split(',')[0];
+
+  cliente.calle = calleLimpia;
+  cliente.distrito = dist;
+  cliente.lat = +parseFloat(r.lat).toFixed(6);
+  cliente.lng = +parseFloat(r.lon).toFixed(6);
+
+  // Intentar deducir zona desde el distrito
+  const zi = deducirZonaSync(dist);
+  if (zi.zona) cliente.zona = zi.zona;
+
+  guardar(LS_CLIENTE, cliente);
+
+  const inp = $('inpCalle');
+  if (inp) inp.value = calleLimpia;
+
+  ocultarSugerencias();
+  mostrarEstadoBusqueda('ok');
+  mostrarMapaDrawer();
+  actualizarZonaInfo();
+  actualizarChecklistDir();
+  actualizarBotonConfirmar();
+}
+
+function mostrarEstadoBusqueda(tipo){
+  const el = $('estadoBusqueda');
+  if (!el) return;
+  if (tipo === 'idle'){
+    el.classList.remove('visible');
+    el.innerHTML = '';
+    return;
+  }
+  el.classList.add('visible');
+  if (tipo === 'loading'){
+    el.innerHTML = `<div class="msg loading"><span class="spinner-sm"></span><span>Buscando direcciones...</span></div>`;
+  } else if (tipo === 'ok'){
+    el.innerHTML = `<div class="msg ok">✓ <span>Calle encontrada${cliente.distrito ? ' · <strong>' + escapar(cliente.distrito) + '</strong>' : ''}.</span></div>`;
+  } else if (tipo === 'empty'){
+    el.innerHTML = `<div class="msg error">! <span>No encontramos esa calle. Prueba agregando el distrito.</span></div>`;
+  } else if (tipo === 'error'){
+    el.innerHTML = `<div class="msg error">! <span>Error de conexión. Intenta de nuevo.</span></div>`;
+  }
+}
+
+/* ============================================================
+   MAPA
+   ============================================================ */
+function mostrarMapaDrawer(){
+  const caja = $('mapaCajaDrawer');
+  if (!caja || cliente.lat == null || cliente.lng == null) return;
+  caja.classList.add('visible');
+  setTimeout(() => {
+    if (!mapaDrawer){
+      mapaDrawer = L.map('mapaDrawer', { zoomControl:true }).setView([cliente.lat, cliente.lng], 17);
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 19, attribution: 'Tiles © Esri' }
+      ).addTo(mapaDrawer);
+
+      const icono = L.divIcon({
+        className:'',
+        html:`<div style="width:26px;height:26px;border-radius:50% 50% 50% 0;background:var(--naranja-zanah);border:3px solid var(--carbon);transform:rotate(-45deg);box-shadow:2px 2px 0 var(--carbon);"></div>`,
+        iconSize:[26,26],
+        iconAnchor:[13,26]
+      });
+      marcadorDrawer = L.marker([cliente.lat, cliente.lng], { draggable:true, icon:icono }).addTo(mapaDrawer);
+      marcadorDrawer.on('dragend', () => {
+        const p = marcadorDrawer.getLatLng();
+        cliente.lat = +p.lat.toFixed(6);
+        cliente.lng = +p.lng.toFixed(6);
+        guardar(LS_CLIENTE, cliente);
+        const mt = $('mapaTxt');
+        if (mt) mt.textContent = `Pin ajustado a ${cliente.lat.toFixed(5)}, ${cliente.lng.toFixed(5)}`;
+      });
+    } else {
+      mapaDrawer.setView([cliente.lat, cliente.lng], 17);
+      marcadorDrawer.setLatLng([cliente.lat, cliente.lng]);
+    }
+    mapaDrawer.invalidateSize();
+  }, 220);
+}
+
+function destruirMapaDrawer(){
+  if (mapaDrawer){
+    try { mapaDrawer.remove(); } catch(e){}
+    mapaDrawer = null;
+    marcadorDrawer = null;
+  }
+}
+
+/* ============================================================
+   CHECKLIST + BOTÓN
+   ============================================================ */
+function actualizarChecklistDir(){
+  const calleOk = validarCalle();
+  const numV = validarNumeroCasa(cliente.numero);
+  const refV = validarReferencia(cliente.referencia);
+
+  const c1 = $('chk-calle');
+  const c2 = $('chk-numero');
+  const c3 = $('chk-referencia');
+  if (c1) c1.className = calleOk ? 'hecho' : 'pendiente';
+  if (c2) c2.className = numV.ok ? 'hecho' : 'pendiente';
+  if (c3){
+    if (refV.vacio) c3.className = 'opcional';
+    else if (refV.ok) c3.className = 'hecho';
+    else c3.className = 'pendiente';
+  }
+}
+
+function actualizarBotonConfirmar(){
+  const btn = $('btnConfirmar');
+  if (!btn) return;
+  const tel = soloDigitos(cliente.telefono);
+  const nombreOk = !!cliente.nombre.trim();
+  const telOk = tel.length === 9 && tel.startsWith('9');
+
+  if (recogerEnLocal){
+    btn.disabled = !(nombreOk && telOk);
+    return;
+  }
+
+  const calleOk = validarCalle();
+  const numOk = validarNumeroCasa(cliente.numero).ok;
+  const refOk = validarReferencia(cliente.referencia).ok;
+
+  btn.disabled = !(nombreOk && telOk && calleOk && numOk && refOk);
+}
+
+/* ============================================================
+   RENDER CATÁLOGO
    ============================================================ */
 function renderCatalogo(){
   const cont = $('catalogoCont');
@@ -1426,24 +1731,15 @@ function bindQtyInputs(){
     });
 
     inp.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
-
     inp.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        inp.blur();
-      }
+      if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
     });
-
     inp.addEventListener('keypress', (e) => {
       const key = e.key;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (key.length > 1) return;
-      if (!/[\d.,]/.test(key)) {
-        e.preventDefault();
-      }
-      if ((key === '.' || key === ',') && inp.value.includes('.')) {
-        e.preventDefault();
-      }
+      if (!/[\d.,]/.test(key)) e.preventDefault();
+      if ((key === '.' || key === ',') && inp.value.includes('.')) e.preventDefault();
     });
   });
 }
@@ -1478,6 +1774,9 @@ function cerrarDrawer(){
 }
 
 function renderDrawer(){
+  // Destruir mapa previo para evitar duplicados
+  destruirMapaDrayerSafe();
+
   const body = $('drawerBody');
   const foot = $('drawerFoot');
   const items = itemsCarrito();
@@ -1502,6 +1801,10 @@ function renderDrawer(){
 
   const zona = cliente.zona || 'A';
   const descZona = ZONAS[zona] ? ZONAS[zona].desc_recojo : 2;
+
+  const numV = validarNumeroCasa(cliente.numero);
+  const refV = validarReferencia(cliente.referencia);
+  const calleOk = validarCalle();
 
   body.innerHTML = `
     <div>${items.map(i => `
@@ -1547,17 +1850,64 @@ function renderDrawer(){
       </div>
     </label>
 
-    <div class="campo" id="campoDireccion" style="${recogerEnLocal ? 'display:none;' : ''}">
-      <label for="inpDireccion">Dirección <span class="req">*</span></label>
-      <input type="text" id="inpDireccion" value="${escapar(cliente.direccion)}" placeholder="Ej: Av. Petit Thouars 1116, San Borja" autocomplete="street-address">
-      <div class="campo-hint">Escribe calle, número y distrito. Con eso verificamos si tu dirección está dentro de la zona de reparto.</div>
-      <div id="zonaInfo"></div>
-    </div>
+    <div id="bloqueDireccion" style="${recogerEnLocal ? 'display:none;' : ''}">
+      <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:6px 0 14px;">Tu dirección de entrega</h4>
 
-    <div class="campo" id="campoReferencia" style="${recogerEnLocal ? 'display:none;' : ''}">
-      <label for="inpReferencia">Referencia <span class="opt">(opcional)</span></label>
-      <input type="text" id="inpReferencia" value="${escapar(cliente.referencia)}" placeholder="Ej: Portero, edificio azul...">
-      <div class="campo-hint">Ayúdanos a ubicarte más rápido.</div>
+      <!-- Campo 1: Calle -->
+      <div class="campo">
+        <label for="inpCalle">1. Calle o avenida <span class="req">*</span></label>
+        <div class="dir-search">
+          <input type="text" id="inpCalle" value="${escapar(cliente.calle)}"
+                 placeholder="Ej: Av. Aviación, San Borja"
+                 autocomplete="off" spellcheck="false">
+          <div class="sugerencias" id="sugerencias"></div>
+        </div>
+        <div class="campo-hint">Escribe la calle y el distrito. Sin número.</div>
+        <div class="estado-busqueda" id="estadoBusqueda"></div>
+      </div>
+
+      <!-- Campo 2: Número -->
+      <div class="campo">
+        <label for="inpNumero">2. Número de casa <span class="req">*</span></label>
+        <input type="text" id="inpNumero" value="${escapar(cliente.numero)}"
+               placeholder="Ej: 512 o S/N"
+               inputmode="numeric" maxlength="6" autocomplete="off">
+        <div class="input-feedback ${numV.ok ? 'visible ok' : ''}" id="feedbackNumero">${numV.ok ? '✓ ' + numV.msg : ''}</div>
+        <div class="campo-hint">Solo el número. Si no tiene, escribe <strong>S/N</strong>.</div>
+      </div>
+
+      <!-- Campo 3: Referencia -->
+      <div class="campo">
+        <label for="inpReferencia">3. Dpto / piso / referencia <span class="opt">(opcional)</span></label>
+        <input type="text" id="inpReferencia" value="${escapar(cliente.referencia)}"
+               placeholder="Ej: Dpto 302, frente al parque" autocomplete="off">
+        <div class="input-feedback ${(!refV.vacio && !refV.ok) ? 'visible error' : (refV.ok && !refV.vacio ? 'visible ok' : '')}" id="feedbackReferencia">
+          ${!refV.vacio ? (refV.ok ? '✓ ' + refV.msg : '⚠ ' + refV.msg) : ''}
+        </div>
+        <div class="campo-hint">Si tienes dpto, piso o un dato que ayude a ubicarte, escríbelo aquí.</div>
+      </div>
+
+      <!-- Mapa -->
+      <div class="mapa-caja-drawer ${calleOk ? 'visible' : ''}" id="mapaCajaDrawer">
+        <div id="mapaDrawer"></div>
+        <div class="mapa-ayuda-drawer">
+          <span class="dot-pulse"></span>
+          <span id="mapaTxt">Arrastra el pin hasta tu puerta exacta si puedes.</span>
+        </div>
+      </div>
+
+      <!-- Zona info -->
+      <div id="zonaInfo"></div>
+
+      <!-- Checklist -->
+      <div class="checklist-dir" id="checklistDir">
+        <strong>Estado del formulario:</strong>
+        <ul>
+          <li id="chk-calle">Calle encontrada en el mapa</li>
+          <li id="chk-numero">Número de casa</li>
+          <li id="chk-referencia">Dpto / referencia <span class="tag">Opcional</span></li>
+        </ul>
+      </div>
     </div>
 
     <div class="aviso aviso-condiciones">
@@ -1572,8 +1922,24 @@ function renderDrawer(){
   bindQtyButtons();
   bindDrawerInputs();
   actualizarZonaInfo();
+  actualizarChecklistDir();
+  actualizarBotonConfirmar();
+
+  // Si hay lat/lng guardadas, mostrar el mapa con el pin
+  if (!recogerEnLocal && cliente.lat != null && cliente.lng != null){
+    mostrarMapaDrawer();
+  }
+
   $('btnConfirmar').addEventListener('click', confirmarPedido);
   $('checkRecojo').addEventListener('change', onToggleRecojo);
+}
+
+function destruirMapaDrayerSafe(){
+  if (mapaDrawer){
+    try { mapaDrawer.remove(); } catch(e){}
+    mapaDrawer = null;
+    marcadorDrawer = null;
+  }
 }
 
 function bindQtyButtons(){
@@ -1583,59 +1949,147 @@ function bindQtyButtons(){
 }
 
 function bindDrawerInputs(){
-  const campos = [
-    ['inpNombre','nombre'],
-    ['inpTelefono','telefono'],
-    ['inpDireccion','direccion'],
-    ['inpReferencia','referencia']
-  ];
-  campos.forEach(([id, key]) => {
-    const el = $(id);
-    if (!el) return;
-    el.addEventListener('input', () => {
-      cliente[key] = el.value;
+  // Nombre
+  const inpNombre = $('inpNombre');
+  if (inpNombre){
+    inpNombre.addEventListener('input', () => {
+      cliente.nombre = inpNombre.value;
       guardar(LS_CLIENTE, cliente);
-      el.classList.remove('error');
-      if (key === 'direccion') onDireccionChange(el.value);
+      inpNombre.classList.remove('error');
+      actualizarBotonConfirmar();
     });
-  });
-}
-
-async function onDireccionChange(direccion){
-  const sync = deducirZonaSync(direccion);
-  if (sync.origen === 'diccionario_local') {
-    cliente.distrito = sync.distrito;
-    cliente.zona = sync.zona;
-    guardar(LS_CLIENTE, cliente);
-    actualizarZonaInfo();
-    actualizarResumenYPrecio();
-    return;
   }
-  const zi = $('zonaInfo');
-  if (zi && direccion.trim()) zi.innerHTML = `<div class="zona-info"><span class="zi-icon">buscando</span><span>Verificando cobertura...</span></div>`;
-  const async_ = await deducirZonaAsync(direccion);
-  cliente.distrito = async_.distrito || sync.distrito;
-  cliente.zona = async_.zona || sync.zona;
-  cliente.lat = async_.lat || cliente.lat;
-  cliente.lng = async_.lng || cliente.lng;
-  guardar(LS_CLIENTE, cliente);
-  actualizarZonaInfo();
-  actualizarResumenYPrecio();
+
+  // Teléfono (solo dígitos, 9)
+  const inpTelefono = $('inpTelefono');
+  if (inpTelefono){
+    inpTelefono.addEventListener('input', () => {
+      inpTelefono.value = soloDigitos(inpTelefono.value).slice(0, 9);
+      cliente.telefono = inpTelefono.value;
+      guardar(LS_CLIENTE, cliente);
+      inpTelefono.classList.remove('error');
+      actualizarBotonConfirmar();
+    });
+  }
+
+  // Calle
+  const inpCalle = $('inpCalle');
+  if (inpCalle){
+    inpCalle.addEventListener('input', () => {
+      const q = inpCalle.value.trim();
+      // Si cambia el texto, invalidar lat/lng previos
+      if (cliente.lat != null){
+        cliente.lat = null;
+        cliente.lng = null;
+        const caja = $('mapaCajaDrawer');
+        if (caja) caja.classList.remove('visible');
+        destruirMapaDrayerSafe();
+      }
+      cliente.calle = q;
+      guardar(LS_CLIENTE, cliente);
+      actualizarChecklistDir();
+      actualizarBotonConfirmar();
+
+      clearTimeout(debounceDir);
+      if (q.length < 4){
+        ocultarSugerencias();
+        mostrarEstadoBusqueda('idle');
+        return;
+      }
+      debounceDir = setTimeout(() => buscarDireccion(q), 500);
+    });
+
+    inpCalle.addEventListener('focus', () => {
+      const q = inpCalle.value.trim();
+      if (q.length >= 4 && sugerenciasCache.length) renderSugerencias(sugerenciasCache);
+    });
+
+    inpCalle.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') ocultarSugerencias();
+    });
+  }
+
+  // Número
+  const inpNumero = $('inpNumero');
+  if (inpNumero){
+    inpNumero.addEventListener('input', () => {
+      let v = inpNumero.value.toUpperCase();
+      if (/^S\/?N?$/.test(v)){
+        // permitir S/N
+      } else {
+        v = v.replace(/[^0-9]/g, '');
+      }
+      inpNumero.value = v;
+      cliente.numero = v;
+      guardar(LS_CLIENTE, cliente);
+
+      const numV = validarNumeroCasa(v);
+      const fb = $('feedbackNumero');
+      if (fb){
+        if (v){
+          fb.className = 'input-feedback visible ' + (numV.ok ? 'ok' : 'error');
+          fb.textContent = (numV.ok ? '✓ ' : '⚠ ') + numV.msg;
+        } else {
+          fb.className = 'input-feedback';
+          fb.textContent = '';
+        }
+      }
+      inpNumero.classList.toggle('error', !!v && !numV.ok);
+      inpNumero.classList.toggle('ok', !!v && numV.ok);
+      actualizarChecklistDir();
+      actualizarBotonConfirmar();
+    });
+  }
+
+  // Referencia
+  const inpReferencia = $('inpReferencia');
+  if (inpReferencia){
+    inpReferencia.addEventListener('input', () => {
+      const v = inpReferencia.value;
+      cliente.referencia = v;
+      guardar(LS_CLIENTE, cliente);
+      const refV = validarReferencia(v);
+      const fb = $('feedbackReferencia');
+      if (fb){
+        if (v){
+          fb.className = 'input-feedback visible ' + (refV.ok ? 'ok' : 'error');
+          fb.textContent = (refV.ok ? '✓ ' : '⚠ ') + refV.msg;
+        } else {
+          fb.className = 'input-feedback';
+          fb.textContent = '';
+        }
+      }
+      inpReferencia.classList.toggle('error', !!v && !refV.ok);
+      inpReferencia.classList.toggle('ok', !!v && refV.ok);
+      actualizarChecklistDir();
+      actualizarBotonConfirmar();
+    });
+  }
 }
 
 function actualizarZonaInfo(){
   const zi = $('zonaInfo');
   if (!zi) return;
-  const dir = cliente.direccion || '';
-  if (!dir.trim()) { zi.innerHTML = ''; return; }
   const zona = cliente.zona || 'A';
   const distrito = cliente.distrito || '';
   const desc = ZONAS[zona] ? ZONAS[zona].desc_recojo : 2;
-  if (distrito) {
+  if (distrito){
     zi.innerHTML = `<div class="zona-info"><span class="zi-icon">listo</span><span>Detectamos <strong>${escapar(distrito)}</strong> · Zona ${zona} · Descuento si recoges: <strong>S/ ${desc}</strong></span></div>`;
+  } else if (cliente.calle){
+    zi.innerHTML = `<div class="zona-info"><span class="zi-icon">nota</span><span>Confirmaremos la cobertura de tu dirección por WhatsApp.</span></div>`;
   } else {
-    zi.innerHTML = `<div class="zona-info"><span class="zi-icon">nota</span><span>Confirmaremos la cobertura de tu dirección por WhatsApp. Descuento referencial si recoges: <strong>S/ 2</strong></span></div>`;
+    zi.innerHTML = '';
   }
+}
+
+function onToggleRecojo(e){
+  recogerEnLocal = e.target.checked;
+  const wrap = $('checkRecojoWrap');
+  if (wrap) wrap.classList.toggle('activo', recogerEnLocal);
+  const bloque = $('bloqueDireccion');
+  if (bloque) bloque.style.display = recogerEnLocal ? 'none' : '';
+  actualizarResumenYPrecio();
+  actualizarBotonConfirmar();
 }
 
 function actualizarResumenYPrecio(){
@@ -1655,17 +2109,6 @@ function actualizarResumenYPrecio(){
     `;
   }
   renderCartBar();
-}
-
-function onToggleRecojo(e){
-  recogerEnLocal = e.target.checked;
-  const wrap = $('checkRecojoWrap');
-  if (wrap) wrap.classList.toggle('activo', recogerEnLocal);
-  const cd = $('campoDireccion');
-  const cr = $('campoReferencia');
-  if (cd) cd.style.display = recogerEnLocal ? 'none' : '';
-  if (cr) cr.style.display = recogerEnLocal ? 'none' : '';
-  actualizarResumenYPrecio();
 }
 
 function cambiarQty(codigo, delta){
@@ -1692,42 +2135,36 @@ function eliminar(codigo){
    ============================================================ */
 function construirMensajeWhatsApp(){
   const items = itemsCarrito();
-  const subtotal = subtotalCarrito();
-  const descuento = descuentoAplicado();
   const total = totalCarrito();
   const tel = soloDigitos(cliente.telefono);
   const idCliente = '001' + (tel || '000000000');
-  const zona = cliente.zona || 'A';
-  const distrito = cliente.distrito || '';
   const ronda = getRondaId();
+  const refTxt = (cliente.referencia || '').trim() || '—';
 
   const productosTxt = items
     .map(i => `${i.nombre} (x${i.qty} ${i.unidad}) - ${soles(i.subtotal)}`)
     .join(' ▸ ');
 
   const lineas = [
-    '🧺 PEDIDO - COMPRA CON MISTI',
-    `▸ Ronda: ${ronda}`,
+    '🛒 PEDIDO - COMPRA CON MISTI',
     `▸ Nombre: ${cliente.nombre || ''}`,
-    `▸ ID: ${idCliente}`
+    `▸ ID: ${idCliente}`,
+    `▸ Ronda: ${ronda}`
   ];
 
-  if (recogerEnLocal) {
+  if (recogerEnLocal){
     lineas.push('▸ Dirección: Recojo en local (Eduardo Bello 385)');
+    lineas.push(`▸ Referencia: —`);
   } else {
-    lineas.push(`▸ Dirección: ${cliente.direccion || ''}`);
-  }
-
-  if (distrito) lineas.push(`▸ Distrito: ${distrito}`);
-  lineas.push(`▸ Zona: ${zona}`);
-
-  if (!recogerEnLocal && cliente.referencia.trim()) {
-    lineas.push(`▸ Referencia: ${cliente.referencia.trim()}`);
+    lineas.push(`▸ Dirección: ${(cliente.calle || '').trim()} ${(cliente.numero || '').trim()}`.trim());
+    lineas.push(`▸ Referencia: ${refTxt}`);
+    if (cliente.lat != null && cliente.lng != null){
+      lineas.push(`▸ Lat: ${Number(cliente.lat).toFixed(4)}`);
+      lineas.push(`▸ Lng: ${Number(cliente.lng).toFixed(4)}`);
+    }
   }
 
   lineas.push(`▸ Producto(s): ${productosTxt}`);
-  lineas.push(`▸ Subtotal: ${soles(subtotal)}`);
-  if (descuento > 0) lineas.push(`▸ Descuento recojo: ${soles(descuento)}`);
   lineas.push(`▸ TOTAL: ${soles(total)}`);
   lineas.push(`▸ Solicitud: Confirmar día de entrega y coordinar pago.`);
 
@@ -1735,13 +2172,16 @@ function construirMensajeWhatsApp(){
 }
 
 /* ============================================================
-   VALIDACIÓN
+   VALIDACIÓN FINAL
    ============================================================ */
 function validarPedido(){
   cliente.nombre = ($('inpNombre')?.value || cliente.nombre || '').trim();
   cliente.telefono = ($('inpTelefono')?.value || cliente.telefono || '').trim();
-  cliente.direccion = ($('inpDireccion')?.value || cliente.direccion || '').trim();
-  cliente.referencia = ($('inpReferencia')?.value || cliente.referencia || '').trim();
+  if (!recogerEnLocal){
+    cliente.calle = ($('inpCalle')?.value || cliente.calle || '').trim();
+    cliente.numero = ($('inpNumero')?.value || cliente.numero || '').trim();
+    cliente.referencia = ($('inpReferencia')?.value || cliente.referencia || '').trim();
+  }
   guardar(LS_CLIENTE, cliente);
 
   let ok = true, primerError = null;
@@ -1750,7 +2190,26 @@ function validarPedido(){
   if (!cliente.nombre) { $('inpNombre')?.classList.add('error'); primerError = primerError || $('inpNombre'); ok = false; }
   const tel = soloDigitos(cliente.telefono);
   if (tel.length !== 9 || !tel.startsWith('9')) { $('inpTelefono')?.classList.add('error'); primerError = primerError || $('inpTelefono'); ok = false; }
-  if (!recogerEnLocal && !cliente.direccion) { $('inpDireccion')?.classList.add('error'); primerError = primerError || $('inpDireccion'); ok = false; }
+
+  if (!recogerEnLocal){
+    if (!validarCalle()){
+      $('inpCalle')?.classList.add('error');
+      primerError = primerError || $('inpCalle');
+      ok = false;
+    }
+    const numV = validarNumeroCasa(cliente.numero);
+    if (!numV.ok){
+      $('inpNumero')?.classList.add('error');
+      primerError = primerError || $('inpNumero');
+      ok = false;
+    }
+    const refV = validarReferencia(cliente.referencia);
+    if (!refV.ok){
+      $('inpReferencia')?.classList.add('error');
+      primerError = primerError || $('inpReferencia');
+      ok = false;
+    }
+  }
 
   if (!ok) {
     if (primerError) primerError.focus();
@@ -1781,12 +2240,16 @@ function confirmarPedido(){
     ronda: ronda,
     fecha: new Date().toISOString(),
     cliente: {
-      nombre: cliente.nombre, telefono: tel,
-      distrito: cliente.distrito || '', zona: cliente.zona || 'A',
-      direccion: recogerEnLocal ? '' : cliente.direccion,
+      nombre: cliente.nombre,
+      telefono: tel,
+      calle: recogerEnLocal ? '' : cliente.calle,
+      numero: recogerEnLocal ? '' : cliente.numero,
       referencia: recogerEnLocal ? '' : cliente.referencia,
+      distrito: cliente.distrito || '',
+      zona: cliente.zona || 'A',
       recojo_local: recogerEnLocal,
-      lat: cliente.lat, lng: cliente.lng
+      lat: recogerEnLocal ? null : cliente.lat,
+      lng: recogerEnLocal ? null : cliente.lng
     },
     items: items.map(i => ({
       codigo: i.codigo, nombre: i.nombre, unidad: i.unidad,
@@ -1834,7 +2297,11 @@ function finalizarPedido(){
    INIT
    ============================================================ */
 function init(){
-  // Ronda dinámica
+  // Leaflet: referrerPolicy en tiles
+  if (window.L && L.TileLayer && L.TileLayer.prototype && L.TileLayer.prototype.options){
+    L.TileLayer.prototype.options.referrerPolicy = 'strict-origin-when-cross-origin';
+  }
+
   const ronda = getRondaId();
   document.querySelectorAll('.rondaId').forEach(el => el.textContent = ronda);
 
@@ -1849,6 +2316,11 @@ function init(){
   $('drawerOverlay').addEventListener('click', cerrarDrawer);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && $('drawer').classList.contains('open')) cerrarDrawer();
+  });
+
+  // Cerrar sugerencias al hacer click fuera
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dir-search')) ocultarSugerencias();
   });
 }
 
