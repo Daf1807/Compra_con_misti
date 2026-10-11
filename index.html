@@ -1388,7 +1388,8 @@
 
 <script>
 /* ============================================================
-   PRODUCTOS
+   PRODUCTOS (fallback hardcoded — se sobreescriben con precios
+   en vivo desde Firestore cuando están disponibles)
    ============================================================ */
 const PRODUCTOS = [
   { codigo:'PR-002', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:2.29, bgPos:'20% 0%' },
@@ -2521,12 +2522,86 @@ function init(){
     if (!e.target.closest('.dir-search')) ocultarSugerencias();
   });
 
-  // Reloj de ronda
   actualizarRelojRonda();
   setInterval(actualizarRelojRonda, 1000);
 }
 
 init();
 </script>
+
+<!-- ============================================================
+     PRECIOS EN VIVO DESDE FIRESTORE (SOLO LECTURA)
+     ============================================================ -->
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app": "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js",
+    "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+  }
+}
+</script>
+
+<script type="module">
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAonWel671riadA7rP7yKTWFy1APCad1LI",
+  authDomain: "misti-panel.firebaseapp.com",
+  projectId: "misti-panel",
+  storageBucket: "misti-panel.firebasestorage.app",
+  messagingSenderId: "1087729241176",
+  appId: "1:1087729241176:web:82eeae27c92bfdb51f0e2d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function cargarPreciosDeLaRonda(){
+  try {
+    // 1. Leer config para saber cuál es la ronda activa
+    const cfgSnap = await getDoc(doc(db, "config", "global"));
+    if (!cfgSnap.exists()) throw new Error("Sin config global");
+    const rondaActiva = cfgSnap.data().ronda_activa;
+    if (!rondaActiva) throw new Error("Sin ronda activa");
+
+    // 2. Leer SOLO los precios de esa ronda
+    const preciosSnap = await getDocs(collection(db, "rondas", rondaActiva, "precios"));
+    if (preciosSnap.empty) throw new Error("Ronda sin precios publicados");
+
+    const preciosMap = {};
+    preciosSnap.docs.forEach(d => {
+      const p = d.data();
+      preciosMap[p.codigo_producto] = p;
+    });
+
+    // 3. Pisar precios hardcoded con los de Firestore
+    let actualizados = 0;
+    PRODUCTOS.forEach(prod => {
+      const pr = preciosMap[prod.codigo];
+      if (pr && typeof pr.precio_venta === "number"){
+        prod.precio = pr.precio_venta;
+        actualizados++;
+      }
+    });
+
+    console.log(`✓ Precios en vivo: ${actualizados}/${PRODUCTOS.length} (ronda ${rondaActiva})`);
+
+    // 4. Actualizar el número de ronda visible en toda la página
+    document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaActiva);
+
+    // 5. Re-renderizar catálogo y barra flotante con los precios nuevos
+    if (typeof renderCatalogo === 'function') renderCatalogo();
+    if (typeof renderCartBar === 'function') renderCartBar();
+
+  } catch (e) {
+    // Si algo falla, la página sigue funcionando con los precios hardcoded
+    console.warn("No se pudieron leer precios en vivo, usando los locales:", e.message);
+  }
+}
+
+cargarPreciosDeLaRonda();
+</script>
+
 </body>
 </html>
