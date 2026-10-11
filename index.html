@@ -828,7 +828,8 @@
     border:3px solid var(--carbon);
     border-radius:var(--radio-lg);
     box-shadow:6px 6px 0 var(--rojo-aji);
-    margin-top:30px;
+    margin-top:18px;
+    margin-bottom:30px;
     overflow:hidden;
     transition:box-shadow .4s ease;
   }
@@ -970,25 +971,6 @@
         <div class="hero-sello">
           <span class="sello">Ronda <span class="rondaId"></span> · Pedidos hasta el viernes, 5:00 p. m.</span>
         </div>
-        <h1>De la cocina de <em>El Misti</em><br>a tu mesa.</h1>
-        <p class="hero-lede">
-          Los productos frescos que forman parte de nuestra cocina criolla, ahora también en tu casa.
-        </p>
-        <p class="hero-lede">
-          Elige lo que necesitas, conoce los precios desde el inicio y haz tu pedido por WhatsApp. Nosotros organizamos la compra con nuestros proveedores y preparamos los pedidos para la entrega del domingo.
-        </p>
-        <p class="hero-lede" style="font-weight:600; color:var(--carbon);">
-          Alimentos frescos del mercado, con la experiencia de El Misti.
-        </p>
-        <div class="hero-actions">
-          <a href="#catalogo" class="btn btn-primary">Armar mi canasta</a>
-          <a href="#como" class="btn btn-secondary">Cómo funciona</a>
-        </div>
-        <div class="hero-datos">
-          <div class="hero-dato"><b>21</b><span>Productos esta ronda</span></div>
-          <div class="hero-dato"><b>S/ 0</b><span>Delivery en zona</span></div>
-          <div class="hero-dato"><b>S/ 2–5</b><span>Descuento si recoges</span></div>
-        </div>
 
         <!-- RELOJ DE RONDA -->
         <div class="reloj-ronda" id="relojRonda">
@@ -1007,6 +989,26 @@
             <div class="reloj-label">🛒 Compra y entrega</div>
             <div class="reloj-fecha" id="relojFecha">—</div>
           </div>
+        </div>
+
+        <h1>De la cocina de <em>El Misti</em><br>a tu mesa.</h1>
+        <p class="hero-lede">
+          Los productos frescos que forman parte de nuestra cocina criolla, ahora también en tu casa.
+        </p>
+        <p class="hero-lede">
+          Elige lo que necesitas, conoce los precios desde el inicio y haz tu pedido por WhatsApp. Nosotros organizamos la compra con nuestros proveedores y preparamos los pedidos para la entrega del domingo.
+        </p>
+        <p class="hero-lede" style="font-weight:600; color:var(--carbon);">
+          Alimentos frescos del mercado, con la experiencia de El Misti.
+        </p>
+        <div class="hero-actions">
+          <a href="#catalogo" class="btn btn-primary">Armar mi canasta</a>
+          <a href="#como" class="btn btn-secondary">Cómo funciona</a>
+        </div>
+        <div class="hero-datos">
+          <div class="hero-dato"><b>21</b><span>Productos esta ronda</span></div>
+          <div class="hero-dato"><b>S/ 0</b><span>Delivery en zona</span></div>
+          <div class="hero-dato"><b>S/ 2–5</b><span>Descuento si recoges</span></div>
         </div>
       </div>
       <div class="hero-ilu">
@@ -1431,14 +1433,12 @@ const DESCRIPCION_GRUPOS = {
 const WHATSAPP_NEGOCIO = '51977101608';
 
 /* ============================================================
-   RONDA ACTIVA DEL CLIENTE
-   Se setea desde Firestore (primera ronda abierta con precios).
-   Si no se ha leído todavía, se calcula por fecha como fallback.
+   RONDA POR FECHA
+   La ronda es siempre el lunes de la semana actual.
+   Hoy 11/10/2026 (domingo) → R-2026-10-05
+   Mañana 12/10/2026 (lunes) → R-2026-10-12
    ============================================================ */
-let RONDA_ACTIVA_CLIENTE = null;
-
 function getRondaId(){
-  if (RONDA_ACTIVA_CLIENTE) return RONDA_ACTIVA_CLIENTE;
   const hoy = new Date();
   const dia = hoy.getDay();
   const diff = (dia === 0) ? -6 : 1 - dia;
@@ -2538,8 +2538,8 @@ init();
 
 <!-- ============================================================
      PRECIOS EN VIVO DESDE FIRESTORE
-     Lee la primera ronda ABIERTA con precios cargados.
-     Esa misma ronda se usa para el hero, precios y WhatsApp.
+     Lee los precios de la ronda calculada por fecha (lunes de
+     la semana actual). Ej: hoy 11/10 → R-2026-10-05
      ============================================================ -->
 <script type="importmap">
 {
@@ -2552,7 +2552,7 @@ init();
 
 <script type="module">
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAonWel671riadA7rP7yKTWFy1APCad1LI",
@@ -2568,52 +2568,22 @@ const db = getFirestore(app);
 
 async function cargarPreciosDeLaRonda(){
   try {
-    // 1. Leer TODAS las rondas
-    const rondasSnap = await getDocs(collection(db, "rondas"));
-    if (rondasSnap.empty) throw new Error("Sin rondas");
+    // 1. Ronda calculada por fecha (lunes de la semana actual)
+    const rondaHoy = getRondaId();
+    console.log(`Ronda calculada por fecha: ${rondaHoy}`);
 
-    // 2. Filtrar solo las abiertas
-    const abiertas = [];
-    rondasSnap.docs.forEach(d => {
-      const r = d.data();
-      if ((r.estado || "abierta") === "abierta") {
-        abiertas.push({
-          id: d.id,
-          fecha: r.fecha_apertura || r.id
-        });
-      }
-    });
+    // 2. Leer precios de esa ronda
+    const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
+    if (preciosSnap.empty) throw new Error("Ronda sin precios: " + rondaHoy);
 
-    if (!abiertas.length) throw new Error("Sin rondas abiertas");
-
-    // 3. Ordenar por fecha ascendente (la más antigua primero)
-    abiertas.sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
-
-    // 4. Tomar la primera con precios cargados
-    let rondaElegida = null;
-    let preciosSnap = null;
-    for (const r of abiertas) {
-      const snap = await getDocs(collection(db, "rondas", r.id, "precios"));
-      if (!snap.empty) {
-        rondaElegida = r.id;
-        preciosSnap = snap;
-        break;
-      }
-    }
-
-    if (!rondaElegida) throw new Error("Ninguna ronda abierta tiene precios");
-
-    // 5. Guardar globalmente (getRondaId lo usa para WhatsApp)
-    window.RONDA_ACTIVA_CLIENTE = rondaElegida;
-
-    // 6. Mapa de precios
+    // 3. Mapa de precios
     const preciosMap = {};
     preciosSnap.docs.forEach(d => {
       const p = d.data();
       preciosMap[p.codigo_producto] = p;
     });
 
-    // 7. Pisar precios hardcoded
+    // 4. Pisar precios hardcoded
     let actualizados = 0;
     let faltantes = [];
     PRODUCTOS.forEach(prod => {
@@ -2626,15 +2596,15 @@ async function cargarPreciosDeLaRonda(){
       }
     });
 
-    console.log(`✓ Precios en vivo: ${actualizados}/${PRODUCTOS.length} (ronda ${rondaElegida})`);
+    console.log(`✓ Precios en vivo: ${actualizados}/${PRODUCTOS.length} (ronda ${rondaHoy})`);
     if (faltantes.length) {
       console.warn(`⚠️ Sin precio en Firestore: ${faltantes.join(", ")}`);
     }
 
-    // 8. Actualizar el nombre de ronda en el hero
-    document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaElegida);
+    // 5. Actualizar el nombre de ronda en el hero
+    document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaHoy);
 
-    // 9. Re-renderizar catálogo
+    // 6. Re-renderizar catálogo
     if (typeof renderCatalogo === 'function') renderCatalogo();
     if (typeof renderCartBar === 'function') renderCartBar();
 
