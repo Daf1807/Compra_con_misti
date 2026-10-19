@@ -2501,8 +2501,8 @@ function construirMensajeWhatsApp(){
     lineas.push(`▸ Dirección: ${(cliente.calle || '').trim()} ${(cliente.numero || '').trim()}`.trim());
     lineas.push(`▸ Referencia: ${refTxt}`);
     if (cliente.lat != null && cliente.lng != null){
-      lineas.push(`▸ Lat: ${Number(cliente.lat).toFixed(4)}`);
-      lineas.push(`▸ Lng: ${Number(cliente.lng).toFixed(4)}`);
+      lineas.push(`▸ Lat: ${Number(cliente.lat).toFixed(5)}`);
+      lineas.push(`▸ Lng: ${Number(cliente.lng).toFixed(5)}`);
     }
   }
 
