@@ -1264,46 +1264,46 @@
 // Estructura de respaldo y posicionamiento exacto de la cuadrícula 4x7
 let PRODUCTOS = [
   // FILA 1 (Y: 0%)
-  { codigo:'PR-001', nombre:'Papa Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 0%' },
-  { codigo:'PR-002', nombre:'Papa Blanca', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 0%' },
-  { codigo:'PR-003', nombre:'Papa Canchán', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 0%' },
-  { codigo:'PR-004', nombre:'Tomate Katia', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 0%' },
+  { codigo:'PR-001', nombre:'Papa Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 0%', equiv_kg: 1 },
+  { codigo:'PR-002', nombre:'Papa Blanca', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 0%', equiv_kg: 1 },
+  { codigo:'PR-003', nombre:'Papa Canchán', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 0%', equiv_kg: 1 },
+  { codigo:'PR-004', nombre:'Tomate Katia', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 0%', equiv_kg: 1 },
   
   // FILA 2 (Y: 16.66%)
-  { codigo:'PR-005', nombre:'Cebolla Roja', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 16.66%' },
-  { codigo:'PR-006', nombre:'Zanahoria', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 16.66%' },
-  { codigo:'PR-007', nombre:'Choclo Serrano', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 16.66%' },
-  { codigo:'PR-008', nombre:'Camote Amarillo', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 16.66%' },
+  { codigo:'PR-005', nombre:'Cebolla Roja', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 16.66%', equiv_kg: 1 },
+  { codigo:'PR-006', nombre:'Zanahoria', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 16.66%', equiv_kg: 1 },
+  { codigo:'PR-007', nombre:'Choclo Serrano', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 16.66%', equiv_kg: 1 },
+  { codigo:'PR-008', nombre:'Camote Amarillo', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 16.66%', equiv_kg: 1 },
   
   // FILA 3 (Y: 33.33%)
-  { codigo:'PR-009', nombre:'Yuca Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 33.33%' },
-  { codigo:'PR-010', nombre:'Zapallo Macre', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 33.33%' },
-  { codigo:'PR-011', nombre:'Papa Huayro', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 33.33%' },
-  { codigo:'PR-012', nombre:'Papa Negra Andina', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 33.33%' },
+  { codigo:'PR-009', nombre:'Yuca Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 33.33%', equiv_kg: 1 },
+  { codigo:'PR-010', nombre:'Zapallo Macre', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 33.33%', equiv_kg: 1 },
+  { codigo:'PR-011', nombre:'Papa Huayro', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 33.33%', equiv_kg: 1 },
+  { codigo:'PR-012', nombre:'Papa Negra Andina', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 33.33%', equiv_kg: 1 },
   
   // FILA 4 (Y: 50%)
-  { codigo:'PR-013', nombre:'Cebolla China', grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'0% 50%' },
-  { codigo:'PR-014', nombre:'Ajo Criollo', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'33.33% 50%' },
-  { codigo:'PR-015', nombre:'Kion', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'66.66% 50%' },
-  { codigo:'PR-016', nombre:'Ají Amarillo', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'100% 50%' },
+  { codigo:'PR-013', nombre:'Cebolla China', grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'0% 50%', equiv_kg: 0.5 },
+  { codigo:'PR-014', nombre:'Ajo Criollo', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'33.33% 50%', equiv_kg: 1 },
+  { codigo:'PR-015', nombre:'Kion', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'66.66% 50%', equiv_kg: 1 },
+  { codigo:'PR-016', nombre:'Ají Amarillo', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'100% 50%', equiv_kg: 1 },
   
   // FILA 5 (Y: 66.66%)
-  { codigo:'PR-017', nombre:'Ají Panca', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'0% 66.66%' },
-  { codigo:'PR-018', nombre:'Ají Rocoto', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'33.33% 66.66%' },
-  { codigo:'PR-019', nombre:'Huacatay', grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'66.66% 66.66%' },
-  { codigo:'PR-020', nombre:'Culantro', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'100% 66.66%' },
+  { codigo:'PR-017', nombre:'Ají Panca', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'0% 66.66%', equiv_kg: 1 },
+  { codigo:'PR-018', nombre:'Ají Rocoto', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'33.33% 66.66%', equiv_kg: 1 },
+  { codigo:'PR-019', nombre:'Huacatay', grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'66.66% 66.66%', equiv_kg: 0.5 },
+  { codigo:'PR-020', nombre:'Culantro', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'100% 66.66%', equiv_kg: 0.5 },
   
   // FILA 6 (Y: 83.33%)
-  { codigo:'PR-021', nombre:'Perejil', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'0% 83.33%' },
-  { codigo:'PR-022', nombre:'Apio', grupo:'Especial', unidad:'atado', precio:0, bgPos:'33.33% 83.33%' },
-  { codigo:'PR-023', nombre:'Poro', grupo:'Especial', unidad:'atado', precio:0, bgPos:'66.66% 83.33%' },
-  { codigo:'PR-024', nombre:'Maíz Morado', grupo:'Especial', unidad:'kg', precio:0, bgPos:'100% 83.33%' },
+  { codigo:'PR-021', nombre:'Perejil', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'0% 83.33%', equiv_kg: 0.5 },
+  { codigo:'PR-022', nombre:'Apio', grupo:'Especial', unidad:'atado', precio:0, bgPos:'33.33% 83.33%', equiv_kg: 0.5 },
+  { codigo:'PR-023', nombre:'Poro', grupo:'Especial', unidad:'atado', precio:0, bgPos:'66.66% 83.33%', equiv_kg: 0.5 },
+  { codigo:'PR-024', nombre:'Maíz Morado', grupo:'Especial', unidad:'kg', precio:0, bgPos:'100% 83.33%', equiv_kg: 1 },
   
   // FILA 7 (Y: 100%)
-  { codigo:'PR-025', nombre:'Ají Escabeche', grupo:'Especial', unidad:'kg', precio:0, bgPos:'0% 100%' },
-  { codigo:'PR-026', nombre:'Limón Cítrico', grupo:'Especial', unidad:'kg', precio:0, bgPos:'33.33% 100%' },
-  { codigo:'PR-027', nombre:'Vainita', grupo:'Especial', unidad:'kg', precio:0, bgPos:'66.66% 100%' },
-  { codigo:'PR-028', nombre:'Zapallo Loche', grupo:'Especial', unidad:'unidad', precio:0, bgPos:'100% 100%' }
+  { codigo:'PR-025', nombre:'Ají Escabeche', grupo:'Especial', unidad:'kg', precio:0, bgPos:'0% 100%', equiv_kg: 1 },
+  { codigo:'PR-026', nombre:'Limón Cítrico', grupo:'Especial', unidad:'kg', precio:0, bgPos:'33.33% 100%', equiv_kg: 1 },
+  { codigo:'PR-027', nombre:'Vainita', grupo:'Especial', unidad:'kg', precio:0, bgPos:'66.66% 100%', equiv_kg: 1 },
+  { codigo:'PR-028', nombre:'Zapallo Loche', grupo:'Especial', unidad:'unidad', precio:0, bgPos:'100% 100%', equiv_kg: 2 }
 ];
 
 let ORDEN_GRUPOS = ['Básicos','Sazón y Aderezos','Hierbas y Aromáticos', 'Especial'];
@@ -1316,8 +1316,47 @@ const DESCRIPCION_GRUPOS = {
 
 const WHATSAPP_NEGOCIO = '51977101608';
 const MINIMO_COMPRA = 20;
-const DELIVERY_COSTO = 5;
 const COMISION_YAPE_PORC = 2.95;
+
+// ==========================================
+// CONFIGURACIÓN DE DELIVERY (PIE / MOTO)
+// ==========================================
+const CONFIG_DELIVERY = {
+  modo: 'pie', // <-- Cambia a 'moto' en el futuro
+  
+  pie: {
+    maxDistancia: 3.5,
+    maxPeso: 15,
+    tarifasDistancia: [
+      { maxKm: 1.0, costo: 2.00 },
+      { maxKm: 2.0, costo: 3.50 },
+      { maxKm: 3.5, costo: 5.00 }
+    ],
+    recargosPeso: [
+      { maxKg: 5.0, costo: 0.00 },
+      { maxKg: 10.0, costo: 2.00 },
+      { maxKg: 15.0, costo: 4.00 }
+    ]
+  },
+
+  moto: {
+    maxDistancia: 8.0,
+    maxPeso: 30,
+    tarifasDistancia: [
+      { maxKm: 2.0, costo: 4.00 },
+      { maxKm: 5.0, costo: 6.00 },
+      { maxKm: 8.0, costo: 8.00 }
+    ],
+    recargosPeso: [
+      { maxKg: 10.0, costo: 0.00 },
+      { maxKg: 20.0, costo: 3.00 },
+      { maxKg: 30.0, costo: 5.00 }
+    ]
+  }
+};
+
+const MISTI_LAT = -12.065130;
+const MISTI_LNG = -77.029940;
 
 function getRondaId(){
   const hoy = new Date();
@@ -1506,17 +1545,72 @@ function descuentoAplicado(){
   return 0;
 }
 
-function costoDelivery(){
-  return recogerEnLocal ? 0 : DELIVERY_COSTO;
+// --- CÁLCULO DE PESO Y DISTANCIA ---
+function pesoTotalCarrito() {
+  return itemsCarrito().reduce((total, item) => {
+    const pesoUnitario = item.equiv_kg || 1;
+    return total + (item.qty * pesoUnitario);
+  }, 0);
 }
 
-function comisionYape(){
+function calcularDistanciaKm() {
+  if (cliente.lat == null || cliente.lng == null) return null;
+  const R = 6371;
+  const dLat = (cliente.lat - MISTI_LAT) * Math.PI / 180;
+  const dLon = (cliente.lng - MISTI_LNG) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(MISTI_LAT * Math.PI / 180) * Math.cos(cliente.lat * Math.PI / 180) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function costoDelivery() {
+  if (recogerEnLocal) return 0;
+
+  const peso = pesoTotalCarrito();
+  const distancia = calcularDistanciaKm();
+
+  if (distancia === null) return CONFIG_DELIVERY[CONFIG_DELIVERY.modo].tarifasDistancia[0].costo;
+
+  const config = CONFIG_DELIVERY[CONFIG_DELIVERY.modo];
+
+  if (distancia > config.maxDistancia) return -1;
+  if (peso > config.maxPeso) return -2;
+
+  let tarifaBase = 0;
+  for (const rango of config.tarifasDistancia) {
+    if (distancia <= rango.maxKm) {
+      tarifaBase = rango.costo;
+      break;
+    }
+  }
+
+  let recargoPeso = 0;
+  for (const rango of config.recargosPeso) {
+    if (peso <= rango.maxKg) {
+      recargoPeso = rango.costo;
+      break;
+    }
+  }
+
+  return +(tarifaBase + recargoPeso).toFixed(2);
+}
+
+// --- COMISIÓN YAPE (Sobre Subtotal + Delivery) ---
+function comisionYape() {
   if (metodoPago !== 'yape') return 0;
-  const base = subtotalCarrito();
+  const delivery = costoDelivery();
+  if (delivery < 0) return 0;
+  const base = subtotalCarrito() + delivery;
   return +(base * COMISION_YAPE_PORC / 100).toFixed(2);
 }
 
-const totalCarrito = () => Math.max(0, subtotalCarrito() - descuentoAplicado() + costoDelivery() + comisionYape());
+const totalCarrito = () => {
+  const delivery = costoDelivery();
+  if (delivery < 0) return subtotalCarrito();
+  return Math.max(0, subtotalCarrito() - descuentoAplicado() + delivery + comisionYape());
+};
 const totalItems = () => itemsCarrito().reduce((s, i) => s + i.qty, 0);
 
 function validarNumeroCasa(v){
@@ -1698,6 +1792,22 @@ function actualizarBotonConfirmar(){
   const nombreOk = !!cliente.nombre.trim();
   const telOk = tel.length === 9 && tel.startsWith('9');
 
+  const delivery = costoDelivery();
+
+  // Si el delivery es negativo (fuera de cobertura o peso excedido), bloqueamos
+  if (!recogerEnLocal && delivery < 0) {
+    btn.disabled = true;
+    btn.textContent = delivery === -1 ? 'Fuera de cobertura a pie' : 'Peso excedido (máx 15 kg)';
+    btn.style.background = '#E0D5C5';
+    btn.style.color = '#A88A72';
+    return;
+  }
+
+  // Restaurar estilos si todo está ok
+  btn.style.background = '';
+  btn.style.color = '';
+  btn.textContent = 'Confirmar pedido por WhatsApp';
+
   if (recogerEnLocal){
     btn.disabled = !(nombreOk && telOk);
     return;
@@ -1874,6 +1984,8 @@ function renderDrawer(){
   const delivery = costoDelivery();
   const comision = comisionYape();
   const total = totalCarrito();
+  const peso = pesoTotalCarrito();
+  const dist = calcularDistanciaKm();
 
   if (items.length === 0) {
     $('drawerTitulo').textContent = 'Tu pedido';
@@ -1910,12 +2022,48 @@ function renderDrawer(){
       </div>
     `).join('')}</div>
 
-    <div class="resumen">
-      <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
-      <div class="resumen-linea"><span>Delivery</span><span style="${delivery === 0 ? 'color:var(--verde-culantro); font-weight:700;' : ''}">${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}</span></div>
-      <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span>${soles(comision)}</span></div>
-      <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
-    </div>
+    ${(() => {
+      let msgDelivery = '';
+      let colorDelivery = 'var(--texto-suave)';
+      
+      if (recogerEnLocal) {
+        msgDelivery = 'Gratis (recojo en local)';
+        colorDelivery = 'var(--verde-culantro)';
+      } else if (dist === null) {
+        msgDelivery = 'Se calcula al poner dirección';
+      } else if (delivery === -1) {
+        msgDelivery = `Fuera de cobertura a pie (máx. ${CONFIG_DELIVERY.pie.maxDistancia} km)`;
+        colorDelivery = 'var(--rojo-aji)';
+      } else if (delivery === -2) {
+        msgDelivery = `Peso excedido para delivery a pie (máx. ${CONFIG_DELIVERY.pie.maxPeso} kg)`;
+        colorDelivery = 'var(--rojo-aji)';
+      } else {
+        msgDelivery = soles(delivery);
+      }
+
+      return `
+        <div class="resumen">
+          <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
+          
+          ${(dist !== null && !recogerEnLocal) ? `
+            <div class="resumen-linea" style="font-size:11px; color:var(--texto-muy-suave); padding-bottom:8px; border-bottom:1px dashed var(--borde);">
+              <span>Peso aprox: ${peso.toFixed(1)} kg · Distancia: ${dist.toFixed(1)} km</span>
+            </div>
+          ` : ''}
+
+          <div class="resumen-linea">
+            <span>Delivery (${CONFIG_DELIVERY.modo})</span>
+            <span style="color:${colorDelivery}; font-weight:700;">${msgDelivery}</span>
+          </div>
+          
+          ${metodoPago === 'yape' && delivery >= 0 ? `
+            <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span>${soles(comision)}</span></div>
+          ` : ''}
+          
+          <div class="resumen-linea total"><span>Total a pagar</span><span>${soles(total)}</span></div>
+        </div>
+      `;
+    })()}
 
     <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Método de pago</h4>
 
@@ -2247,6 +2395,8 @@ function construirMensajeWhatsApp(){
   const idCliente = '001' + (tel || '000000000');
   const ronda = getRondaId();
   const refTxt = (cliente.referencia || '').trim() || '—';
+  const peso = pesoTotalCarrito();
+  const dist = calcularDistanciaKm();
 
   const productosTxt = items
     .map(i => `${i.nombre} (x${i.qty} ${i.unidad}) - ${soles(i.subtotal)}`)
@@ -2272,8 +2422,16 @@ function construirMensajeWhatsApp(){
   }
 
   lineas.push(`▸ Producto(s): ${productosTxt}`);
+  lineas.push(`▸ Peso aprox: ${peso.toFixed(1)} kg`);
   lineas.push(`▸ Subtotal: ${soles(subtotal)}`);
-  lineas.push(`▸ Delivery: ${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}`);
+  
+  if (recogerEnLocal) {
+    lineas.push(`▸ Delivery: Gratis (recojo en local)`);
+  } else {
+    lineas.push(`▸ Delivery: ${cliente.lat ? soles(delivery) : 'Por calcular'}`);
+    if (dist) lineas.push(`   (Distancia aprox: ${dist.toFixed(1)} km)`);
+  }
+
   lineas.push(`▸ Comisión Yape (${COMISION_YAPE_PORC}%): ${soles(comision)}`);
   lineas.push(`▸ TOTAL: ${soles(total)}`);
   lineas.push(`▸ Pago: ${metodoPago === 'yape' ? 'Yape' : 'Efectivo'}`);
@@ -2320,6 +2478,11 @@ function validarPedido(){
       $('inpReferencia')?.classList.add('error');
       primerError = primerError || $('inpReferencia');
       ok = false;
+    }
+    const delivery = costoDelivery();
+    if (delivery < 0) {
+      alert('Lo sentimos, tu dirección está fuera de nuestra cobertura actual a pie (máx. 3.5 km) o el pedido excede el peso máximo (15 kg).');
+      return false;
     }
   }
 
@@ -2463,7 +2626,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Deduce el grupo por rango de código (PR-001..PR-028)
 function grupoDesdeCodigo(codigo) {
   const num = parseInt(String(codigo || '').replace(/\D/g, ''), 10);
   if (isNaN(num)) return 'Especial';
@@ -2490,7 +2652,6 @@ async function cargarTodoElCatalogo() {
       const data = d.data();
       const codigo = data.codigo_producto || d.id;
 
-      // Precio final de venta: P_L_final > P_L_sugerido > P_L_mercado
       let precio = 0;
       if (typeof data.P_L_final === 'number' && data.P_L_final > 0) {
         precio = data.P_L_final;
@@ -2501,9 +2662,15 @@ async function cargarTodoElCatalogo() {
       }
       precio = Math.round(precio * 100) / 100;
 
-      // Buscamos si el producto ya tiene una posición asignada en nuestro array
       const productoCfg = PRODUCTOS.find(p => p.codigo === codigo);
       const posicionBG = productoCfg ? productoCfg.bgPos : '0% 0%';
+      
+      let equiv_kg = 1;
+      if (typeof data.equiv_kg === 'number' && data.equiv_kg > 0) {
+        equiv_kg = data.equiv_kg;
+      } else if (productoCfg && productoCfg.equiv_kg) {
+        equiv_kg = productoCfg.equiv_kg;
+      }
 
       nuevosProductos.push({
         codigo,
@@ -2511,6 +2678,7 @@ async function cargarTodoElCatalogo() {
         grupo: data.grupo || grupoDesdeCodigo(codigo),
         unidad: data.unidad_venta || 'kg',
         precio,
+        equiv_kg,
         img: 'catalogo-misti-grid.png',
         bgPos: posicionBG,
         bgSize: '400% 700%'
