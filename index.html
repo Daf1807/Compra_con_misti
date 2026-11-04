@@ -212,47 +212,6 @@
     .section-eyebrow{font-size:18px; margin-bottom:10px;}
   }
 
-  .porque-grid{display:grid; grid-template-columns:1fr; gap:14px; margin-top:8px;}
-  @media (min-width:560px){ .porque-grid{grid-template-columns:1fr 1fr;} }
-  @media (min-width:960px){ .porque-grid{grid-template-columns:repeat(4,1fr); gap:16px;} }
-  .porque-card{
-    background:var(--blanco); border:2px solid var(--carbon);
-    border-radius:var(--radio); padding:18px 16px;
-    box-shadow:3px 3px 0 var(--carbon);
-    transition:transform .15s;
-    display:flex; flex-direction:column; gap:10px;
-  }
-  @media (min-width:640px){
-    .porque-card{padding:22px 20px;}
-  }
-  .porque-card:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--carbon);}
-  .porque-card:nth-child(1){background:var(--miel-suave);}
-  .porque-card:nth-child(2){background:var(--crema-2);}
-  .porque-card:nth-child(3){background:#F4E2D8;}
-  .porque-card:nth-child(4){background:#E4EFDC;}
-  .porque-num{font-family:var(--font-display); font-weight:800; font-size:30px; color:var(--carbon); line-height:1; letter-spacing:-0.03em;}
-  .porque-card h4{font-size:16px; font-weight:700; color:var(--carbon); font-family:var(--font-display); letter-spacing:-0.02em; line-height:1.2;}
-  .porque-card p{font-size:13.5px; color:var(--texto); line-height:1.55;}
-  @media (min-width:640px){
-    .porque-num{font-size:34px;}
-    .porque-card h4{font-size:17px;}
-  }
-
-  #historia{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
-  .historia-text{max-width:720px; display:flex; flex-direction:column; gap:14px;}
-  .historia-text p{font-size:15.5px; line-height:1.65; color:var(--texto);}
-  .historia-text p.lead{font-size:17px; color:var(--carbon); font-weight:500;}
-  .historia-text p.final{
-    font-family:var(--font-hand); font-weight:700; font-size:20px;
-    color:var(--rojo-aji); line-height:1.4; margin-top:6px;
-  }
-  @media (min-width:640px){
-    .historia-text{gap:16px;}
-    .historia-text p{font-size:16.5px; line-height:1.7;}
-    .historia-text p.lead{font-size:18.5px;}
-    .historia-text p.final{font-size:22px; margin-top:8px;}
-  }
-
   #catalogo{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .ronda-banner{
     background:var(--carbon); color:var(--crema);
@@ -407,33 +366,6 @@
   .qty-wrap .unit{font-size:11.5px; font-weight:700; color:var(--texto-suave); flex-shrink:0; padding-right:2px; font-family:var(--font-hand);}
   @media (min-width:640px){ .qty-wrap .unit{font-size:12.5px;} }
 
-  .como-grid{display:grid; grid-template-columns:1fr; gap:14px;}
-  @media (min-width:560px){ .como-grid{grid-template-columns:1fr 1fr;} }
-  @media (min-width:960px){ .como-grid{grid-template-columns:repeat(4,1fr); gap:16px;} }
-  .como-paso{
-    background:var(--blanco); border:2px solid var(--carbon);
-    border-radius:var(--radio); padding:18px 16px;
-    box-shadow:3px 3px 0 var(--carbon);
-    display:flex; flex-direction:column; gap:10px;
-  }
-  @media (min-width:640px){ .como-paso{padding:22px 20px; gap:12px;} }
-  .como-paso-num{
-    width:40px; height:40px; border-radius:50%;
-    background:var(--rojo-aji); color:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-display); font-weight:800; font-size:18px;
-    border:2px solid var(--carbon);
-    box-shadow:2px 2px 0 var(--carbon);
-    flex-shrink:0;
-  }
-  @media (min-width:640px){ .como-paso-num{width:44px; height:44px; font-size:20px;} }
-  .como-paso:nth-child(2) .como-paso-num{background:var(--naranja-zanah);}
-  .como-paso:nth-child(3) .como-paso-num{background:var(--miel); color:var(--carbon);}
-  .como-paso:nth-child(4) .como-paso-num{background:var(--verde-culantro);}
-  .como-paso h4{font-size:15.5px; font-weight:700; color:var(--carbon); font-family:var(--font-display); line-height:1.2; letter-spacing:-0.02em;}
-  .como-paso p{font-size:13.5px; color:var(--texto-suave); line-height:1.55;}
-  @media (min-width:640px){ .como-paso h4{font-size:16.5px;} }
-
   #donde{background:var(--crema-2); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .donde-grid{display:grid; grid-template-columns:1fr; gap:24px;}
   @media (min-width:820px){ .donde-grid{grid-template-columns:1fr 1fr; gap:56px;} }
@@ -447,98 +379,6 @@
   @media (min-width:480px){ .donde-info .linea b{width:90px; font-size:20px;} }
   .donde-info .linea span{font-size:14px; color:var(--texto); line-height:1.55;}
   .donde-info .linea span strong{color:var(--carbon); font-weight:700;}
-
-  #acuerdo{background:var(--carbon); color:var(--crema);}
-  #acuerdo .section-head h2{color:var(--crema);}
-  #acuerdo .section-head h2 em{color:var(--miel);}
-  #acuerdo .section-head p{color:rgba(250,244,232,0.75);}
-  #acuerdo .section-eyebrow{color:var(--miel);}
-  .acuerdo-bloque{max-width:760px; display:flex; flex-direction:column; gap:16px; margin-bottom:28px;}
-  @media (min-width:640px){ .acuerdo-bloque{gap:18px; margin-bottom:32px;} }
-  .acuerdo-bloque p{font-size:15.5px; line-height:1.65; color:rgba(250,244,232,0.9);}
-  .acuerdo-bloque p strong{color:var(--miel); font-weight:700;}
-  .acuerdo-bloque h3{
-    font-family:var(--font-display); font-size:17px; font-weight:700;
-    color:var(--miel); margin-top:10px; letter-spacing:-0.01em;
-  }
-  @media (min-width:640px){
-    .acuerdo-bloque p{font-size:16.5px; line-height:1.7;}
-    .acuerdo-bloque h3{font-size:18px; margin-top:12px;}
-  }
-  .acuerdo-clausula{
-    background:rgba(250,244,232,0.06);
-    border-left:4px solid var(--miel);
-    padding:16px 18px;
-    font-size:15px; line-height:1.6; color:var(--crema); margin:6px 0;
-  }
-  @media (min-width:640px){
-    .acuerdo-clausula{padding:18px 22px; font-size:16px; line-height:1.65; margin:8px 0;}
-  }
-  .acuerdo-cierre{
-    font-family:var(--font-display);
-    font-size:19px; font-weight:700; line-height:1.3;
-    color:var(--miel); margin-top:14px;
-  }
-  @media (min-width:640px){ .acuerdo-cierre{font-size:22px; margin-top:18px;} }
-
-  #mercado{background:var(--crema);}
-  .escenarios{display:grid; grid-template-columns:1fr; gap:12px; margin-top:8px;}
-  @media (min-width:720px){ .escenarios{grid-template-columns:1fr 1fr;} }
-  @media (min-width:960px){ .escenarios{grid-template-columns:repeat(3,1fr); gap:14px;} }
-  .escenario{
-    background:var(--blanco); border:2px solid var(--carbon);
-    border-radius:var(--radio); padding:18px 18px;
-    box-shadow:3px 3px 0 var(--carbon);
-    display:flex; flex-direction:column; gap:8px;
-  }
-  @media (min-width:640px){ .escenario{padding:22px 22px; gap:10px;} }
-  .escenario-num{
-    font-family:var(--font-display); font-weight:800;
-    font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
-    color:var(--rojo-aji);
-  }
-  .escenario h4{
-    font-family:var(--font-display); font-size:16px; font-weight:700;
-    line-height:1.25; color:var(--carbon); letter-spacing:-0.02em;
-  }
-  .escenario p{font-size:13.5px; line-height:1.6; color:var(--texto);}
-  @media (min-width:640px){
-    .escenario h4{font-size:17px;}
-    .escenario p{font-size:14px;}
-  }
-  .escenario.s-estable{background:#E4EFDC;}
-  .escenario.s-shock{background:var(--miel-suave);}
-  .escenario.s-hiper{background:#F4E2D8;}
-
-  .mercado-cierre{
-    font-family:var(--font-display);
-    font-size:19px; font-weight:700; line-height:1.3;
-    color:var(--rojo-aji); margin-top:26px; max-width:720px;
-  }
-  @media (min-width:640px){
-    .mercado-cierre{font-size:22px; margin-top:32px;}
-  }
-
-  #faq{background:var(--blanco); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
-  .faq-list{max-width:820px; display:flex; flex-direction:column;}
-  .faq-item{border-top:2px solid var(--carbon); padding:18px 0;}
-  .faq-list .faq-item:last-child{border-bottom:2px solid var(--carbon);}
-  .faq-item summary{
-    font-size:16px; font-weight:700; list-style:none;
-    display:flex; justify-content:space-between; align-items:center;
-    cursor:pointer; gap:12px; line-height:1.35;
-  }
-  @media (min-width:640px){
-    .faq-item{padding:22px 0;}
-    .faq-item summary{font-size:17.5px; gap:16px;}
-  }
-  .faq-item summary::-webkit-details-marker{display:none;}
-  .faq-item summary::after{content:"+"; font-size:22px; color:var(--rojo-aji); font-weight:400; flex-shrink:0;}
-  .faq-item[open] summary::after{content:"–";}
-  .faq-item p{font-size:14.5px; margin-top:12px; max-width:680px; line-height:1.6; color:var(--texto);}
-  @media (min-width:640px){
-    .faq-item p{font-size:15.5px; margin-top:14px; line-height:1.65;}
-  }
 
   #cierre{padding:48px 0; background:var(--crema-2); border-top:2px solid var(--carbon);}
   @media (min-width:640px){ #cierre{padding:60px 0;} }
@@ -736,6 +576,8 @@
   @media (min-width:640px){ .resumen-linea.total{margin-top:10px; padding-top:14px; font-size:15px;} }
   .resumen-linea.total span:last-child{font-family:var(--font-display); font-size:20px; color:var(--rojo-aji); font-weight:800; letter-spacing:-0.02em;}
   @media (min-width:640px){ .resumen-linea.total span:last-child{font-size:22px;} }
+  .resumen-linea .comision{color:var(--naranja-zanah); font-weight:600;}
+  .resumen-linea .delivery{color:var(--naranja-zanah); font-weight:600;}
 
   .campo{margin-bottom:14px;}
   @media (min-width:640px){ .campo{margin-bottom:16px;} }
@@ -1132,8 +974,6 @@
   }
 </style>
 
-
-  
 </head>
 <body>
 
@@ -1150,9 +990,7 @@
     <ul class="nav-links">
       <li><a href="#catalogo">Catálogo</a></li>
       <li><a href="#como">Cómo funciona</a></li>
-      <li><a href="#acuerdo">Acuerdo</a></li>
-      <li><a href="#mercado">Precio fijado</a></li>
-      <li><a href="#faq">Preguntas</a></li>
+      <li><a href="#donde">Ubicación</a></li>
     </ul>
     <a href="#catalogo" class="nav-cta">Armar mi canasta</a>
   </div>
@@ -1203,7 +1041,7 @@
         <div class="hero-datos">
           <div class="hero-dato"><b>14</b><span>Productos esta ronda</span></div>
           <div class="hero-dato"><b>S/ 20</b><span>Mínimo de compra</span></div>
-          <div class="hero-dato"><b>Dom 4–6 p.m.</b><span>Delivery gratis</span></div>
+          <div class="hero-dato"><b>Dom 4–6 p.m.</b><span>Delivery disponible</span></div>
         </div>
       </div>
       <div class="hero-ilu">
@@ -1217,63 +1055,6 @@
     </div>
   </div>
 </header>
-
-<!-- POR QUÉ -->
-<section id="porque">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-eyebrow">Lo que nos diferencia</span>
-      <h2>Tu compra de la semana, <em>con la confianza de siempre.</em></h2>
-    </div>
-
-    <div class="porque-grid">
-      <div class="porque-card">
-        <div class="porque-num">01</div>
-        <h4>Los productos que conocemos</h4>
-        <p>En la cocina de El Misti trabajamos diariamente con papas, cebollas, tomates, ajíes, hierbas y otros ingredientes de nuestra cocina criolla. Conocemos estos productos y sabemos lo importante que es elegirlos bien.</p>
-      </div>
-      <div class="porque-card">
-        <div class="porque-num">02</div>
-        <h4>Compra directa en el mercado</h4>
-        <p>Organizamos los pedidos de las familias y coordinamos el abastecimiento con nuestros proveedores. Así puedes encargar tus alimentos sin recorrer puestos, hacer colas ni cargar bolsas.</p>
-      </div>
-      <div class="porque-card">
-        <div class="porque-num">03</div>
-        <h4>Precios claros desde el inicio</h4>
-        <p>Cada producto tiene un precio visible en el catálogo. Los precios de la ronda se fijan para el periodo de pedidos, de modo que puedas conocer el importe de tu compra antes de confirmarla.</p>
-      </div>
-      <div class="porque-card">
-        <div class="porque-num">04</div>
-        <h4>Recibe en casa o recoge en El Misti</h4>
-        <p>Delivery gratis el domingo, de 4 a 6 p. m. También puedes recoger tu compra en nuestro local. El recojo no tiene descuento.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HISTORIA -->
-<section id="historia">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-eyebrow">De El Misti para tu mesa</span>
-      <h2>Cocina criolla, de verdad.</h2>
-    </div>
-
-    <div class="historia-text">
-      <p class="lead">El Misti es un restaurante familiar de comida criolla. Cada día trabajamos con alimentos frescos para preparar los platos que compartimos con nuestros clientes.</p>
-    
-      <p>Compra con Misti nace de una idea sencilla: si ya compramos alimentos frescos para la cocina del restaurante, podemos ofrecer ese mismo servicio a quien quiera encargar su compra de la semana.</p>
-    
-      <p>Aprovechamos nuestra logística de abastecimiento para conseguir los productos directo de nuestros proveedores y llevarlos hasta tu casa.</p>
-    
-      <p>Tú eliges los alimentos que necesitas y nosotros nos encargamos de organizar la compra y la entrega. Así puedes abastecer tu hogar sin tener que ir al mercado ni cargar tus bolsas.</p>
-    
-      <p>No necesitas comprar una canasta idéntica a la de otra familia. Puedes elegir los productos y las cantidades disponibles en el catálogo según tus necesidades.</p>
-    
-      <p class="final">Compra con Misti acerca la experiencia de compra de nuestro restaurante a tu hogar: una forma práctica de organizar tus alimentos de la semana, con precios claros y la confianza de El Misti.</p>
-    </div>
-  </div>
-</section>
 
 <!-- CATÁLOGO -->
 <section id="catalogo">
@@ -1297,7 +1078,7 @@
 
     <div class="ronda-banner">
       <span class="dot"></span>
-      <span><strong>Ronda <span class="rondaId"></span> abierta.</strong> Cierra el viernes a las 5:00 pm. Mínimo de compra S/ 20. Delivery gratis el domingo, de 4 a 6 p. m.</span>
+      <span><strong>Ronda <span class="rondaId"></span> abierta.</strong> Cierra el viernes a las 5:00 pm. Mínimo de compra S/ 20. Delivery disponible el domingo, de 4 a 6 p. m.</span>
     </div>
 
     <div id="catalogoCont"></div>
@@ -1312,26 +1093,26 @@
       <h2>Tú eliges. <em>Nosotros organizamos la compra.</em></h2>
     </div>
 
-    <div class="como-grid">
-      <div class="como-paso">
-        <div class="como-paso-num">1</div>
-        <h4>Arma tu canasta</h4>
-        <p>Explora el catálogo, selecciona los productos que necesitas e indica las cantidades. Puedes combinar alimentos según tus preferencias y tu presupuesto.</p>
+    <div style="display:grid; grid-template-columns:1fr; gap:14px;">
+      <div style="background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:18px 16px; box-shadow:3px 3px 0 var(--carbon);">
+        <div style="width:40px; height:40px; border-radius:50%; background:var(--rojo-aji); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; font-size:18px; border:2px solid var(--carbon); box-shadow:2px 2px 0 var(--carbon);">1</div>
+        <h4 style="font-size:15.5px; margin-top:10px;">Arma tu canasta</h4>
+        <p style="font-size:13.5px; color:var(--texto-suave); line-height:1.55;">Explora el catálogo, selecciona los productos que necesitas e indica las cantidades. Puedes combinar alimentos según tus preferencias y tu presupuesto.</p>
       </div>
-      <div class="como-paso">
-        <div class="como-paso-num">2</div>
-        <h4>Confirma por WhatsApp</h4>
-        <p>Envía tu selección y revisa el resumen del pedido. Coordinamos contigo el importe, la modalidad de entrega y el pago.</p>
+      <div style="background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:18px 16px; box-shadow:3px 3px 0 var(--carbon);">
+        <div style="width:40px; height:40px; border-radius:50%; background:var(--naranja-zanah); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; font-size:18px; border:2px solid var(--carbon); box-shadow:2px 2px 0 var(--carbon);">2</div>
+        <h4 style="font-size:15.5px; margin-top:10px;">Confirma por WhatsApp</h4>
+        <p style="font-size:13.5px; color:var(--texto-suave); line-height:1.55;">Envía tu selección y revisa el resumen del pedido. Coordinamos contigo el importe, la modalidad de entrega y el pago.</p>
       </div>
-      <div class="como-paso">
-        <div class="como-paso-num">3</div>
-        <h4>Compramos el domingo</h4>
-        <p>Reunimos los pedidos y coordinamos el abastecimiento con nuestros proveedores. Organizamos la compra teniendo en cuenta las necesidades de las familias y las compras habituales de la cocina de El Misti.</p>
+      <div style="background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:18px 16px; box-shadow:3px 3px 0 var(--carbon);">
+        <div style="width:40px; height:40px; border-radius:50%; background:var(--miel); color:var(--carbon); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; font-size:18px; border:2px solid var(--carbon); box-shadow:2px 2px 0 var(--carbon);">3</div>
+        <h4 style="font-size:15.5px; margin-top:10px;">Compramos el domingo</h4>
+        <p style="font-size:13.5px; color:var(--texto-suave); line-height:1.55;">Reunimos los pedidos y coordinamos el abastecimiento con nuestros proveedores. Organizamos la compra teniendo en cuenta las necesidades de las familias y las compras habituales de la cocina de El Misti.</p>
       </div>
-      <div class="como-paso">
-        <div class="como-paso-num">4</div>
-        <h4>Recibe tu pedido</h4>
-        <p>Entregamos los pedidos el domingo, según la coordinación por WhatsApp. Delivery gratis de 4 a 6 p. m., o recógelo en nuestro local, sin descuento.</p>
+      <div style="background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:18px 16px; box-shadow:3px 3px 0 var(--carbon);">
+        <div style="width:40px; height:40px; border-radius:50%; background:var(--verde-culantro); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; font-size:18px; border:2px solid var(--carbon); box-shadow:2px 2px 0 var(--carbon);">4</div>
+        <h4 style="font-size:15.5px; margin-top:10px;">Recibe tu pedido</h4>
+        <p style="font-size:13.5px; color:var(--texto-suave); line-height:1.55;">Entregamos los pedidos el domingo, según la coordinación por WhatsApp. Delivery disponible de 4 a 6 p. m., o recógelo en nuestro local.</p>
       </div>
     </div>
   </div>
@@ -1354,7 +1135,7 @@
         </div>
         <div class="linea">
           <b>Delivery</b>
-          <span>Delivery gratis el domingo, de 4:00 a 6:00 p. m. Fuera de ese horario, se coordina por WhatsApp.</span>
+          <span>Delivery disponible el domingo, de 4:00 a 6:00 p. m. Fuera de ese horario, se coordina por WhatsApp.</span>
         </div>
         <div class="linea">
           <b>Recojo</b>
@@ -1367,141 +1148,9 @@
           Puedes recoger tu pedido en <strong>Eduardo Bello 385, Santa Catalina, La Victoria</strong>, el domingo, según la coordinación realizada por WhatsApp. El recojo no tiene descuento.
         </p>
         <p style="font-size:14.5px; line-height:1.6; color:var(--texto); margin-top:12px;">
-          El delivery es gratis el domingo, de 4:00 a 6:00 p. m. Fuera de ese horario, se coordina por WhatsApp.
+          El delivery está disponible el domingo, de 4:00 a 6:00 p. m. Fuera de ese horario, se coordina por WhatsApp.
         </p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ACUERDO -->
-<section id="acuerdo">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-eyebrow">Transparencia desde el primer pedido</span>
-      <h2>Un precio claro. <em>Una compra organizada.</em></h2>
-    </div>
-
-    <div class="acuerdo-bloque">
-      <p>Cuando confirmas tu pedido, conoces los productos, las cantidades y los precios establecidos para la ronda. Los precios se mantienen durante el periodo de pedidos, hasta el viernes a las 5:00 p. m.</p>
-    
-      <p>Compramos el domingo por la mañana, coordinando el abastecimiento con nuestros proveedores para atender los pedidos de las familias. Nuestra planificación combina la compra acumulada con el abastecimiento habitual de la cocina de El Misti.</p>
-    
-      <h3>Asumimos las variaciones habituales del mercado</h3>
-      <p>Los precios de compra pueden cambiar durante la semana. En condiciones normales, mantenemos los precios acordados y asumimos las variaciones habituales dentro de los márgenes previstos para la operación, incluso cuando esto reduce nuestro margen económico.</p>
-    
-      <h3>Si hay un shock inflacionario</h3>
-      <p>Si se produce una subida excepcional y sostenida de precios, el ajuste es por producto y es independiente. El presupuesto destinado a alimentos y el costo real de compra determinan cuánto se puede adquirir en ese caso particular.</p>
-      <p>No se ajusta porque se "sobrepase un colchón", sino porque el presupuesto destinado a alimentos y el costo real de compra mandan. En ese escenario, el presupuesto determina cuánto podemos comprar, sin trasladar automáticamente a las familias todo el incremento.</p>
-    
-      <h3>Cómo se organiza tu compra</h3>
-      <p>El importe de tu pedido contempla el presupuesto destinado a los alimentos y los costos de operación del servicio. Las cantidades que podemos ofrecer dependen de ese presupuesto y de los precios efectivos de compra.</p>
-    
-      <div class="acuerdo-clausula">
-        Nuestro compromiso es organizar la compra con responsabilidad, asumir las variaciones habituales del mercado y utilizar el presupuesto destinado a alimentos de acuerdo con los costos reales de abastecimiento.
-      </div>
-    
-      <p class="acuerdo-cierre">Tú decides qué comprar. Nosotros organizamos la compra y coordinamos la entrega.</p>
-    </div>
-  </div>
-</section>
-
-<!-- MERCADO -->
-<section id="mercado">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-eyebrow">Cómo funciona el precio fijado</span>
-      <h2>Tu compra no cambia <em>con cada movimiento del mercado.</em></h2>
-      <p>Los precios de los alimentos pueden subir o bajar durante la semana. En Compra con Misti fijamos los precios de la ronda para que puedas organizar tu presupuesto con anticipación.</p>
-    </div>
-
-    <div class="escenarios">
-      <div class="escenario s-estable">
-        <span class="escenario-num">01 · Estable</span>
-        <h4>Si los precios se mantienen</h4>
-        <p>El presupuesto permite adquirir las cantidades previstas para tu pedido y organizar su entrega.</p>
-      </div>
-
-      <div class="escenario s-shock">
-        <span class="escenario-num">02 · Shock inflacionario</span>
-        <h4>Si hay una subida excepcional</h4>
-        <p>El ajuste es por producto y es independiente. El presupuesto destinado a alimentos y el costo real de compra determinan cuánto se puede adquirir.</p>
-        <p>No se ajusta porque se "sobrepase un colchón", sino porque el presupuesto disponible y el costo real mandan.</p>
-      </div>
-
-      <div class="escenario s-hiper">
-        <span class="escenario-num">03 · Mega hiperinflación</span>
-        <h4>Escenario extremo</h4>
-        <p>Misma lógica, pero mucho más restrictiva. Las cantidades que podemos adquirir se ajustan al presupuesto disponible para alimentos y a los costos reales de compra.</p>
-        <p>El objetivo es mantener el abastecimiento dentro de los recursos disponibles, sin asumir compromisos de cantidades que el presupuesto ya no permite sostener.</p>
-      </div>
-    </div>
-
-    <p class="mercado-cierre">El precio organiza el presupuesto; el costo real de compra determina cuánto alimento puede adquirirse.</p>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-eyebrow">Preguntas frecuentes</span>
-      <h2>Lo que necesitas saber antes de comprar.</h2>
-    </div>
-
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>¿Cuándo puedo hacer mi pedido?</summary>
-        <p>Puedes realizarlo durante el periodo de la ronda, desde la publicación del catálogo hasta el viernes a las 5:00 p. m.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Cuándo compran los productos?</summary>
-        <p>La compra se realiza el domingo por la mañana y las entregas se coordinan para ese mismo día.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Los precios cambian después de confirmar?</summary>
-        <p>Los precios de la ronda se mantienen durante el periodo de pedidos. Si se produce un shock inflacionario, el ajuste es por producto y depende del presupuesto destinado a alimentos y del costo real de compra.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Qué determina la cantidad de alimentos que recibo?</summary>
-        <p>Las cantidades dependen de los productos elegidos, del presupuesto destinado a alimentos y de los precios efectivos de compra. En condiciones normales, organizamos la compra para cumplir las cantidades previstas.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Qué pasa si hay un shock inflacionario?</summary>
-        <p>El ajuste es por producto y es independiente. El presupuesto destinado a alimentos y el costo real de compra determinan cuánto se puede adquirir. No se ajusta por "sobrepasar un colchón".</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Tengo que comprar una canasta predeterminada?</summary>
-        <p>No necesariamente. Puedes elegir los productos y las cantidades disponibles en el catálogo, según las condiciones de compra de la ronda.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Cuánto cuesta el delivery?</summary>
-        <p>El delivery es gratis el domingo, de 4:00 a 6:00 p. m. Fuera de ese horario, se coordina por WhatsApp.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Puedo recoger mi pedido?</summary>
-        <p>Sí. Puedes recogerlo en El Misti, en Eduardo Bello 385, Santa Catalina, La Victoria. El recojo no tiene descuento.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Cuál es el mínimo de compra?</summary>
-        <p>S/ 20.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Cómo puedo pagar?</summary>
-        <p>Puedes pagar con Yape, Plin o efectivo. El pago se coordina por WhatsApp al confirmar el pedido.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿El peso es exacto?</summary>
-        <p>El peso es estimado. No cortamos los productos para cuadrar el kilo exacto. Si la balanza marca 0.85 kg, agregamos una unidad más al margen de lo que pese. Normalmente queda 1 kg o un poco más. Nunca partimos una papa para llegar a 1 kg exacto.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Cómo sé cuánto costará mi pedido?</summary>
-        <p>El catálogo muestra los precios unitarios. Al seleccionar los productos y las cantidades, puedes revisar el importe correspondiente antes de confirmar.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Compra con Misti es una donación, un préstamo o una inversión?</summary>
-        <p>No. Compra con Misti es un servicio de compra de alimentos. Realizas un pedido para adquirir productos destinados a tu hogar; no estás realizando una donación ni entregando dinero como inversión o préstamo.</p>
-      </details>
     </div>
   </div>
 </section>
@@ -1549,7 +1198,7 @@
           <li>WhatsApp: +51 977 101 608</li>
           <li>Pedidos hasta el viernes, 5:00 p. m.</li>
           <li>Compra y entrega el domingo</li>
-          <li>Delivery gratis domingo 4–6 p. m.</li>
+          <li>Delivery disponible domingo 4–6 p. m.</li>
         </ul>
       </div>
     </div>
@@ -1609,92 +1258,23 @@ const DESCRIPCION_GRUPOS = {
 
 const WHATSAPP_NEGOCIO = '51977101608';
 const MINIMO_COMPRA = 20;
+const DELIVERY_COSTO = 5; // Costo fijo de delivery
+const COMISION_YAPE_PORC = 2.95; // Porcentaje de comisión de Yape
 
-function getRondaId(){
-  const hoy = new Date();
-  const dia = hoy.getDay();
-  const diff = (dia === 0) ? -6 : 1 - dia;
-  const lunes = new Date(hoy);
-  lunes.setDate(hoy.getDate() + diff);
-  const y = lunes.getFullYear();
-  const m = String(lunes.getMonth()+1).padStart(2,'0');
-  const d = String(lunes.getDate()).padStart(2,'0');
-  return `R-${y}-${m}-${d}`;
-}
-
-const DIAS_ES  = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-
-function getFechasRonda(){
-  const hoy  = new Date();
-  const dia  = hoy.getDay();
-  const diff = (dia === 0) ? -6 : 1 - dia;
-  const lunes = new Date(hoy);
-  lunes.setDate(hoy.getDate() + diff);
-  lunes.setHours(0,0,0,0);
-
-  const viernes = new Date(lunes);
-  viernes.setDate(lunes.getDate() + 4);
-  viernes.setHours(17, 0, 0, 0);
-
-  const domingo = new Date(lunes);
-  domingo.setDate(lunes.getDate() + 6);
-  domingo.setHours(0,0,0,0);
-
-  return { lunes, viernes, domingo };
-}
-
-function formatearFechaRonda(d){
-  return `${DIAS_ES[d.getDay()]} ${d.getDate()} de ${MESES_ES[d.getMonth()]}`;
-}
-
-function actualizarRelojRonda(){
-  const reloj = $('relojRonda');
-  if (!reloj) return;
-
-  const { viernes, domingo } = getFechasRonda();
-  const ahora = new Date();
-
-  const fechaEl = $('relojFecha');
-  if (fechaEl) fechaEl.textContent = formatearFechaRonda(domingo);
-
-  const restante = viernes.getTime() - ahora.getTime();
-  const tiempoEl = $('relojTiempo');
-  const cerradoEl = $('relojCerrado');
-
-  if (restante <= 0){
-    reloj.classList.add('cerrada');
-    reloj.classList.remove('urgente');
-    if (tiempoEl) tiempoEl.classList.add('hidden');
-    if (cerradoEl){
-      cerradoEl.classList.remove('hidden');
-      const hoyIni = new Date(ahora);   hoyIni.setHours(0,0,0,0);
-      const domIni = new Date(domingo); domIni.setHours(0,0,0,0);
-      const dias = Math.round((domIni - hoyIni) / 86400000);
-      if (dias === 0)      cerradoEl.textContent = '¡Hoy es día de compra! 🎉';
-      else if (dias === 1) cerradoEl.textContent = 'Ronda cerrada · compra mañana';
-      else                 cerradoEl.textContent = 'Ronda cerrada · compra el domingo';
-    }
-    return;
-  }
-
-  reloj.classList.remove('cerrada');
-  if (tiempoEl) tiempoEl.classList.remove('hidden');
-  if (cerradoEl) cerradoEl.classList.add('hidden');
-
-  reloj.classList.toggle('urgente', restante < 24 * 3600 * 1000);
-
-  const segs   = Math.floor(restante / 1000);
-  const dias   = Math.floor(segs / 86400);
-  const horas  = Math.floor((segs % 86400) / 3600);
-  const mins   = Math.floor((segs % 3600) / 60);
-  const segsR  = segs % 60;
-
-  const elD = $('relojDias');  if (elD) elD.textContent = dias;
-  const elH = $('relojHoras'); if (elH) elH.textContent = String(horas).padStart(2,'0');
-  const elM = $('relojMin');   if (elM) elM.textContent = String(mins).padStart(2,'0');
-  const elS = $('relojSeg');   if (elS) elS.textContent = String(segsR).padStart(2,'0');
-}
+// Variables globales
+let carrito = cargar(LS_CARRITO, {});
+let cliente = cargar(LS_CLIENTE, {
+  nombre:'', telefono:'',
+  calle:'', numero:'', referencia:'',
+  distrito:'', zona:'A', lat:null, lng:null
+});
+let pedidos = cargar(LS_PEDIDOS, []);
+let recogerEnLocal = false;
+let mapaDrawer = null;
+let marcadorDrawer = null;
+let debounceDir = null;
+let sugerenciasCache = [];
+let metodoPago = 'yape'; // 'yape' o 'efectivo'
 
 const ZONAS = {
   A: { desc_recojo: 0 },
@@ -1711,29 +1291,6 @@ const DISTRITOS_LIMA = {
 const LS_CARRITO = 'misti_carrito';
 const LS_CLIENTE = 'misti_cliente';
 const LS_PEDIDOS = 'misti_pedidos';
-
-let carrito = cargar(LS_CARRITO, {});
-let cliente = cargar(LS_CLIENTE, {
-  nombre:'', telefono:'',
-  calle:'', numero:'', referencia:'',
-  distrito:'', zona:'A', lat:null, lng:null
-});
-
-if (!cliente.calle)      cliente.calle = '';
-if (!cliente.numero)     cliente.numero = '';
-if (!cliente.referencia) cliente.referencia = '';
-if (!cliente.distrito)   cliente.distrito = '';
-if (!cliente.zona)       cliente.zona = 'A';
-if (cliente.lat == null) cliente.lat = null;
-if (cliente.lng == null) cliente.lng = null;
-
-let pedidos = cargar(LS_PEDIDOS, []);
-let recogerEnLocal = false;
-
-let mapaDrawer = null;
-let marcadorDrawer = null;
-let debounceDir = null;
-let sugerenciasCache = [];
 
 function cargar(key, fallback){
   try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
@@ -1801,7 +1358,19 @@ const subtotalCarrito = () => itemsCarrito().reduce((s, i) => s + i.subtotal, 0)
 function descuentoAplicado(){
   return 0;
 }
-const totalCarrito = () => Math.max(0, subtotalCarrito() - descuentoAplicado());
+function calcularDelivery(){
+  return recogerEnLocal ? 0 : DELIVERY_COSTO;
+}
+function calcularComisionYape(subtotal){
+  if (metodoPago !== 'yape') return 0;
+  return +(subtotal * (COMISION_YAPE_PORC / 100)).toFixed(2);
+}
+const totalCarrito = () => {
+  const subtotal = subtotalCarrito();
+  const delivery = calcularDelivery();
+  const comision = calcularComisionYape(subtotal);
+  return Math.max(0, subtotal + delivery + comision - descuentoAplicado());
+};
 const totalItems = () => itemsCarrito().reduce((s, i) => s + i.qty, 0);
 
 function validarNumeroCasa(v){
@@ -2136,7 +1705,8 @@ function renderDrawer(){
   const foot = $('drawerFoot');
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
-  const descuento = descuentoAplicado();
+  const delivery = calcularDelivery();
+  const comision = calcularComisionYape(subtotal);
   const total = totalCarrito();
 
   if (items.length === 0) {
@@ -2176,7 +1746,8 @@ function renderDrawer(){
 
     <div class="resumen">
       <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
-      <div class="resumen-linea"><span>Delivery</span><span style="color:var(--verde-culantro); font-weight:700;">Gratis (dom 4–6 p. m.)</span></div>
+      <div class="resumen-linea"><span>Delivery</span><span class="delivery">${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}</span></div>
+      <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span class="comision">${soles(comision)}</span></div>
       <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
     </div>
 
@@ -2261,6 +1832,18 @@ function renderDrawer(){
       </div>
     </div>
 
+    <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Método de pago</h4>
+    <div style="display:flex; gap:10px; margin-bottom:16px;">
+      <label style="flex:1; display:flex; align-items:center; gap:8px; padding:10px 12px; background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio-sm); cursor:pointer; box-shadow:2px 2px 0 var(--carbon); ${metodoPago === 'yape' ? 'border-color:var(--rojo-aji); background:var(--miel-suave);' : ''}">
+        <input type="radio" name="metodoPago" value="yape" ${metodoPago === 'yape' ? 'checked' : ''} style="accent-color:var(--rojo-aji);">
+        <span style="font-weight:600; font-size:14px;">Yape (+${COMISION_YAPE_PORC}%)</span>
+      </label>
+      <label style="flex:1; display:flex; align-items:center; gap:8px; padding:10px 12px; background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio-sm); cursor:pointer; box-shadow:2px 2px 0 var(--carbon); ${metodoPago === 'efectivo' ? 'border-color:var(--rojo-aji); background:var(--miel-suave);' : ''}">
+        <input type="radio" name="metodoPago" value="efectivo" ${metodoPago === 'efectivo' ? 'checked' : ''} style="accent-color:var(--rojo-aji);">
+        <span style="font-weight:600; font-size:14px;">Efectivo</span>
+      </label>
+    </div>
+
     <div class="aviso aviso-condiciones">
       <span><strong>Importante sobre los precios fijados:</strong> el precio que ves es el que pagas. Si el mercado sube de forma extraordinaria durante la semana (un shock inflacionario), el ajuste es por producto y es independiente: el presupuesto destinado a alimentos y el costo real de compra determinan cuánto se puede adquirir. En condiciones normales, recibes exactamente lo que pediste.</span>
     </div>
@@ -2291,6 +1874,12 @@ function renderDrawer(){
 
   $('btnConfirmar').addEventListener('click', confirmarPedido);
   $('checkRecojo').addEventListener('change', onToggleRecojo);
+  document.querySelectorAll('input[name="metodoPago"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      metodoPago = e.target.value;
+      renderDrawer();
+    });
+  });
 }
 
 function destruirMapaDrayerSafe(){
@@ -2444,12 +2033,15 @@ function onToggleRecojo(e){
 
 function actualizarResumenYPrecio(){
   const subtotal = subtotalCarrito();
+  const delivery = calcularDelivery();
+  const comision = calcularComisionYape(subtotal);
   const total = totalCarrito();
   const resumenEl = document.querySelector('.drawer-body .resumen');
   if (resumenEl) {
     resumenEl.innerHTML = `
       <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
-      <div class="resumen-linea"><span>Delivery</span><span style="color:var(--verde-culantro); font-weight:700;">Gratis (dom 4–6 p. m.)</span></div>
+      <div class="resumen-linea"><span>Delivery</span><span class="delivery">${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}</span></div>
+      <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span class="comision">${soles(comision)}</span></div>
       <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
     `;
   }
@@ -2477,6 +2069,9 @@ function eliminar(codigo){
 
 function construirMensajeWhatsApp(){
   const items = itemsCarrito();
+  const subtotal = subtotalCarrito();
+  const delivery = calcularDelivery();
+  const comision = calcularComisionYape(subtotal);
   const total = totalCarrito();
   const tel = soloDigitos(cliente.telefono);
   const idCliente = '001' + (tel || '000000000');
@@ -2507,8 +2102,11 @@ function construirMensajeWhatsApp(){
   }
 
   lineas.push(`▸ Producto(s): ${productosTxt}`);
+  lineas.push(`▸ Subtotal: ${soles(subtotal)}`);
+  lineas.push(`▸ Delivery: ${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}`);
+  lineas.push(`▸ Comisión Yape (${COMISION_YAPE_PORC}%): ${soles(comision)}`);
   lineas.push(`▸ TOTAL: ${soles(total)}`);
-  lineas.push(`▸ Pago: Yape / Plin / efectivo`);
+  lineas.push(`▸ Pago: ${metodoPago === 'yape' ? 'Yape' : 'Efectivo'}`);
   lineas.push(`▸ Solicitud: Confirmar día de entrega y coordinar pago.`);
 
   return lineas.join('\n');
@@ -2568,7 +2166,8 @@ function confirmarPedido(){
 
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
-  const descuento = descuentoAplicado();
+  const delivery = calcularDelivery();
+  const comision = calcularComisionYape(subtotal);
   const total = totalCarrito();
   const tel = soloDigitos(cliente.telefono);
   const idCliente = '001' + tel;
@@ -2596,7 +2195,8 @@ function confirmarPedido(){
       codigo: i.codigo, nombre: i.nombre, unidad: i.unidad,
       cantidad: i.qty, precio_unitario: i.precio, subtotal: i.subtotal
     })),
-    subtotal, descuento_recojo: descuento, total,
+    subtotal, delivery, comision, total,
+    metodo_pago: metodoPago,
     mensaje_enviado: mensaje
   };
   pedidos.unshift(pedido);
@@ -2623,6 +2223,7 @@ function confirmarPedido(){
 function finalizarPedido(){
   carrito = {};
   recogerEnLocal = false;
+  metodoPago = 'yape';
   guardar(LS_CARRITO, carrito);
   cerrarDrawer();
   renderCatalogo();
@@ -2656,6 +2257,93 @@ function init(){
 
   actualizarRelojRonda();
   setInterval(actualizarRelojRonda, 1000);
+}
+
+// Funciones de ronda y reloj
+function getRondaId(){
+  const hoy = new Date();
+  const dia = hoy.getDay();
+  const diff = (dia === 0) ? -6 : 1 - dia;
+  const lunes = new Date(hoy);
+  lunes.setDate(hoy.getDate() + diff);
+  const y = lunes.getFullYear();
+  const m = String(lunes.getMonth()+1).padStart(2,'0');
+  const d = String(lunes.getDate()).padStart(2,'0');
+  return `R-${y}-${m}-${d}`;
+}
+
+const DIAS_ES  = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+function getFechasRonda(){
+  const hoy  = new Date();
+  const dia  = hoy.getDay();
+  const diff = (dia === 0) ? -6 : 1 - dia;
+  const lunes = new Date(hoy);
+  lunes.setDate(hoy.getDate() + diff);
+  lunes.setHours(0,0,0,0);
+
+  const viernes = new Date(lunes);
+  viernes.setDate(lunes.getDate() + 4);
+  viernes.setHours(17, 0, 0, 0);
+
+  const domingo = new Date(lunes);
+  domingo.setDate(lunes.getDate() + 6);
+  domingo.setHours(0,0,0,0);
+
+  return { lunes, viernes, domingo };
+}
+
+function formatearFechaRonda(d){
+  return `${DIAS_ES[d.getDay()]} ${d.getDate()} de ${MESES_ES[d.getMonth()]}`;
+}
+
+function actualizarRelojRonda(){
+  const reloj = $('relojRonda');
+  if (!reloj) return;
+
+  const { viernes, domingo } = getFechasRonda();
+  const ahora = new Date();
+
+  const fechaEl = $('relojFecha');
+  if (fechaEl) fechaEl.textContent = formatearFechaRonda(domingo);
+
+  const restante = viernes.getTime() - ahora.getTime();
+  const tiempoEl = $('relojTiempo');
+  const cerradoEl = $('relojCerrado');
+
+  if (restante <= 0){
+    reloj.classList.add('cerrada');
+    reloj.classList.remove('urgente');
+    if (tiempoEl) tiempoEl.classList.add('hidden');
+    if (cerradoEl){
+      cerradoEl.classList.remove('hidden');
+      const hoyIni = new Date(ahora);   hoyIni.setHours(0,0,0,0);
+      const domIni = new Date(domingo); domIni.setHours(0,0,0,0);
+      const dias = Math.round((domIni - hoyIni) / 86400000);
+      if (dias === 0)      cerradoEl.textContent = '¡Hoy es día de compra! 🎉';
+      else if (dias === 1) cerradoEl.textContent = 'Ronda cerrada · compra mañana';
+      else                 cerradoEl.textContent = 'Ronda cerrada · compra el domingo';
+    }
+    return;
+  }
+
+  reloj.classList.remove('cerrada');
+  if (tiempoEl) tiempoEl.classList.remove('hidden');
+  if (cerradoEl) cerradoEl.classList.add('hidden');
+
+  reloj.classList.toggle('urgente', restante < 24 * 3600 * 1000);
+
+  const segs   = Math.floor(restante / 1000);
+  const dias   = Math.floor(segs / 86400);
+  const horas  = Math.floor((segs % 86400) / 3600);
+  const mins   = Math.floor((segs % 3600) / 60);
+  const segsR  = segs % 60;
+
+  const elD = $('relojDias');  if (elD) elD.textContent = dias;
+  const elH = $('relojHoras'); if (elH) elH.textContent = String(horas).padStart(2,'0');
+  const elM = $('relojMin');   if (elM) elM.textContent = String(mins).padStart(2,'0');
+  const elS = $('relojSeg');   if (elS) elS.textContent = String(segsR).padStart(2,'0');
 }
 
 init();
