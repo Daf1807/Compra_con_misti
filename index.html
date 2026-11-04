@@ -311,9 +311,9 @@
     aspect-ratio:1/1;
     border-bottom:2px solid var(--carbon);
     background-color:var(--crema-2);
-    background-image:url('expositor-rustico.png');
+    background-image:url('catalogo-misti-grid.png');
     background-repeat:no-repeat;
-    background-size:500% 500%;
+    background-size:400% 700%;
     background-position:var(--bg-pos, 0% 0%);
     image-rendering:-webkit-optimize-contrast;
   }
@@ -1261,22 +1261,49 @@
 </div>
 
 <script>
-// Estructura de respaldo (solo se usa si Firestore falla)
+// Estructura de respaldo y posicionamiento exacto de la cuadrícula 4x7
 let PRODUCTOS = [
-  { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'2% 2%' },
-  { codigo:'PR-003', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'26% 2%' },
-  { codigo:'PR-005', nombre:'Cebolla Roja',      grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'98% 2%' },
-  { codigo:'PR-004', nombre:'Tomate',            grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'2% 26%' },
-  { codigo:'PR-006', nombre:'Zanahoria',         grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'26% 26%' },
-  { codigo:'PR-008', nombre:'Camote Amarillo',   grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'50% 26%' },
-  { codigo:'PR-009', nombre:'Yuca Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'74% 26%' },
-  { codigo:'PR-007', nombre:'Choclo',            grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'98% 26%' },
-  { codigo:'PR-014', nombre:'Ajo Criollo',       grupo:'Sazón y Aderezos', unidad:'kg',    precio:0, bgPos:'74% 50%' },
-  { codigo:'PR-018', nombre:'Ají Rocoto',        grupo:'Sazón y Aderezos', unidad:'kg',    precio:0, bgPos:'2% 74%' },
-  { codigo:'PR-016', nombre:'Ají Amarillo',      grupo:'Sazón y Aderezos', unidad:'kg',    precio:0, bgPos:'26% 74%' },
-  { codigo:'PR-013', nombre:'Cebolla China',     grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'50% 74%' },
-  { codigo:'PR-020', nombre:'Culantro', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'20% 66.666%', img:'productos-grid.png', bgSize:'600% 400%' },
-  { codigo:'PR-021', nombre:'Perejil',  grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'40% 66.666%', img:'productos-grid.png', bgSize:'600% 400%' }
+  // FILA 1 (Y: 0%)
+  { codigo:'PR-001', nombre:'Papa Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 0%' },
+  { codigo:'PR-002', nombre:'Papa Blanca', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 0%' },
+  { codigo:'PR-003', nombre:'Papa Canchán', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 0%' },
+  { codigo:'PR-004', nombre:'Tomate Katia', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 0%' },
+  
+  // FILA 2 (Y: 16.66%)
+  { codigo:'PR-005', nombre:'Cebolla Roja', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 16.66%' },
+  { codigo:'PR-006', nombre:'Zanahoria', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 16.66%' },
+  { codigo:'PR-007', nombre:'Choclo Serrano', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 16.66%' },
+  { codigo:'PR-008', nombre:'Camote Amarillo', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 16.66%' },
+  
+  // FILA 3 (Y: 33.33%)
+  { codigo:'PR-009', nombre:'Yuca Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 33.33%' },
+  { codigo:'PR-010', nombre:'Zapallo Macre', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 33.33%' },
+  { codigo:'PR-011', nombre:'Papa Huayro', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 33.33%' },
+  { codigo:'PR-012', nombre:'Papa Negra Andina', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 33.33%' },
+  
+  // FILA 4 (Y: 50%)
+  { codigo:'PR-013', nombre:'Cebolla China', grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'0% 50%' },
+  { codigo:'PR-014', nombre:'Ajo Criollo', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'33.33% 50%' },
+  { codigo:'PR-015', nombre:'Kion', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'66.66% 50%' },
+  { codigo:'PR-016', nombre:'Ají Amarillo', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'100% 50%' },
+  
+  // FILA 5 (Y: 66.66%)
+  { codigo:'PR-017', nombre:'Ají Panca', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'0% 66.66%' },
+  { codigo:'PR-018', nombre:'Ají Rocoto', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'33.33% 66.66%' },
+  { codigo:'PR-019', nombre:'Huacatay', grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'66.66% 66.66%' },
+  { codigo:'PR-020', nombre:'Culantro', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'100% 66.66%' },
+  
+  // FILA 6 (Y: 83.33%)
+  { codigo:'PR-021', nombre:'Perejil', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'0% 83.33%' },
+  { codigo:'PR-022', nombre:'Apio', grupo:'Especial', unidad:'atado', precio:0, bgPos:'33.33% 83.33%' },
+  { codigo:'PR-023', nombre:'Poro', grupo:'Especial', unidad:'atado', precio:0, bgPos:'66.66% 83.33%' },
+  { codigo:'PR-024', nombre:'Maíz Morado', grupo:'Especial', unidad:'kg', precio:0, bgPos:'100% 83.33%' },
+  
+  // FILA 7 (Y: 100%)
+  { codigo:'PR-025', nombre:'Ají Escabeche', grupo:'Especial', unidad:'kg', precio:0, bgPos:'0% 100%' },
+  { codigo:'PR-026', nombre:'Limón Cítrico', grupo:'Especial', unidad:'kg', precio:0, bgPos:'33.33% 100%' },
+  { codigo:'PR-027', nombre:'Vainita', grupo:'Especial', unidad:'kg', precio:0, bgPos:'66.66% 100%' },
+  { codigo:'PR-028', nombre:'Zapallo Loche', grupo:'Especial', unidad:'unidad', precio:0, bgPos:'100% 100%' }
 ];
 
 let ORDEN_GRUPOS = ['Básicos','Sazón y Aderezos','Hierbas y Aromáticos', 'Especial'];
@@ -1687,17 +1714,6 @@ function actualizarBotonConfirmar(){
 // RENDERIZADO DINÁMICO DEL CATÁLOGO
 // ----------------------------------------------------
 
-function calcularBgPos(nombre) {
-  if(!nombre) return '0% 0%';
-  let hash = 0;
-  for (let i = 0; i < nombre.length; i++) {
-    hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const posX = Math.abs(hash % 6) * 20;
-  const posY = Math.abs((hash >> 3) % 6) * 20;
-  return `${posX}% ${posY}%`;
-}
-
 function renderCatalogo(){
   const cont = $('catalogoCont');
   if (!cont) return;
@@ -1731,11 +1747,8 @@ function renderCatalogo(){
       const qty = (carrito[p.codigo] && carrito[p.codigo].qty) || 0;
       const enCarrito = qty > 0;
 
-      let bgPos = p.bgPos || calcularBgPos(p.nombre);
-      
+      let bgPos = p.bgPos || '0% 0%';
       let fotoStyle = `--bg-pos:${bgPos};`;
-      if (p.img)    fotoStyle += ` background-image:url('${p.img}');`;
-      if (p.bgSize) fotoStyle += ` background-size:${p.bgSize};`;
 
       const precioMostrar = p.precio > 0 ? soles(p.precio) : 'Cargando...';
 
@@ -2400,7 +2413,6 @@ function init(){
   const ronda = getRondaId();
   document.querySelectorAll('.rondaId').forEach(el => el.textContent = ronda);
 
-  // Primero renderizamos los productos por defecto (respaldo) para que la vista no quede en blanco
   renderCatalogo();
   renderCartBar();
 
@@ -2466,7 +2478,6 @@ async function cargarTodoElCatalogo() {
     const rondaHoy = getRondaId();
     console.log(`[Misti] Cargando precios de rondas/${rondaHoy}/precios`);
 
-    // ✅ RUTA CORRECTA: 3 segmentos (colección/doc/colección)
     const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
 
     if (preciosSnap.empty) {
@@ -2490,24 +2501,26 @@ async function cargarTodoElCatalogo() {
       }
       precio = Math.round(precio * 100) / 100;
 
+      // Buscamos si el producto ya tiene una posición asignada en nuestro array
+      const productoCfg = PRODUCTOS.find(p => p.codigo === codigo);
+      const posicionBG = productoCfg ? productoCfg.bgPos : '0% 0%';
+
       nuevosProductos.push({
         codigo,
         nombre: data.nombre || 'Producto',
         grupo: data.grupo || grupoDesdeCodigo(codigo),
         unidad: data.unidad_venta || 'kg',
         precio,
-        img: 'expositor-rustico.png',
-        bgPos: null,
-        bgSize: '500% 500%'
+        img: 'catalogo-misti-grid.png',
+        bgPos: posicionBG,
+        bgSize: '400% 700%'
       });
     });
 
     nuevosProductos.sort((a, b) => a.codigo.localeCompare(b.codigo));
 
-    // Reemplaza el array global
     PRODUCTOS = nuevosProductos;
 
-    // Reordena los grupos respetando el orden preferido
     const gruposPresentes = [...new Set(PRODUCTOS.map(p => p.grupo))];
     const ordenPreferido = ['Básicos', 'Sazón y Aderezos', 'Hierbas y Aromáticos', 'Especial'];
     ORDEN_GRUPOS = ordenPreferido.filter(g => gruposPresentes.includes(g));
