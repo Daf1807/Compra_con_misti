@@ -998,9 +998,6 @@
     .drawer-foot{padding:10px 14px calc(10px + env(safe-area-inset-bottom));}
   }
 </style>
-
-
-
 </head>
 <body>
 
@@ -1264,7 +1261,7 @@
 </div>
 
 <script>
-// Estructura de respaldo
+// Estructura de respaldo (solo se usa si Firestore falla)
 let PRODUCTOS = [
   { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'2% 2%' },
   { codigo:'PR-003', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'26% 2%' },
@@ -2440,7 +2437,7 @@ init();
 
 <script type="module">
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAonWel671riadA7rP7yKTWFy1APCad1LI",
@@ -2454,83 +2451,80 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Deduce el grupo por rango de código (PR-001..PR-028)
+function grupoDesdeCodigo(codigo) {
+  const num = parseInt(String(codigo || '').replace(/\D/g, ''), 10);
+  if (isNaN(num)) return 'Especial';
+  if (num <= 12) return 'Básicos';
+  if (num <= 19) return 'Sazón y Aderezos';
+  if (num <= 21) return 'Hierbas y Aromáticos';
+  return 'Especial';
+}
+
 async function cargarTodoElCatalogo() {
   try {
     const rondaHoy = getRondaId();
-    console.log(`[Misti] Buscando catálogo en catalogo/items y precios en rondas/${rondaHoy}/precios`);
+    console.log(`[Misti] Cargando precios de rondas/${rondaHoy}/precios`);
 
-    // 1. Cargar el maestro de productos desde catalogo/items
-    const productosSnap = await getDocs(collection(db, "catalogo", "items"));
-    
-    if (productosSnap.empty) {
-      console.warn("[Misti] La colección catalogo/items está vacía. Usando productos de respaldo.");
-      return; 
+    // ✅ RUTA CORRECTA: 3 segmentos (colección/doc/colección)
+    const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
+
+    if (preciosSnap.empty) {
+      console.warn("[Misti] Sin precios en Firestore. Manteniendo catálogo local.");
+      return;
     }
 
-    // 2. Traer los precios de la ronda actual
-    let preciosMap = {};
-    try {
-      const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
-      if (!preciosSnap.empty) {
-        preciosSnap.docs.forEach(d => {
-          const p = d.data();
-          preciosMap[p.codigo_producto] = p;
-        });
-        console.log(`[Misti] Precios encontrados para ${preciosSnap.size} productos.`);
-      } else {
-        console.warn(`[Misti] No hay precios para la ronda ${rondaHoy}. Se mostrarán precios en 0.`);
-      }
-    } catch(e) {
-      console.warn("[Misti] Error al leer precios de la ronda:", e);
-    }
-
-    // 3. Armar el nuevo array de PRODUCTOS
     const nuevosProductos = [];
-    productosSnap.docs.forEach(d => {
+    preciosSnap.docs.forEach(d => {
       const data = d.data();
-      
-      // Intentar obtener el precio. Prioridad: colección de precios -> campo precio_venta -> campo precio
-      let precioReal = 0;
-      if (preciosMap[data.codigo] && typeof preciosMap[data.codigo].precio_venta === "number") {
-        precioReal = preciosMap[data.codigo].precio_venta;
-      } else if (typeof data.precio_venta === "number") {
-        precioReal = data.precio_venta;
-      } else if (typeof data.precio === "number") {
-         precioReal = data.precio;
+      const codigo = data.codigo_producto || d.id;
+
+      // Precio final de venta: P_L_final > P_L_sugerido > P_L_mercado
+      let precio = 0;
+      if (typeof data.P_L_final === 'number' && data.P_L_final > 0) {
+        precio = data.P_L_final;
+      } else if (typeof data.P_L_sugerido === 'number' && data.P_L_sugerido > 0) {
+        precio = data.P_L_sugerido;
+      } else if (typeof data.P_L_mercado === 'number' && data.P_L_mercado > 0) {
+        precio = data.P_L_mercado;
       }
+      precio = Math.round(precio * 100) / 100;
 
       nuevosProductos.push({
-        codigo: data.codigo || d.id,
+        codigo,
         nombre: data.nombre || 'Producto',
-        grupo: data.grupo || 'Especial',
+        grupo: data.grupo || grupoDesdeCodigo(codigo),
         unidad: data.unidad_venta || 'kg',
-        precio: precioReal,
+        precio,
         img: 'expositor-rustico.png',
-        bgPos: null, // Se calculará dinámicamente
+        bgPos: null,
         bgSize: '500% 500%'
       });
     });
 
-    if (nuevosProductos.length > 0) {
-      // Reemplazar el array global
-      PRODUCTOS = nuevosProductos;
-      
-      // Actualizar los grupos dinámicamente
-      const nuevosGrupos = [...new Set(PRODUCTOS.map(p => p.grupo))];
-      ORDEN_GRUPOS = nuevosGrupos.sort();
+    nuevosProductos.sort((a, b) => a.codigo.localeCompare(b.codigo));
 
-      console.log(`[Misti] ✓ Éxito: Se cargaron ${PRODUCTOS.length} productos desde Firestore.`);
+    // Reemplaza el array global
+    PRODUCTOS = nuevosProductos;
 
-      // Volver a dibujar el catálogo
-      if (typeof renderCatalogo === 'function') renderCatalogo();
-      if (typeof renderCartBar === 'function') renderCartBar();
-      
-      document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaHoy);
-    }
+    // Reordena los grupos respetando el orden preferido
+    const gruposPresentes = [...new Set(PRODUCTOS.map(p => p.grupo))];
+    const ordenPreferido = ['Básicos', 'Sazón y Aderezos', 'Hierbas y Aromáticos', 'Especial'];
+    ORDEN_GRUPOS = ordenPreferido.filter(g => gruposPresentes.includes(g));
+    gruposPresentes.forEach(g => {
+      if (!ORDEN_GRUPOS.includes(g)) ORDEN_GRUPOS.push(g);
+    });
+
+    console.log(`[Misti] ✓ ${PRODUCTOS.length} productos cargados desde Firestore`);
+
+    if (typeof renderCatalogo === 'function') renderCatalogo();
+    if (typeof renderCartBar === 'function') renderCartBar();
+
+    document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaHoy);
 
   } catch (e) {
     console.error("[Misti] Error crítico leyendo Firestore:", e);
-    console.log("[Misti] Se mantienen los productos por defecto para no romper la app.");
+    console.log("[Misti] Se mantienen los productos de respaldo.");
   }
 }
 
