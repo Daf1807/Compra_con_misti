@@ -1264,8 +1264,7 @@
 </div>
 
 <script>
-// Array de respaldo en caso de que Firebase falle o tarde en cargar
-// Mantenemos tus 14 productos originales para que la app nunca esté vacía
+// Estructura de respaldo
 let PRODUCTOS = [
   { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'2% 2%' },
   { codigo:'PR-003', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'26% 2%' },
@@ -1283,7 +1282,6 @@ let PRODUCTOS = [
   { codigo:'PR-021', nombre:'Perejil',  grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'40% 66.666%', img:'productos-grid.png', bgSize:'600% 400%' }
 ];
 
-// Variables de configuración
 let ORDEN_GRUPOS = ['Básicos','Sazón y Aderezos','Hierbas y Aromáticos', 'Especial'];
 const DESCRIPCION_GRUPOS = {
   'Básicos':    'Los alimentos que más ayudan a resolver la compra cotidiana de una familia.',
@@ -1692,16 +1690,12 @@ function actualizarBotonConfirmar(){
 // RENDERIZADO DINÁMICO DEL CATÁLOGO
 // ----------------------------------------------------
 
-// Función auxiliar para calcular una posición de imagen basada en el nombre del producto
-// Esto simula que todos los +200 productos tienen su "foto" en el sprite gigante
 function calcularBgPos(nombre) {
   if(!nombre) return '0% 0%';
   let hash = 0;
   for (let i = 0; i < nombre.length; i++) {
     hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
   }
-  // Convertir el hash a un porcentaje entre 0% y 100%
-  // El sprite tiene 5x5 celdas, así que usamos múltiplos de 20 (0, 20, 40, 60, 80, 100)
   const posX = Math.abs(hash % 6) * 20;
   const posY = Math.abs((hash >> 3) % 6) * 20;
   return `${posX}% ${posY}%`;
@@ -1720,7 +1714,6 @@ function renderCatalogo(){
 
   let html = '';
   
-  // Asegurarnos de iterar los grupos en un orden lógico
   const gruposOrdenados = Object.keys(grupos).sort((a,b) => {
       const idxA = ORDEN_GRUPOS.indexOf(a);
       const idxB = ORDEN_GRUPOS.indexOf(b);
@@ -1741,14 +1734,12 @@ function renderCatalogo(){
       const qty = (carrito[p.codigo] && carrito[p.codigo].qty) || 0;
       const enCarrito = qty > 0;
 
-      // Si el producto no tiene bgPos definido, calculamos uno dinámico
       let bgPos = p.bgPos || calcularBgPos(p.nombre);
       
       let fotoStyle = `--bg-pos:${bgPos};`;
       if (p.img)    fotoStyle += ` background-image:url('${p.img}');`;
       if (p.bgSize) fotoStyle += ` background-size:${p.bgSize};`;
 
-      // Formatear el precio para que no se vea como 0 si aún no carga Firebase
       const precioMostrar = p.precio > 0 ? soles(p.precio) : 'Cargando...';
 
       html += `
@@ -2412,7 +2403,7 @@ function init(){
   const ronda = getRondaId();
   document.querySelectorAll('.rondaId').forEach(el => el.textContent = ronda);
 
-  // Primero renderizamos los productos por defecto (respaldo)
+  // Primero renderizamos los productos por defecto (respaldo) para que la vista no quede en blanco
   renderCatalogo();
   renderCartBar();
 
@@ -2466,15 +2457,13 @@ const db = getFirestore(app);
 async function cargarTodoElCatalogo() {
   try {
     const rondaHoy = getRondaId();
-    console.log(`Buscando catálogo y precios para la ronda: ${rondaHoy}`);
+    console.log(`[Misti] Buscando catálogo en catalogo/items y precios en rondas/${rondaHoy}/precios`);
 
-    // 1. Cargar el maestro de productos
-    // IMPORTANTE: Asumo que la colección se llama "productos". 
-    // Si se llama diferente en tu Firestore, cambia el string aquí abajo.
-    const productosSnap = await getDocs(collection(db, "productos"));
+    // 1. Cargar el maestro de productos desde catalogo/items
+    const productosSnap = await getDocs(collection(db, "catalogo", "items"));
     
     if (productosSnap.empty) {
-      console.warn("La colección 'productos' está vacía. Usando los 14 productos de respaldo.");
+      console.warn("[Misti] La colección catalogo/items está vacía. Usando productos de respaldo.");
       return; 
     }
 
@@ -2487,9 +2476,12 @@ async function cargarTodoElCatalogo() {
           const p = d.data();
           preciosMap[p.codigo_producto] = p;
         });
+        console.log(`[Misti] Precios encontrados para ${preciosSnap.size} productos.`);
+      } else {
+        console.warn(`[Misti] No hay precios para la ronda ${rondaHoy}. Se mostrarán precios en 0.`);
       }
     } catch(e) {
-      console.warn("No se pudieron leer precios de la ronda, se usarán precios por defecto.", e);
+      console.warn("[Misti] Error al leer precios de la ronda:", e);
     }
 
     // 3. Armar el nuevo array de PRODUCTOS
@@ -2497,28 +2489,25 @@ async function cargarTodoElCatalogo() {
     productosSnap.docs.forEach(d => {
       const data = d.data();
       
-      // Intentar obtener el precio de la colección de precios
+      // Intentar obtener el precio. Prioridad: colección de precios -> campo precio_venta -> campo precio
       let precioReal = 0;
       if (preciosMap[data.codigo] && typeof preciosMap[data.codigo].precio_venta === "number") {
         precioReal = preciosMap[data.codigo].precio_venta;
       } else if (typeof data.precio_venta === "number") {
-        // A veces el precio está directamente en el producto maestro
         precioReal = data.precio_venta;
       } else if (typeof data.precio === "number") {
          precioReal = data.precio;
       }
 
-      // Normalizar los nombres de los campos para que coincidan con lo que espera tu HTML
       nuevosProductos.push({
-        codigo: data.codigo || data.id || d.id,
-        nombre: data.nombre || 'Producto sin nombre',
+        codigo: data.codigo || d.id,
+        nombre: data.nombre || 'Producto',
         grupo: data.grupo || 'Especial',
-        unidad: data.unidad_venta || data.unidadVenta || data.unidad || 'kg',
+        unidad: data.unidad_venta || 'kg',
         precio: precioReal,
-        // La imagen se calculará dinámicamente en renderCatalogo si no viene en la BD
-        img: data.img || 'expositor-rustico.png',
-        bgPos: data.bgPos || null,
-        bgSize: data.bgSize || '500% 500%'
+        img: 'expositor-rustico.png',
+        bgPos: null, // Se calculará dinámicamente
+        bgSize: '500% 500%'
       });
     });
 
@@ -2526,11 +2515,11 @@ async function cargarTodoElCatalogo() {
       // Reemplazar el array global
       PRODUCTOS = nuevosProductos;
       
-      // Actualizar los grupos por si hay nuevos
+      // Actualizar los grupos dinámicamente
       const nuevosGrupos = [...new Set(PRODUCTOS.map(p => p.grupo))];
       ORDEN_GRUPOS = nuevosGrupos.sort();
 
-      console.log(`✓ Éxito: Se cargaron ${PRODUCTOS.length} productos desde Firestore.`);
+      console.log(`[Misti] ✓ Éxito: Se cargaron ${PRODUCTOS.length} productos desde Firestore.`);
 
       // Volver a dibujar el catálogo
       if (typeof renderCatalogo === 'function') renderCatalogo();
@@ -2540,8 +2529,8 @@ async function cargarTodoElCatalogo() {
     }
 
   } catch (e) {
-    console.warn("No se pudo leer el catálogo completo desde Firestore:", e.message);
-    console.log("Se mantienen los productos por defecto para no romper la app.");
+    console.error("[Misti] Error crítico leyendo Firestore:", e);
+    console.log("[Misti] Se mantienen los productos por defecto para no romper la app.");
   }
 }
 
