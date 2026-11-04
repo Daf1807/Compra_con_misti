@@ -366,6 +366,33 @@
   .qty-wrap .unit{font-size:11.5px; font-weight:700; color:var(--texto-suave); flex-shrink:0; padding-right:2px; font-family:var(--font-hand);}
   @media (min-width:640px){ .qty-wrap .unit{font-size:12.5px;} }
 
+  .como-grid{display:grid; grid-template-columns:1fr; gap:14px;}
+  @media (min-width:560px){ .como-grid{grid-template-columns:1fr 1fr;} }
+  @media (min-width:960px){ .como-grid{grid-template-columns:repeat(4,1fr); gap:16px;} }
+  .como-paso{
+    background:var(--blanco); border:2px solid var(--carbon);
+    border-radius:var(--radio); padding:18px 16px;
+    box-shadow:3px 3px 0 var(--carbon);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  @media (min-width:640px){ .como-paso{padding:22px 20px; gap:12px;} }
+  .como-paso-num{
+    width:40px; height:40px; border-radius:50%;
+    background:var(--rojo-aji); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:800; font-size:18px;
+    border:2px solid var(--carbon);
+    box-shadow:2px 2px 0 var(--carbon);
+    flex-shrink:0;
+  }
+  @media (min-width:640px){ .como-paso-num{width:44px; height:44px; font-size:20px;} }
+  .como-paso:nth-child(2) .como-paso-num{background:var(--naranja-zanah);}
+  .como-paso:nth-child(3) .como-paso-num{background:var(--miel); color:var(--carbon);}
+  .como-paso:nth-child(4) .como-paso-num{background:var(--verde-culantro);}
+  .como-paso h4{font-size:15.5px; font-weight:700; color:var(--carbon); font-family:var(--font-display); line-height:1.2; letter-spacing:-0.02em;}
+  .como-paso p{font-size:13.5px; color:var(--texto-suave); line-height:1.55;}
+  @media (min-width:640px){ .como-paso h4{font-size:16.5px;} }
+
   #donde{background:var(--crema-2); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .donde-grid{display:grid; grid-template-columns:1fr; gap:24px;}
   @media (min-width:820px){ .donde-grid{grid-template-columns:1fr 1fr; gap:56px;} }
@@ -576,8 +603,6 @@
   @media (min-width:640px){ .resumen-linea.total{margin-top:10px; padding-top:14px; font-size:15px;} }
   .resumen-linea.total span:last-child{font-family:var(--font-display); font-size:20px; color:var(--rojo-aji); font-weight:800; letter-spacing:-0.02em;}
   @media (min-width:640px){ .resumen-linea.total span:last-child{font-size:22px;} }
-  .resumen-linea .comision{color:var(--naranja-zanah); font-weight:600;}
-  .resumen-linea .delivery{color:var(--naranja-zanah); font-weight:600;}
 
   .campo{margin-bottom:14px;}
   @media (min-width:640px){ .campo{margin-bottom:16px;} }
@@ -973,6 +998,9 @@
     .drawer-foot{padding:10px 14px calc(10px + env(safe-area-inset-bottom));}
   }
 </style>
+
+
+
 </head>
 <body>
 
@@ -989,7 +1017,6 @@
     <ul class="nav-links">
       <li><a href="#catalogo">Catálogo</a></li>
       <li><a href="#como">Cómo funciona</a></li>
-      <li><a href="#donde">Ubicación</a></li>
     </ul>
     <a href="#catalogo" class="nav-cta">Armar mi canasta</a>
   </div>
@@ -1092,26 +1119,26 @@
       <h2>Tú eliges. <em>Nosotros organizamos la compra.</em></h2>
     </div>
 
-    <div style="display:grid; grid-template-columns:1fr; gap:14px;">
-      <div style="background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:18px 16px; box-shadow:3px 3px 0 var(--carbon);">
-        <div style="width:40px; height:40px; border-radius:50%; background:var(--rojo-aji); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; font-size:18px; border:2px solid var(--carbon); box-shadow:2px 2px 0 var(--carbon);">1</div>
-        <h4 style="font-size:15.5px; margin-top:10px;">Arma tu canasta</h4>
-        <p style="font-size:13.5px; color:var(--texto-suave); line-height:1.55;">Explora el catálogo, selecciona los productos que necesitas e indica las cantidades. Puedes combinar alimentos según tus preferencias y tu presupuesto.</p>
+    <div class="como-grid">
+      <div class="como-paso">
+        <div class="como-paso-num">1</div>
+        <h4>Arma tu canasta</h4>
+        <p>Explora el catálogo, selecciona los productos que necesitas e indica las cantidades. Puedes combinar alimentos según tus preferencias y tu presupuesto.</p>
       </div>
-      <div style="background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:18px 16px; box-shadow:3px 3px 0 var(--carbon);">
-        <div style="width:40px; height:40px; border-radius:50%; background:var(--naranja-zanah); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; font-size:18px; border:2px solid var(--carbon); box-shadow:2px 2px 0 var(--carbon);">2</div>
-        <h4 style="font-size:15.5px; margin-top:10px;">Confirma por WhatsApp</h4>
-        <p style="font-size:13.5px; color:var(--texto-suave); line-height:1.55;">Envía tu selección y revisa el resumen del pedido. Coordinamos contigo el importe, la modalidad de entrega y el pago.</p>
+      <div class="como-paso">
+        <div class="como-paso-num">2</div>
+        <h4>Confirma por WhatsApp</h4>
+        <p>Envía tu selección y revisa el resumen del pedido. Coordinamos contigo el importe, la modalidad de entrega y el pago.</p>
       </div>
-      <div style="background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:18px 16px; box-shadow:3px 3px 0 var(--carbon);">
-        <div style="width:40px; height:40px; border-radius:50%; background:var(--miel); color:var(--carbon); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; font-size:18px; border:2px solid var(--carbon); box-shadow:2px 2px 0 var(--carbon);">3</div>
-        <h4 style="font-size:15.5px; margin-top:10px;">Compramos el domingo</h4>
-        <p style="font-size:13.5px; color:var(--texto-suave); line-height:1.55;">Reunimos los pedidos y coordinamos el abastecimiento con nuestros proveedores. Organizamos la compra teniendo en cuenta las necesidades de las familias y las compras habituales de la cocina de El Misti.</p>
+      <div class="como-paso">
+        <div class="como-paso-num">3</div>
+        <h4>Compramos el domingo</h4>
+        <p>Reunimos los pedidos y coordinamos el abastecimiento con nuestros proveedores. Organizamos la compra teniendo en cuenta las necesidades de las familias y las compras habituales de la cocina de El Misti.</p>
       </div>
-      <div style="background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio); padding:18px 16px; box-shadow:3px 3px 0 var(--carbon);">
-        <div style="width:40px; height:40px; border-radius:50%; background:var(--verde-culantro); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; font-size:18px; border:2px solid var(--carbon); box-shadow:2px 2px 0 var(--carbon);">4</div>
-        <h4 style="font-size:15.5px; margin-top:10px;">Recibe tu pedido</h4>
-        <p style="font-size:13.5px; color:var(--texto-suave); line-height:1.55;">Entregamos los pedidos el domingo, según la coordinación por WhatsApp. Delivery disponible de 4 a 6 p. m., o recógelo en nuestro local.</p>
+      <div class="como-paso">
+        <div class="como-paso-num">4</div>
+        <h4>Recibe tu pedido</h4>
+        <p>Entregamos los pedidos el domingo, según la coordinación por WhatsApp. Delivery disponible de 4 a 6 p. m., o recógelo en nuestro local, sin descuento.</p>
       </div>
     </div>
   </div>
@@ -1257,23 +1284,94 @@ const DESCRIPCION_GRUPOS = {
 
 const WHATSAPP_NEGOCIO = '51977101608';
 const MINIMO_COMPRA = 20;
-const DELIVERY_COSTO = 5; // Costo fijo de delivery
-const COMISION_YAPE_PORC = 2.95; // Porcentaje de comisión de Yape
+const DELIVERY_COSTO = 5;
+const COMISION_YAPE_PORC = 2.95;
 
-// Variables globales
-let carrito = cargar(LS_CARRITO, {});
-let cliente = cargar(LS_CLIENTE, {
-  nombre:'', telefono:'',
-  calle:'', numero:'', referencia:'',
-  distrito:'', zona:'A', lat:null, lng:null
-});
-let pedidos = cargar(LS_PEDIDOS, []);
-let recogerEnLocal = false;
-let mapaDrawer = null;
-let marcadorDrawer = null;
-let debounceDir = null;
-let sugerenciasCache = [];
-let metodoPago = 'yape'; // 'yape' o 'efectivo'
+function getRondaId(){
+  const hoy = new Date();
+  const dia = hoy.getDay();
+  const diff = (dia === 0) ? -6 : 1 - dia;
+  const lunes = new Date(hoy);
+  lunes.setDate(hoy.getDate() + diff);
+  const y = lunes.getFullYear();
+  const m = String(lunes.getMonth()+1).padStart(2,'0');
+  const d = String(lunes.getDate()).padStart(2,'0');
+  return `R-${y}-${m}-${d}`;
+}
+
+const DIAS_ES  = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+function getFechasRonda(){
+  const hoy  = new Date();
+  const dia  = hoy.getDay();
+  const diff = (dia === 0) ? -6 : 1 - dia;
+  const lunes = new Date(hoy);
+  lunes.setDate(hoy.getDate() + diff);
+  lunes.setHours(0,0,0,0);
+
+  const viernes = new Date(lunes);
+  viernes.setDate(lunes.getDate() + 4);
+  viernes.setHours(17, 0, 0, 0);
+
+  const domingo = new Date(lunes);
+  domingo.setDate(lunes.getDate() + 6);
+  domingo.setHours(0,0,0,0);
+
+  return { lunes, viernes, domingo };
+}
+
+function formatearFechaRonda(d){
+  return `${DIAS_ES[d.getDay()]} ${d.getDate()} de ${MESES_ES[d.getMonth()]}`;
+}
+
+function actualizarRelojRonda(){
+  const reloj = $('relojRonda');
+  if (!reloj) return;
+
+  const { viernes, domingo } = getFechasRonda();
+  const ahora = new Date();
+
+  const fechaEl = $('relojFecha');
+  if (fechaEl) fechaEl.textContent = formatearFechaRonda(domingo);
+
+  const restante = viernes.getTime() - ahora.getTime();
+  const tiempoEl = $('relojTiempo');
+  const cerradoEl = $('relojCerrado');
+
+  if (restante <= 0){
+    reloj.classList.add('cerrada');
+    reloj.classList.remove('urgente');
+    if (tiempoEl) tiempoEl.classList.add('hidden');
+    if (cerradoEl){
+      cerradoEl.classList.remove('hidden');
+      const hoyIni = new Date(ahora);   hoyIni.setHours(0,0,0,0);
+      const domIni = new Date(domingo); domIni.setHours(0,0,0,0);
+      const dias = Math.round((domIni - hoyIni) / 86400000);
+      if (dias === 0)      cerradoEl.textContent = '¡Hoy es día de compra! 🎉';
+      else if (dias === 1) cerradoEl.textContent = 'Ronda cerrada · compra mañana';
+      else                 cerradoEl.textContent = 'Ronda cerrada · compra el domingo';
+    }
+    return;
+  }
+
+  reloj.classList.remove('cerrada');
+  if (tiempoEl) tiempoEl.classList.remove('hidden');
+  if (cerradoEl) cerradoEl.classList.add('hidden');
+
+  reloj.classList.toggle('urgente', restante < 24 * 3600 * 1000);
+
+  const segs   = Math.floor(restante / 1000);
+  const dias   = Math.floor(segs / 86400);
+  const horas  = Math.floor((segs % 86400) / 3600);
+  const mins   = Math.floor((segs % 3600) / 60);
+  const segsR  = segs % 60;
+
+  const elD = $('relojDias');  if (elD) elD.textContent = dias;
+  const elH = $('relojHoras'); if (elH) elH.textContent = String(horas).padStart(2,'0');
+  const elM = $('relojMin');   if (elM) elM.textContent = String(mins).padStart(2,'0');
+  const elS = $('relojSeg');   if (elS) elS.textContent = String(segsR).padStart(2,'0');
+}
 
 const ZONAS = {
   A: { desc_recojo: 0 },
@@ -1290,6 +1388,30 @@ const DISTRITOS_LIMA = {
 const LS_CARRITO = 'misti_carrito';
 const LS_CLIENTE = 'misti_cliente';
 const LS_PEDIDOS = 'misti_pedidos';
+
+let carrito = cargar(LS_CARRITO, {});
+let cliente = cargar(LS_CLIENTE, {
+  nombre:'', telefono:'',
+  calle:'', numero:'', referencia:'',
+  distrito:'', zona:'A', lat:null, lng:null
+});
+
+if (!cliente.calle)      cliente.calle = '';
+if (!cliente.numero)     cliente.numero = '';
+if (!cliente.referencia) cliente.referencia = '';
+if (!cliente.distrito)   cliente.distrito = '';
+if (!cliente.zona)       cliente.zona = 'A';
+if (cliente.lat == null) cliente.lat = null;
+if (cliente.lng == null) cliente.lng = null;
+
+let pedidos = cargar(LS_PEDIDOS, []);
+let recogerEnLocal = false;
+let metodoPago = 'yape'; // 'yape' | 'efectivo'
+
+let mapaDrawer = null;
+let marcadorDrawer = null;
+let debounceDir = null;
+let sugerenciasCache = [];
 
 function cargar(key, fallback){
   try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
@@ -1357,19 +1479,18 @@ const subtotalCarrito = () => itemsCarrito().reduce((s, i) => s + i.subtotal, 0)
 function descuentoAplicado(){
   return 0;
 }
-function calcularDelivery(){
+
+function costoDelivery(){
   return recogerEnLocal ? 0 : DELIVERY_COSTO;
 }
-function calcularComisionYape(subtotal){
+
+function comisionYape(){
   if (metodoPago !== 'yape') return 0;
-  return +(subtotal * (COMISION_YAPE_PORC / 100)).toFixed(2);
+  const base = subtotalCarrito();
+  return +(base * COMISION_YAPE_PORC / 100).toFixed(2);
 }
-const totalCarrito = () => {
-  const subtotal = subtotalCarrito();
-  const delivery = calcularDelivery();
-  const comision = calcularComisionYape(subtotal);
-  return Math.max(0, subtotal + delivery + comision - descuentoAplicado());
-};
+
+const totalCarrito = () => Math.max(0, subtotalCarrito() - descuentoAplicado() + costoDelivery() + comisionYape());
 const totalItems = () => itemsCarrito().reduce((s, i) => s + i.qty, 0);
 
 function validarNumeroCasa(v){
@@ -1704,8 +1825,9 @@ function renderDrawer(){
   const foot = $('drawerFoot');
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
-  const delivery = calcularDelivery();
-  const comision = calcularComisionYape(subtotal);
+  const descuento = descuentoAplicado();
+  const delivery = costoDelivery();
+  const comision = comisionYape();
   const total = totalCarrito();
 
   if (items.length === 0) {
@@ -1745,9 +1867,22 @@ function renderDrawer(){
 
     <div class="resumen">
       <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
-      <div class="resumen-linea"><span>Delivery</span><span class="delivery">${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}</span></div>
-      <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span class="comision">${soles(comision)}</span></div>
+      <div class="resumen-linea"><span>Delivery</span><span style="${delivery === 0 ? 'color:var(--verde-culantro); font-weight:700;' : ''}">${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}</span></div>
+      <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span>${soles(comision)}</span></div>
       <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
+    </div>
+
+    <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Método de pago</h4>
+
+    <div style="display:flex; gap:12px; margin-bottom:20px;">
+      <button type="button" class="metodo-pago ${metodoPago === 'yape' ? 'activo' : ''}" data-metodo="yape"
+        style="flex:1; padding:12px; border:2px solid var(--carbon); border-radius:var(--radio-sm); background:${metodoPago === 'yape' ? 'var(--miel-suave)' : 'var(--blanco)'}; font-weight:700; font-size:14px; box-shadow:2px 2px 0 var(--carbon); transition:all .15s;">
+        Yape (${COMISION_YAPE_PORC}%)
+      </button>
+      <button type="button" class="metodo-pago ${metodoPago === 'efectivo' ? 'activo' : ''}" data-metodo="efectivo"
+        style="flex:1; padding:12px; border:2px solid var(--carbon); border-radius:var(--radio-sm); background:${metodoPago === 'efectivo' ? 'var(--miel-suave)' : 'var(--blanco)'}; font-weight:700; font-size:14px; box-shadow:2px 2px 0 var(--carbon); transition:all .15s;">
+        Efectivo
+      </button>
     </div>
 
     ${faltaMinimo ? `
@@ -1831,18 +1966,6 @@ function renderDrawer(){
       </div>
     </div>
 
-    <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Método de pago</h4>
-    <div style="display:flex; gap:10px; margin-bottom:16px;">
-      <label style="flex:1; display:flex; align-items:center; gap:8px; padding:10px 12px; background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio-sm); cursor:pointer; box-shadow:2px 2px 0 var(--carbon); ${metodoPago === 'yape' ? 'border-color:var(--rojo-aji); background:var(--miel-suave);' : ''}">
-        <input type="radio" name="metodoPago" value="yape" ${metodoPago === 'yape' ? 'checked' : ''} style="accent-color:var(--rojo-aji);">
-        <span style="font-weight:600; font-size:14px;">Yape (+${COMISION_YAPE_PORC}%)</span>
-      </label>
-      <label style="flex:1; display:flex; align-items:center; gap:8px; padding:10px 12px; background:var(--blanco); border:2px solid var(--carbon); border-radius:var(--radio-sm); cursor:pointer; box-shadow:2px 2px 0 var(--carbon); ${metodoPago === 'efectivo' ? 'border-color:var(--rojo-aji); background:var(--miel-suave);' : ''}">
-        <input type="radio" name="metodoPago" value="efectivo" ${metodoPago === 'efectivo' ? 'checked' : ''} style="accent-color:var(--rojo-aji);">
-        <span style="font-weight:600; font-size:14px;">Efectivo</span>
-      </label>
-    </div>
-
     <div class="aviso aviso-condiciones">
       <span><strong>Importante sobre los precios fijados:</strong> el precio que ves es el que pagas. Si el mercado sube de forma extraordinaria durante la semana (un shock inflacionario), el ajuste es por producto y es independiente: el presupuesto destinado a alimentos y el costo real de compra determinan cuánto se puede adquirir. En condiciones normales, recibes exactamente lo que pediste.</span>
     </div>
@@ -1858,6 +1981,7 @@ function renderDrawer(){
 
   bindQtyButtons();
   bindDrawerInputs();
+  bindMetodoPagoButtons();
   actualizarZonaInfo();
   actualizarChecklistDir();
   actualizarBotonConfirmar();
@@ -1873,9 +1997,12 @@ function renderDrawer(){
 
   $('btnConfirmar').addEventListener('click', confirmarPedido);
   $('checkRecojo').addEventListener('change', onToggleRecojo);
-  document.querySelectorAll('input[name="metodoPago"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      metodoPago = e.target.value;
+}
+
+function bindMetodoPagoButtons(){
+  document.querySelectorAll('.metodo-pago').forEach(btn => {
+    btn.addEventListener('click', () => {
+      metodoPago = btn.dataset.metodo;
       renderDrawer();
     });
   });
@@ -2026,21 +2153,20 @@ function onToggleRecojo(e){
   if (wrap) wrap.classList.toggle('activo', recogerEnLocal);
   const bloque = $('bloqueDireccion');
   if (bloque) bloque.style.display = recogerEnLocal ? 'none' : '';
-  actualizarResumenYPrecio();
-  actualizarBotonConfirmar();
+  renderDrawer();
 }
 
 function actualizarResumenYPrecio(){
   const subtotal = subtotalCarrito();
-  const delivery = calcularDelivery();
-  const comision = calcularComisionYape(subtotal);
+  const delivery = costoDelivery();
+  const comision = comisionYape();
   const total = totalCarrito();
   const resumenEl = document.querySelector('.drawer-body .resumen');
   if (resumenEl) {
     resumenEl.innerHTML = `
       <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
-      <div class="resumen-linea"><span>Delivery</span><span class="delivery">${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}</span></div>
-      <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span class="comision">${soles(comision)}</span></div>
+      <div class="resumen-linea"><span>Delivery</span><span style="${delivery === 0 ? 'color:var(--verde-culantro); font-weight:700;' : ''}">${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}</span></div>
+      <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span>${soles(comision)}</span></div>
       <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
     `;
   }
@@ -2069,8 +2195,8 @@ function eliminar(codigo){
 function construirMensajeWhatsApp(){
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
-  const delivery = calcularDelivery();
-  const comision = calcularComisionYape(subtotal);
+  const delivery = costoDelivery();
+  const comision = comisionYape();
   const total = totalCarrito();
   const tel = soloDigitos(cliente.telefono);
   const idCliente = '001' + (tel || '000000000');
@@ -2165,8 +2291,9 @@ function confirmarPedido(){
 
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
-  const delivery = calcularDelivery();
-  const comision = calcularComisionYape(subtotal);
+  const descuento = descuentoAplicado();
+  const delivery = costoDelivery();
+  const comision = comisionYape();
   const total = totalCarrito();
   const tel = soloDigitos(cliente.telefono);
   const idCliente = '001' + tel;
@@ -2194,8 +2321,12 @@ function confirmarPedido(){
       codigo: i.codigo, nombre: i.nombre, unidad: i.unidad,
       cantidad: i.qty, precio_unitario: i.precio, subtotal: i.subtotal
     })),
-    subtotal, delivery, comision, total,
+    subtotal,
+    descuento_recojo: descuento,
+    delivery_costo: delivery,
+    comision_yape: comision,
     metodo_pago: metodoPago,
+    total,
     mensaje_enviado: mensaje
   };
   pedidos.unshift(pedido);
@@ -2256,93 +2387,6 @@ function init(){
 
   actualizarRelojRonda();
   setInterval(actualizarRelojRonda, 1000);
-}
-
-// Funciones de ronda y reloj
-function getRondaId(){
-  const hoy = new Date();
-  const dia = hoy.getDay();
-  const diff = (dia === 0) ? -6 : 1 - dia;
-  const lunes = new Date(hoy);
-  lunes.setDate(hoy.getDate() + diff);
-  const y = lunes.getFullYear();
-  const m = String(lunes.getMonth()+1).padStart(2,'0');
-  const d = String(lunes.getDate()).padStart(2,'0');
-  return `R-${y}-${m}-${d}`;
-}
-
-const DIAS_ES  = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-
-function getFechasRonda(){
-  const hoy  = new Date();
-  const dia  = hoy.getDay();
-  const diff = (dia === 0) ? -6 : 1 - dia;
-  const lunes = new Date(hoy);
-  lunes.setDate(hoy.getDate() + diff);
-  lunes.setHours(0,0,0,0);
-
-  const viernes = new Date(lunes);
-  viernes.setDate(lunes.getDate() + 4);
-  viernes.setHours(17, 0, 0, 0);
-
-  const domingo = new Date(lunes);
-  domingo.setDate(lunes.getDate() + 6);
-  domingo.setHours(0,0,0,0);
-
-  return { lunes, viernes, domingo };
-}
-
-function formatearFechaRonda(d){
-  return `${DIAS_ES[d.getDay()]} ${d.getDate()} de ${MESES_ES[d.getMonth()]}`;
-}
-
-function actualizarRelojRonda(){
-  const reloj = $('relojRonda');
-  if (!reloj) return;
-
-  const { viernes, domingo } = getFechasRonda();
-  const ahora = new Date();
-
-  const fechaEl = $('relojFecha');
-  if (fechaEl) fechaEl.textContent = formatearFechaRonda(domingo);
-
-  const restante = viernes.getTime() - ahora.getTime();
-  const tiempoEl = $('relojTiempo');
-  const cerradoEl = $('relojCerrado');
-
-  if (restante <= 0){
-    reloj.classList.add('cerrada');
-    reloj.classList.remove('urgente');
-    if (tiempoEl) tiempoEl.classList.add('hidden');
-    if (cerradoEl){
-      cerradoEl.classList.remove('hidden');
-      const hoyIni = new Date(ahora);   hoyIni.setHours(0,0,0,0);
-      const domIni = new Date(domingo); domIni.setHours(0,0,0,0);
-      const dias = Math.round((domIni - hoyIni) / 86400000);
-      if (dias === 0)      cerradoEl.textContent = '¡Hoy es día de compra! 🎉';
-      else if (dias === 1) cerradoEl.textContent = 'Ronda cerrada · compra mañana';
-      else                 cerradoEl.textContent = 'Ronda cerrada · compra el domingo';
-    }
-    return;
-  }
-
-  reloj.classList.remove('cerrada');
-  if (tiempoEl) tiempoEl.classList.remove('hidden');
-  if (cerradoEl) cerradoEl.classList.add('hidden');
-
-  reloj.classList.toggle('urgente', restante < 24 * 3600 * 1000);
-
-  const segs   = Math.floor(restante / 1000);
-  const dias   = Math.floor(segs / 86400);
-  const horas  = Math.floor((segs % 86400) / 3600);
-  const mins   = Math.floor((segs % 3600) / 60);
-  const segsR  = segs % 60;
-
-  const elD = $('relojDias');  if (elD) elD.textContent = dias;
-  const elH = $('relojHoras'); if (elH) elH.textContent = String(horas).padStart(2,'0');
-  const elM = $('relojMin');   if (elM) elM.textContent = String(mins).padStart(2,'0');
-  const elS = $('relojSeg');   if (elS) elS.textContent = String(segsR).padStart(2,'0');
 }
 
 init();
