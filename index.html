@@ -1065,7 +1065,7 @@
           <a href="#como" class="btn btn-secondary">Cómo funciona</a>
         </div>
         <div class="hero-datos">
-          <div class="hero-dato"><b>14</b><span>Productos esta ronda</span></div>
+          <div class="hero-dato"><b>+200</b><span>Productos esta ronda</span></div>
           <div class="hero-dato"><b>S/ 20</b><span>Mínimo de compra</span></div>
           <div class="hero-dato"><b>Dom 4–6 p.m.</b><span>Delivery disponible</span></div>
         </div>
@@ -1107,7 +1107,13 @@
       <span><strong>Ronda <span class="rondaId"></span> abierta.</strong> Cierra el viernes a las 5:00 pm. Mínimo de compra S/ 20. Delivery disponible el domingo, de 4 a 6 p. m.</span>
     </div>
 
-    <div id="catalogoCont"></div>
+    <div id="catalogoCont">
+        <!-- Aquí se inyectarán los productos dinámicamente -->
+        <div style="text-align:center; padding: 40px; color: var(--texto-suave);">
+            <div class="spinner-sm" style="margin: 0 auto 10px; width:24px; height:24px; border-width:3px;"></div>
+            <p>Cargando catálogo desde la nube...</p>
+        </div>
+    </div>
   </div>
 </section>
 
@@ -1258,7 +1264,9 @@
 </div>
 
 <script>
-const PRODUCTOS = [
+// Array de respaldo en caso de que Firebase falle o tarde en cargar
+// Mantenemos tus 14 productos originales para que la app nunca esté vacía
+let PRODUCTOS = [
   { codigo:'PR-001', nombre:'Papa Amarilla',     grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'2% 2%' },
   { codigo:'PR-003', nombre:'Papa Canchán',      grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'26% 2%' },
   { codigo:'PR-005', nombre:'Cebolla Roja',      grupo:'Básicos',  unidad:'kg',     precio:0,  bgPos:'98% 2%' },
@@ -1275,11 +1283,13 @@ const PRODUCTOS = [
   { codigo:'PR-021', nombre:'Perejil',  grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'40% 66.666%', img:'productos-grid.png', bgSize:'600% 400%' }
 ];
 
-const ORDEN_GRUPOS = ['Básicos','Sazón y Aderezos','Hierbas y Aromáticos'];
+// Variables de configuración
+let ORDEN_GRUPOS = ['Básicos','Sazón y Aderezos','Hierbas y Aromáticos', 'Especial'];
 const DESCRIPCION_GRUPOS = {
   'Básicos':    'Los alimentos que más ayudan a resolver la compra cotidiana de una familia.',
   'Sazón y Aderezos':      'Ingredientes base para preparar aderezos, guisos y dar sabor a los platos criollos.',
-  'Hierbas y Aromáticos': 'Ingredientes frescos para dar aroma, frescura y realzar el sabor de tus comidas.'
+  'Hierbas y Aromáticos': 'Ingredientes frescos para dar aroma, frescura y realzar el sabor de tus comidas.',
+  'Especial': 'Productos selectos para preparaciones específicas.'
 };
 
 const WHATSAPP_NEGOCIO = '51977101608';
@@ -1372,12 +1382,6 @@ function actualizarRelojRonda(){
   const elM = $('relojMin');   if (elM) elM.textContent = String(mins).padStart(2,'0');
   const elS = $('relojSeg');   if (elS) elS.textContent = String(segsR).padStart(2,'0');
 }
-
-const ZONAS = {
-  A: { desc_recojo: 0 },
-  B: { desc_recojo: 0 },
-  C: { desc_recojo: 0 }
-};
 
 const DISTRITOS_LIMA = {
   'la victoria':'A','lince':'A','breña':'A','cercado de lima':'A','cercado':'A',
@@ -1684,29 +1688,68 @@ function actualizarBotonConfirmar(){
   btn.disabled = !(nombreOk && telOk && calleOk && numOk && refOk);
 }
 
+// ----------------------------------------------------
+// RENDERIZADO DINÁMICO DEL CATÁLOGO
+// ----------------------------------------------------
+
+// Función auxiliar para calcular una posición de imagen basada en el nombre del producto
+// Esto simula que todos los +200 productos tienen su "foto" en el sprite gigante
+function calcularBgPos(nombre) {
+  if(!nombre) return '0% 0%';
+  let hash = 0;
+  for (let i = 0; i < nombre.length; i++) {
+    hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  // Convertir el hash a un porcentaje entre 0% y 100%
+  // El sprite tiene 5x5 celdas, así que usamos múltiplos de 20 (0, 20, 40, 60, 80, 100)
+  const posX = Math.abs(hash % 6) * 20;
+  const posY = Math.abs((hash >> 3) % 6) * 20;
+  return `${posX}% ${posY}%`;
+}
+
 function renderCatalogo(){
   const cont = $('catalogoCont');
+  if (!cont) return;
+  
   const grupos = {};
   PRODUCTOS.forEach(p => {
-    if (!grupos[p.grupo]) grupos[p.grupo] = [];
-    grupos[p.grupo].push(p);
+    const g = p.grupo || 'Otros';
+    if (!grupos[g]) grupos[g] = [];
+    grupos[g].push(p);
   });
 
   let html = '';
-  ORDEN_GRUPOS.forEach(g => {
-    if (!grupos[g]) return;
+  
+  // Asegurarnos de iterar los grupos en un orden lógico
+  const gruposOrdenados = Object.keys(grupos).sort((a,b) => {
+      const idxA = ORDEN_GRUPOS.indexOf(a);
+      const idxB = ORDEN_GRUPOS.indexOf(b);
+      if(idxA !== -1 && idxB !== -1) return idxA - idxB;
+      if(idxA !== -1) return -1;
+      if(idxB !== -1) return 1;
+      return a.localeCompare(b);
+  });
+
+  gruposOrdenados.forEach(g => {
     html += `<h3 class="grupo-titulo">${g} <small>${grupos[g].length} productos</small></h3>`;
     if (DESCRIPCION_GRUPOS[g]) {
       html += `<p class="grupo-desc">${DESCRIPCION_GRUPOS[g]}</p>`;
     }
     html += `<div class="productos-grid">`;
+    
     grupos[g].forEach(p => {
       const qty = (carrito[p.codigo] && carrito[p.codigo].qty) || 0;
       const enCarrito = qty > 0;
 
-      let fotoStyle = `--bg-pos:${p.bgPos};`;
+      // Si el producto no tiene bgPos definido, calculamos uno dinámico
+      let bgPos = p.bgPos || calcularBgPos(p.nombre);
+      
+      let fotoStyle = `--bg-pos:${bgPos};`;
       if (p.img)    fotoStyle += ` background-image:url('${p.img}');`;
       if (p.bgSize) fotoStyle += ` background-size:${p.bgSize};`;
+
+      // Formatear el precio para que no se vea como 0 si aún no carga Firebase
+      const precioMostrar = p.precio > 0 ? soles(p.precio) : 'Cargando...';
 
       html += `
         <div class="producto ${enCarrito ? 'en-carrito' : ''}" data-codigo="${p.codigo}">
@@ -1716,7 +1759,7 @@ function renderCatalogo(){
               <div class="producto-nombre">${escapar(p.nombre)}</div>
               <div class="producto-unidad">${escapar(p.unidad)}</div>
             </div>
-            <div class="producto-precio">${soles(p.precio)} <small>/ ${escapar(p.unidad)}</small></div>
+            <div class="producto-precio">${precioMostrar} <small>/ ${escapar(p.unidad)}</small></div>
             <div class="qty-wrap">
               <label for="qty-${p.codigo}">Cant.</label>
               <input type="text" class="qty-input" id="qty-${p.codigo}"
@@ -1735,6 +1778,7 @@ function renderCatalogo(){
     });
     html += `</div>`;
   });
+  
   cont.innerHTML = html;
   bindQtyInputs();
 }
@@ -2368,6 +2412,7 @@ function init(){
   const ronda = getRondaId();
   document.querySelectorAll('.rondaId').forEach(el => el.textContent = ronda);
 
+  // Primero renderizamos los productos por defecto (respaldo)
   renderCatalogo();
   renderCartBar();
 
@@ -2392,7 +2437,7 @@ function init(){
 init();
 </script>
 
-<!-- PRECIOS EN VIVO DESDE FIRESTORE -->
+<!-- PRECIOS EN VIVO Y CARGA COMPLETA DESDE FIRESTORE -->
 <script type="importmap">
 {
   "imports": {
@@ -2418,48 +2463,89 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function cargarPreciosDeLaRonda(){
+async function cargarTodoElCatalogo() {
   try {
     const rondaHoy = getRondaId();
-    console.log(`Ronda calculada por fecha: ${rondaHoy}`);
+    console.log(`Buscando catálogo y precios para la ronda: ${rondaHoy}`);
 
-    const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
-    if (preciosSnap.empty) throw new Error("Ronda sin precios: " + rondaHoy);
-
-    const preciosMap = {};
-    preciosSnap.docs.forEach(d => {
-      const p = d.data();
-      preciosMap[p.codigo_producto] = p;
-    });
-
-    let actualizados = 0;
-    let faltantes = [];
-    PRODUCTOS.forEach(prod => {
-      const pr = preciosMap[prod.codigo];
-      if (pr && typeof pr.precio_venta === "number"){
-        prod.precio = pr.precio_venta;
-        actualizados++;
-      } else {
-        faltantes.push(prod.codigo);
-      }
-    });
-
-    console.log(`✓ Precios en vivo: ${actualizados}/${PRODUCTOS.length} (ronda ${rondaHoy})`);
-    if (faltantes.length) {
-      console.warn(`⚠️ Sin precio en Firestore: ${faltantes.join(", ")}`);
+    // 1. Cargar el maestro de productos
+    // IMPORTANTE: Asumo que la colección se llama "productos". 
+    // Si se llama diferente en tu Firestore, cambia el string aquí abajo.
+    const productosSnap = await getDocs(collection(db, "productos"));
+    
+    if (productosSnap.empty) {
+      console.warn("La colección 'productos' está vacía. Usando los 14 productos de respaldo.");
+      return; 
     }
 
-    document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaHoy);
+    // 2. Traer los precios de la ronda actual
+    let preciosMap = {};
+    try {
+      const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
+      if (!preciosSnap.empty) {
+        preciosSnap.docs.forEach(d => {
+          const p = d.data();
+          preciosMap[p.codigo_producto] = p;
+        });
+      }
+    } catch(e) {
+      console.warn("No se pudieron leer precios de la ronda, se usarán precios por defecto.", e);
+    }
 
-    if (typeof renderCatalogo === 'function') renderCatalogo();
-    if (typeof renderCartBar === 'function') renderCartBar();
+    // 3. Armar el nuevo array de PRODUCTOS
+    const nuevosProductos = [];
+    productosSnap.docs.forEach(d => {
+      const data = d.data();
+      
+      // Intentar obtener el precio de la colección de precios
+      let precioReal = 0;
+      if (preciosMap[data.codigo] && typeof preciosMap[data.codigo].precio_venta === "number") {
+        precioReal = preciosMap[data.codigo].precio_venta;
+      } else if (typeof data.precio_venta === "number") {
+        // A veces el precio está directamente en el producto maestro
+        precioReal = data.precio_venta;
+      } else if (typeof data.precio === "number") {
+         precioReal = data.precio;
+      }
+
+      // Normalizar los nombres de los campos para que coincidan con lo que espera tu HTML
+      nuevosProductos.push({
+        codigo: data.codigo || data.id || d.id,
+        nombre: data.nombre || 'Producto sin nombre',
+        grupo: data.grupo || 'Especial',
+        unidad: data.unidad_venta || data.unidadVenta || data.unidad || 'kg',
+        precio: precioReal,
+        // La imagen se calculará dinámicamente en renderCatalogo si no viene en la BD
+        img: data.img || 'expositor-rustico.png',
+        bgPos: data.bgPos || null,
+        bgSize: data.bgSize || '500% 500%'
+      });
+    });
+
+    if (nuevosProductos.length > 0) {
+      // Reemplazar el array global
+      PRODUCTOS = nuevosProductos;
+      
+      // Actualizar los grupos por si hay nuevos
+      const nuevosGrupos = [...new Set(PRODUCTOS.map(p => p.grupo))];
+      ORDEN_GRUPOS = nuevosGrupos.sort();
+
+      console.log(`✓ Éxito: Se cargaron ${PRODUCTOS.length} productos desde Firestore.`);
+
+      // Volver a dibujar el catálogo
+      if (typeof renderCatalogo === 'function') renderCatalogo();
+      if (typeof renderCartBar === 'function') renderCartBar();
+      
+      document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaHoy);
+    }
 
   } catch (e) {
-    console.warn("No se pudieron leer precios en vivo:", e.message);
+    console.warn("No se pudo leer el catálogo completo desde Firestore:", e.message);
+    console.log("Se mantienen los productos por defecto para no romper la app.");
   }
 }
 
-cargarPreciosDeLaRonda();
+cargarTodoElCatalogo();
 </script>
 
 </body>
