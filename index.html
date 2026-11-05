@@ -675,15 +675,6 @@
   @media (min-width:640px){ .aviso{padding:12px 14px; font-size:12.5px; gap:10px; margin-top:12px;} }
   .aviso-error{background:#FBE0DC; color:var(--rojo-aji-osc);}
   .aviso-ok{background:#E4EFDC; color:var(--verde-hoja);}
-  .aviso-condiciones{
-    background:var(--crema-2);
-    color:var(--texto);
-    font-weight:500;
-    font-size:12px;
-    line-height:1.55;
-  }
-  @media (min-width:640px){ .aviso-condiciones{font-size:12.5px;} }
-  .aviso-condiciones strong{color:var(--carbon); font-weight:700;}
 
   .confirmacion{text-align:center; padding:26px 6px;}
   @media (min-width:640px){ .confirmacion{padding:30px 8px;} }
@@ -975,6 +966,128 @@
   }
   @media (min-width:640px){
     .reloj-cerrado-msg{font-size:clamp(20px, 3vw, 26px); text-align:left;}
+  }
+
+  /* === BOLETA (resumen visual del pedido) === */
+  .boleta {
+    margin-top: 24px;
+    background: var(--blanco);
+    border: 2px solid var(--carbon);
+    border-radius: var(--radio);
+    box-shadow: 3px 3px 0 var(--carbon);
+    overflow: hidden;
+  }
+  .boleta-head {
+    background: var(--carbon);
+    color: var(--miel-suave);
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .boleta-head strong {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--miel-suave);
+  }
+  .boleta-head span {
+    font-family: var(--font-hand);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--miel);
+  }
+  .boleta-body {
+    padding: 14px 16px 16px;
+    font-size: 12.5px;
+    color: var(--texto);
+    line-height: 1.55;
+    font-variant-numeric: tabular-nums;
+  }
+  .boleta-linea {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 2px 0;
+    align-items: baseline;
+  }
+  .boleta-linea .label {
+    color: var(--texto-suave);
+    flex-shrink: 0;
+  }
+  .boleta-linea strong {
+    color: var(--carbon);
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+  }
+  .boleta-linea .falta {
+    color: var(--rojo-aji);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .boleta-seccion {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--texto-muy-suave);
+    margin: 4px 0 6px;
+    font-family: var(--font-body);
+  }
+  .boleta-items .item {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 2px 0;
+    font-size: 12px;
+  }
+  .boleta-items .item-nombre {
+    color: var(--carbon);
+    flex: 1;
+    min-width: 0;
+  }
+  .boleta-items .item-cant {
+    color: var(--texto-suave);
+    font-size: 11px;
+  }
+  .boleta-items .item-precio {
+    color: var(--carbon);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .boleta-divider {
+    border: none;
+    border-top: 1px dashed var(--borde-fuerte);
+    margin: 10px 0;
+  }
+  .boleta-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 12px 16px;
+    background: var(--miel-suave);
+    border-top: 2px solid var(--carbon);
+    gap: 10px;
+  }
+  .boleta-total-label {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--carbon);
+  }
+  .boleta-total-monto {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--rojo-aji);
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
 
   @media (max-width:380px){
@@ -1323,11 +1436,8 @@ const CONFIG_DELIVERY = {
   }
 };
 
-// ========================================================================
-// ✅ FIX: Coordenadas REALES del local (Eduardo Bello 385, Santa Catalina, La Victoria)
-// ANTES estaban mal (-12.065130, -77.029940) y sumaban ~2.6 km de error a TODOS.
-// AHORA: distancia real desde tu local a cualquier cliente.
-// ========================================================================
+// ✅ FIX aplicado: coordenadas REALES del local
+// Eduardo Bello 385, Santa Catalina, La Victoria, Lima
 const MISTI_LAT = -12.08725;
 const MISTI_LNG = -77.02178;
 
@@ -1549,7 +1659,6 @@ function costoDelivery() {
     }
   }
   const resultado = +(tarifaBase + recargoPeso).toFixed(2);
-  // 🔍 Log de debug: abre F12 → Console para ver cada cálculo
   console.log(`[Misti] Distancia: ${distancia.toFixed(2)} km · Peso: ${peso.toFixed(1)} kg · Delivery: S/ ${resultado.toFixed(2)}`);
   return resultado;
 }
@@ -1654,6 +1763,7 @@ function seleccionarSugerencia(r){
   actualizarZonaInfo();
   actualizarChecklistDir();
   actualizarBotonConfirmar();
+  actualizarBoleta();
 }
 
 function mostrarEstadoBusqueda(tipo){
@@ -1701,8 +1811,11 @@ function mostrarMapaDrawer(){
         guardar(LS_CLIENTE, cliente);
         const mt = $('mapaTxt');
         if (mt) mt.textContent = `Pin ajustado a ${cliente.lat.toFixed(5)}, ${cliente.lng.toFixed(5)}`;
-        // Recalcular delivery al mover el pin
-        renderDrawer();
+        // Actualizar solo los pedazos afectados sin destruir el mapa
+        const resumenBox = $('resumenBox');
+        if (resumenBox) resumenBox.outerHTML = renderResumenHTML();
+        actualizarBoleta();
+        actualizarBotonConfirmar();
       });
     } else {
       mapaDrawer.setView([cliente.lat, cliente.lng], 17);
@@ -1901,18 +2014,153 @@ function cerrarDrawer(){
   document.body.style.overflow = '';
 }
 
+// === Resumen del medio (extraído para poder refrescar solo el bloque) ===
+function renderResumenHTML(){
+  const subtotal = subtotalCarrito();
+  const delivery = costoDelivery();
+  const comision = comisionYape();
+  const total = totalCarrito();
+  const peso = pesoTotalCarrito();
+  const dist = calcularDistanciaKm();
+
+  let msgDelivery = '';
+  let colorDelivery = 'var(--texto-suave)';
+  if (recogerEnLocal) {
+    msgDelivery = 'Gratis (recojo en local)';
+    colorDelivery = 'var(--verde-culantro)';
+  } else if (dist === null) {
+    msgDelivery = 'Se calcula al poner dirección';
+  } else if (delivery === -1) {
+    msgDelivery = `Fuera de cobertura a pie (máx. ${CONFIG_DELIVERY.pie.maxDistancia} km)`;
+    colorDelivery = 'var(--rojo-aji)';
+  } else if (delivery === -2) {
+    msgDelivery = `Peso excedido para delivery a pie (máx. ${CONFIG_DELIVERY.pie.maxPeso} kg)`;
+    colorDelivery = 'var(--rojo-aji)';
+  } else {
+    msgDelivery = soles(delivery);
+  }
+
+  return `
+    <div class="resumen" id="resumenBox">
+      <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
+      ${(dist !== null && !recogerEnLocal) ? `
+        <div class="resumen-linea" style="font-size:11px; color:var(--texto-muy-suave); padding-bottom:8px; border-bottom:1px dashed var(--borde);">
+          <span>Peso aprox: ${peso.toFixed(1)} kg · Distancia: ${dist.toFixed(1)} km</span>
+        </div>
+      ` : ''}
+      <div class="resumen-linea">
+        <span>Delivery (${CONFIG_DELIVERY.modo})</span>
+        <span style="color:${colorDelivery}; font-weight:700;">${msgDelivery}</span>
+      </div>
+      ${metodoPago === 'yape' && delivery >= 0 ? `
+        <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span>${soles(comision)}</span></div>
+      ` : ''}
+      <div class="resumen-linea total"><span>Total a pagar</span><span>${soles(total)}</span></div>
+    </div>
+  `;
+}
+
+// === Boleta final (resumen visual tipo WhatsApp) ===
+function actualizarBoleta(){
+  const el = $('boleta');
+  if (!el) return;
+
+  const items = itemsCarrito();
+  const subtotal = subtotalCarrito();
+  const delivery = costoDelivery();
+  const comision = comisionYape();
+  const total = totalCarrito();
+  const peso = pesoTotalCarrito();
+  const dist = calcularDistanciaKm();
+  const tel = soloDigitos(cliente.telefono);
+  const ronda = getRondaId();
+
+  const nombreOk = !!cliente.nombre.trim();
+  const telOk = tel.length === 9 && tel.startsWith('9');
+  const calleOk = recogerEnLocal ? true : validarCalle();
+  const numOk = recogerEnLocal ? true : validarNumeroCasa(cliente.numero).ok;
+
+  let dirTxt = '';
+  if (recogerEnLocal) {
+    dirTxt = 'Eduardo Bello 385, Santa Catalina';
+  } else if (cliente.calle) {
+    const numTxt = cliente.numero ? ` ${cliente.numero}` : '';
+    const distTxt = cliente.distrito ? `, ${cliente.distrito}` : '';
+    dirTxt = `${cliente.calle}${numTxt}${distTxt}`;
+  } else {
+    dirTxt = 'Falta dirección';
+  }
+
+  let deliveryTxt = '';
+  let deliveryFalta = false;
+  if (recogerEnLocal) {
+    deliveryTxt = 'S/ 0.00 · gratis';
+  } else if (delivery === -1) {
+    deliveryTxt = 'Fuera de cobertura';
+    deliveryFalta = true;
+  } else if (delivery === -2) {
+    deliveryTxt = 'Peso excedido';
+    deliveryFalta = true;
+  } else if (dist === null) {
+    deliveryTxt = 'Se calcula con la dirección';
+    deliveryFalta = true;
+  } else {
+    deliveryTxt = `${soles(delivery)} · ${dist.toFixed(1)} km`;
+  }
+
+  const itemsHtml = items.length
+    ? items.map(i => `
+      <div class="item">
+        <span class="item-nombre">${escapar(i.nombre)} <span class="item-cant">×${i.qty} ${escapar(i.unidad)}</span></span>
+        <span class="item-precio">${soles(i.subtotal)}</span>
+      </div>
+    `).join('')
+    : `<div style="padding:8px 0; color:var(--texto-suave); font-style:italic;">Sin productos aún</div>`;
+
+  el.innerHTML = `
+    <div class="boleta-head">
+      <strong>🧾 Resumen del pedido</strong>
+      <span>Vista previa</span>
+    </div>
+    <div class="boleta-body">
+      <div class="boleta-linea"><span class="label">Cliente</span><strong class="${!nombreOk ? 'falta' : ''}">${nombreOk ? escapar(cliente.nombre) : 'Falta nombre'}</strong></div>
+      <div class="boleta-linea"><span class="label">WhatsApp</span><strong class="${!telOk ? 'falta' : ''}">${telOk ? escapar(tel) : (tel ? 'Teléfono incompleto' : 'Falta WhatsApp')}</strong></div>
+      <div class="boleta-linea"><span class="label">Ronda</span><strong>${escapar(ronda)}</strong></div>
+      <div class="boleta-linea"><span class="label">Entrega</span><strong>${escapar(recogerEnLocal ? 'Recojo en local' : 'Delivery')}</strong></div>
+      <div class="boleta-linea"><span class="label">Dirección</span><strong class="${(!calleOk || !numOk) ? 'falta' : ''}">${escapar(dirTxt)}</strong></div>
+      ${!recogerEnLocal ? `<div class="boleta-linea"><span class="label">Referencia</span><strong>${escapar(cliente.referencia || '—')}</strong></div>` : ''}
+
+      <hr class="boleta-divider">
+      <div class="boleta-seccion">Productos (${items.length})</div>
+      <div class="boleta-items">${itemsHtml}</div>
+      <div class="boleta-linea" style="margin-top:6px;">
+        <span class="label">Peso aprox.</span>
+        <strong>${peso.toFixed(1)} kg</strong>
+      </div>
+
+      <hr class="boleta-divider">
+      <div class="boleta-linea"><span class="label">Subtotal</span><strong>${soles(subtotal)}</strong></div>
+      <div class="boleta-linea"><span class="label">Delivery</span><strong class="${deliveryFalta ? 'falta' : ''}">${deliveryTxt}</strong></div>
+      ${metodoPago === 'yape' && delivery >= 0 ? `<div class="boleta-linea"><span class="label">Comisión Yape (${COMISION_YAPE_PORC}%)</span><strong>${soles(comision)}</strong></div>` : ''}
+      <div class="boleta-linea"><span class="label">Método de pago</span><strong>${metodoPago === 'yape' ? 'Yape' : 'Efectivo'}</strong></div>
+    </div>
+    <div class="boleta-total">
+      <span class="boleta-total-label">Total a pagar</span>
+      <span class="boleta-total-monto">${soles(total)}</span>
+    </div>
+  `;
+}
+
 function renderDrawer(){
   destruirMapaDrayerSafe();
   const body = $('drawerBody');
   const foot = $('drawerFoot');
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
-  const descuento = descuentoAplicado();
-  const delivery = costoDelivery();
-  const comision = comisionYape();
-  const total = totalCarrito();
-  const peso = pesoTotalCarrito();
-  const dist = calcularDistanciaKm();
+  const numV = validarNumeroCasa(cliente.numero);
+  const refV = validarReferencia(cliente.referencia);
+  const calleOk = validarCalle();
+  const faltaMinimo = subtotal < MINIMO_COMPRA;
 
   if (items.length === 0) {
     $('drawerTitulo').textContent = 'Tu pedido';
@@ -1928,10 +2176,6 @@ function renderDrawer(){
   }
 
   $('drawerTitulo').textContent = `Tu pedido · ${totalItems()} ${totalItems() === 1 ? 'producto' : 'productos'}`;
-  const numV = validarNumeroCasa(cliente.numero);
-  const refV = validarReferencia(cliente.referencia);
-  const calleOk = validarCalle();
-  const faltaMinimo = subtotal < MINIMO_COMPRA;
 
   body.innerHTML = `
     <div>${items.map(i => `
@@ -1947,42 +2191,7 @@ function renderDrawer(){
       </div>
     `).join('')}</div>
 
-    ${(() => {
-      let msgDelivery = '';
-      let colorDelivery = 'var(--texto-suave)';
-      if (recogerEnLocal) {
-        msgDelivery = 'Gratis (recojo en local)';
-        colorDelivery = 'var(--verde-culantro)';
-      } else if (dist === null) {
-        msgDelivery = 'Se calcula al poner dirección';
-      } else if (delivery === -1) {
-        msgDelivery = `Fuera de cobertura a pie (máx. ${CONFIG_DELIVERY.pie.maxDistancia} km)`;
-        colorDelivery = 'var(--rojo-aji)';
-      } else if (delivery === -2) {
-        msgDelivery = `Peso excedido para delivery a pie (máx. ${CONFIG_DELIVERY.pie.maxPeso} kg)`;
-        colorDelivery = 'var(--rojo-aji)';
-      } else {
-        msgDelivery = soles(delivery);
-      }
-      return `
-        <div class="resumen">
-          <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
-          ${(dist !== null && !recogerEnLocal) ? `
-            <div class="resumen-linea" style="font-size:11px; color:var(--texto-muy-suave); padding-bottom:8px; border-bottom:1px dashed var(--borde);">
-              <span>Peso aprox: ${peso.toFixed(1)} kg · Distancia: ${dist.toFixed(1)} km</span>
-            </div>
-          ` : ''}
-          <div class="resumen-linea">
-            <span>Delivery (${CONFIG_DELIVERY.modo})</span>
-            <span style="color:${colorDelivery}; font-weight:700;">${msgDelivery}</span>
-          </div>
-          ${metodoPago === 'yape' && delivery >= 0 ? `
-            <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span>${soles(comision)}</span></div>
-          ` : ''}
-          <div class="resumen-linea total"><span>Total a pagar</span><span>${soles(total)}</span></div>
-        </div>
-      `;
-    })()}
+    ${renderResumenHTML()}
 
     <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Método de pago</h4>
     <div style="display:flex; gap:12px; margin-bottom:20px;">
@@ -2077,13 +2286,7 @@ function renderDrawer(){
       </div>
     </div>
 
-    <div class="aviso aviso-condiciones">
-      <span><strong>Importante sobre los precios fijados:</strong> el precio que ves es el que pagas. Si el mercado sube de forma extraordinaria durante la semana (un shock inflacionario), el ajuste es por producto y es independiente: el presupuesto destinado a alimentos y el costo real de compra determinan cuánto se puede adquirir. En condiciones normales, recibes exactamente lo que pediste.</span>
-    </div>
-
-    <div class="aviso aviso-condiciones" style="background:var(--miel-suave);">
-      <span><strong>Sobre el peso:</strong> el peso es estimado. No cortamos los productos para cuadrar el kilo exacto. Si la balanza marca 0.85 kg, agregamos una unidad más al margen de lo que pese.</span>
-    </div>
+    <div id="boleta"></div>
   `;
 
   foot.innerHTML = `
@@ -2096,6 +2299,7 @@ function renderDrawer(){
   actualizarZonaInfo();
   actualizarChecklistDir();
   actualizarBotonConfirmar();
+  actualizarBoleta();
 
   if (faltaMinimo){
     const btn = $('btnConfirmar');
@@ -2141,6 +2345,7 @@ function bindDrawerInputs(){
       guardar(LS_CLIENTE, cliente);
       inpNombre.classList.remove('error');
       actualizarBotonConfirmar();
+      actualizarBoleta();
     });
   }
 
@@ -2152,6 +2357,7 @@ function bindDrawerInputs(){
       guardar(LS_CLIENTE, cliente);
       inpTelefono.classList.remove('error');
       actualizarBotonConfirmar();
+      actualizarBoleta();
     });
   }
 
@@ -2170,6 +2376,7 @@ function bindDrawerInputs(){
       guardar(LS_CLIENTE, cliente);
       actualizarChecklistDir();
       actualizarBotonConfirmar();
+      actualizarBoleta();
       clearTimeout(debounceDir);
       if (q.length < 4){
         ocultarSugerencias();
@@ -2213,6 +2420,7 @@ function bindDrawerInputs(){
       inpNumero.classList.toggle('ok', !!v && numV.ok);
       actualizarChecklistDir();
       actualizarBotonConfirmar();
+      actualizarBoleta();
     });
   }
 
@@ -2237,6 +2445,7 @@ function bindDrawerInputs(){
       inpReferencia.classList.toggle('ok', !!v && refV.ok);
       actualizarChecklistDir();
       actualizarBotonConfirmar();
+      actualizarBoleta();
     });
   }
 }
@@ -2517,7 +2726,6 @@ async function cargarTodoElCatalogo() {
     const rondaHoy = getRondaId();
     console.log(`[Misti] Cargando catálogo de la ronda ${rondaHoy}`);
 
-    // 1) Cargar PRODUCTOS MAESTROS (fuente de verdad de equiv_kg)
     let mapaProductos = {};
     try {
       const productosSnap = await getDocs(collection(db, "catalogo", "productos", "items"));
@@ -2530,7 +2738,6 @@ async function cargarTodoElCatalogo() {
       console.warn("[Misti] No se pudieron cargar productos maestros:", e);
     }
 
-    // 2) Cargar precios de la ronda
     const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
     if (preciosSnap.empty) {
       console.warn("[Misti] Sin precios en Firestore. Manteniendo catálogo local.");
@@ -2543,7 +2750,6 @@ async function cargarTodoElCatalogo() {
       const codigo = data.codigo_producto || d.id;
       const prod = mapaProductos[codigo];
 
-      // --- PASO 1: precio base en S//kg ---
       let precio_kg = 0;
       if (typeof data.P_L_final === 'number' && data.P_L_final > 0) {
         precio_kg = data.P_L_final;
@@ -2553,7 +2759,6 @@ async function cargarTodoElCatalogo() {
         precio_kg = data.P_L_mercado;
       }
 
-      // --- PASO 2: equiv_kg (kg por unidad de venta) ---
       let equiv_kg = 1;
       let fuenteEquiv = 'default';
 
@@ -2578,7 +2783,6 @@ async function cargarTodoElCatalogo() {
         }
       }
 
-      // --- PASO 3: precio final = S//kg × kg/unidad = S//unidad ---
       const precio = Math.round(precio_kg * equiv_kg * 100) / 100;
 
       console.log(`[Misti] ${codigo} ${data.nombre || ''}: P_L_final=${precio_kg} × equiv_kg=${equiv_kg} (${fuenteEquiv}) = ${precio}`);
