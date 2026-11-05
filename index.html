@@ -803,6 +803,7 @@
     border-radius:var(--radio-sm);
     padding:11px 12px;
     margin-top:12px;
+    margin-bottom:8px; /* Espacio extra */
     font-size:12px;
     color:var(--texto);
     line-height:1.55;
@@ -968,9 +969,10 @@
     .reloj-cerrado-msg{font-size:clamp(20px, 3vw, 26px); text-align:left;}
   }
 
-  /* === BOLETA (resumen visual del pedido) === */
+  /* === BOLETA (Optimizada para celular) === */
   .boleta {
-    margin-top: 24px;
+    margin-top: 26px; 
+    margin-bottom: 16px;
     background: var(--blanco);
     border: 2px solid var(--carbon);
     border-radius: var(--radio);
@@ -980,19 +982,18 @@
   .boleta-head {
     background: var(--carbon);
     color: var(--miel-suave);
-    padding: 10px 16px;
+    padding: 12px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   .boleta-head strong {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 0.08em;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--miel-suave);
   }
   .boleta-head span {
     font-family: var(--font-hand);
@@ -1001,27 +1002,29 @@
     color: var(--miel);
   }
   .boleta-body {
-    padding: 14px 16px 16px;
+    padding: 14px 14px 16px;
     font-size: 12.5px;
     color: var(--texto);
-    line-height: 1.55;
+    line-height: 1.5;
     font-variant-numeric: tabular-nums;
   }
   .boleta-linea {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    padding: 2px 0;
-    align-items: baseline;
+    gap: 10px;
+    padding: 5px 0;
+    align-items: flex-start;
   }
   .boleta-linea .label {
     color: var(--texto-suave);
     flex-shrink: 0;
+    padding-top: 1px;
   }
   .boleta-linea strong {
     color: var(--carbon);
     font-weight: 600;
     text-align: right;
+    max-width: 65%;
     word-break: break-word;
   }
   .boleta-linea .falta {
@@ -1032,18 +1035,18 @@
   .boleta-seccion {
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--texto-muy-suave);
-    margin: 4px 0 6px;
-    font-family: var(--font-body);
+    margin: 12px 0 6px;
   }
   .boleta-items .item {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    padding: 2px 0;
+    gap: 10px;
+    padding: 4px 0;
     font-size: 12px;
+    align-items: flex-start;
   }
   .boleta-items .item-nombre {
     color: var(--carbon);
@@ -1053,6 +1056,8 @@
   .boleta-items .item-cant {
     color: var(--texto-suave);
     font-size: 11px;
+    display: block;
+    margin-top: 2px;
   }
   .boleta-items .item-precio {
     color: var(--carbon);
@@ -1062,13 +1067,13 @@
   .boleta-divider {
     border: none;
     border-top: 1px dashed var(--borde-fuerte);
-    margin: 10px 0;
+    margin: 12px 0;
   }
   .boleta-total {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    padding: 12px 16px;
+    align-items: center;
+    padding: 14px;
     background: var(--miel-suave);
     border-top: 2px solid var(--carbon);
     gap: 10px;
@@ -1077,9 +1082,10 @@
     font-family: var(--font-display);
     font-weight: 800;
     font-size: 12px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--carbon);
+    line-height: 1.2;
   }
   .boleta-total-monto {
     font-family: var(--font-display);
@@ -1088,6 +1094,14 @@
     color: var(--rojo-aji);
     letter-spacing: -0.02em;
     line-height: 1;
+  }
+
+  @media (min-width: 640px) {
+    .boleta { margin-top: 34px; margin-bottom: 24px; }
+    .boleta-body { padding: 18px 20px; font-size: 13px; }
+    .boleta-linea { padding: 6px 0; gap: 16px; }
+    .boleta-total { padding: 16px 20px; }
+    .boleta-total-monto { font-size: 24px; }
   }
 
   @media (max-width:380px){
