@@ -1323,8 +1323,13 @@ const CONFIG_DELIVERY = {
   }
 };
 
-const MISTI_LAT = -12.065130;
-const MISTI_LNG = -77.029940;
+// ========================================================================
+// ✅ FIX: Coordenadas REALES del local (Eduardo Bello 385, Santa Catalina, La Victoria)
+// ANTES estaban mal (-12.065130, -77.029940) y sumaban ~2.6 km de error a TODOS.
+// AHORA: distancia real desde tu local a cualquier cliente.
+// ========================================================================
+const MISTI_LAT = -12.08725;
+const MISTI_LNG = -77.02178;
 
 function getRondaId(){
   const hoy = new Date();
@@ -1543,7 +1548,10 @@ function costoDelivery() {
       break;
     }
   }
-  return +(tarifaBase + recargoPeso).toFixed(2);
+  const resultado = +(tarifaBase + recargoPeso).toFixed(2);
+  // 🔍 Log de debug: abre F12 → Console para ver cada cálculo
+  console.log(`[Misti] Distancia: ${distancia.toFixed(2)} km · Peso: ${peso.toFixed(1)} kg · Delivery: S/ ${resultado.toFixed(2)}`);
+  return resultado;
 }
 
 function comisionYape() {
@@ -1693,6 +1701,8 @@ function mostrarMapaDrawer(){
         guardar(LS_CLIENTE, cliente);
         const mt = $('mapaTxt');
         if (mt) mt.textContent = `Pin ajustado a ${cliente.lat.toFixed(5)}, ${cliente.lng.toFixed(5)}`;
+        // Recalcular delivery al mover el pin
+        renderDrawer();
       });
     } else {
       mapaDrawer.setView([cliente.lat, cliente.lng], 17);
@@ -2544,10 +2554,6 @@ async function cargarTodoElCatalogo() {
       }
 
       // --- PASO 2: equiv_kg (kg por unidad de venta) ---
-      // Prioridad 1: producto maestro (equiv_kg_venta)
-      // Prioridad 2: producto maestro (equiv_kg)
-      // Prioridad 3: doc de precio (equiv_kg)
-      // Prioridad 4: catálogo local (PRODUCTOS)
       let equiv_kg = 1;
       let fuenteEquiv = 'default';
 
@@ -2575,7 +2581,6 @@ async function cargarTodoElCatalogo() {
       // --- PASO 3: precio final = S//kg × kg/unidad = S//unidad ---
       const precio = Math.round(precio_kg * equiv_kg * 100) / 100;
 
-      // Log por producto para debug
       console.log(`[Misti] ${codigo} ${data.nombre || ''}: P_L_final=${precio_kg} × equiv_kg=${equiv_kg} (${fuenteEquiv}) = ${precio}`);
 
       const productoCfg = PRODUCTOS.find(p => p.codigo === codigo);
@@ -2605,7 +2610,7 @@ async function cargarTodoElCatalogo() {
     });
 
     console.log(`[Misti] ✓ ${PRODUCTOS.length} productos finales`);
-    console.log('[Misti] Cebolla china:', PRODUCTOS.find(p => p.codigo === 'PR-013'));
+    console.log(`[Misti] Hub: ${MISTI_LAT}, ${MISTI_LNG} (Eduardo Bello 385, La Victoria)`);
 
     if (typeof renderCatalogo === 'function') renderCatalogo();
     if (typeof renderCartBar === 'function') renderCartBar();
