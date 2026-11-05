@@ -978,7 +978,6 @@
     .reloj-cerrado-msg{font-size:clamp(20px, 3vw, 26px); text-align:left;}
   }
 
-  /* Ajustes finos para pantallas muy chicas */
   @media (max-width:380px){
     .wrap{padding:0 12px;}
     .hero{padding:24px 0 20px;}
@@ -1028,7 +1027,6 @@
           <span class="sello">Ronda <span class="rondaId"></span> · Pedidos hasta el viernes, 5:00 p. m.</span>
         </div>
 
-        <!-- RELOJ DE RONDA -->
         <div class="reloj-ronda" id="relojRonda">
           <div class="reloj-bloque">
             <div class="reloj-label">⏳ Cierra en</div>
@@ -1105,7 +1103,6 @@
     </div>
 
     <div id="catalogoCont">
-        <!-- Aquí se inyectarán los productos dinámicamente -->
         <div style="text-align:center; padding: 40px; color: var(--texto-suave);">
             <div class="spinner-sm" style="margin: 0 auto 10px; width:24px; height:24px; border-width:3px;"></div>
             <p>Cargando catálogo desde la nube...</p>
@@ -1263,43 +1260,30 @@
 <script>
 // Estructura de respaldo y posicionamiento exacto de la cuadrícula 4x7
 let PRODUCTOS = [
-  // FILA 1 (Y: 0%)
   { codigo:'PR-001', nombre:'Papa Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 0%', equiv_kg: 1 },
   { codigo:'PR-002', nombre:'Papa Blanca', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 0%', equiv_kg: 1 },
   { codigo:'PR-003', nombre:'Papa Canchán', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 0%', equiv_kg: 1 },
   { codigo:'PR-004', nombre:'Tomate Katia', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 0%', equiv_kg: 1 },
-  
-  // FILA 2 (Y: 16.66%)
   { codigo:'PR-005', nombre:'Cebolla Roja', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 16.66%', equiv_kg: 1 },
   { codigo:'PR-006', nombre:'Zanahoria', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 16.66%', equiv_kg: 1 },
   { codigo:'PR-007', nombre:'Choclo Serrano', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 16.66%', equiv_kg: 1 },
   { codigo:'PR-008', nombre:'Camote Amarillo', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 16.66%', equiv_kg: 1 },
-  
-  // FILA 3 (Y: 33.33%)
   { codigo:'PR-009', nombre:'Yuca Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 33.33%', equiv_kg: 1 },
   { codigo:'PR-010', nombre:'Zapallo Macre', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 33.33%', equiv_kg: 1 },
   { codigo:'PR-011', nombre:'Papa Huayro', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'66.66% 33.33%', equiv_kg: 1 },
   { codigo:'PR-012', nombre:'Papa Negra Andina', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'100% 33.33%', equiv_kg: 1 },
-  
-  // FILA 4 (Y: 50%)
   { codigo:'PR-013', nombre:'Cebolla China', grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'0% 50%', equiv_kg: 0.5 },
   { codigo:'PR-014', nombre:'Ajo Criollo', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'33.33% 50%', equiv_kg: 1 },
   { codigo:'PR-015', nombre:'Kion', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'66.66% 50%', equiv_kg: 1 },
   { codigo:'PR-016', nombre:'Ají Amarillo', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'100% 50%', equiv_kg: 1 },
-  
-  // FILA 5 (Y: 66.66%)
   { codigo:'PR-017', nombre:'Ají Panca', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'0% 66.66%', equiv_kg: 1 },
   { codigo:'PR-018', nombre:'Ají Rocoto', grupo:'Sazón y Aderezos', unidad:'kg', precio:0, bgPos:'33.33% 66.66%', equiv_kg: 1 },
   { codigo:'PR-019', nombre:'Huacatay', grupo:'Sazón y Aderezos', unidad:'atado', precio:0, bgPos:'66.66% 66.66%', equiv_kg: 0.5 },
   { codigo:'PR-020', nombre:'Culantro', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'100% 66.66%', equiv_kg: 0.5 },
-  
-  // FILA 6 (Y: 83.33%)
   { codigo:'PR-021', nombre:'Perejil', grupo:'Hierbas y Aromáticos', unidad:'atado', precio:0, bgPos:'0% 83.33%', equiv_kg: 0.5 },
   { codigo:'PR-022', nombre:'Apio', grupo:'Especial', unidad:'atado', precio:0, bgPos:'33.33% 83.33%', equiv_kg: 0.5 },
   { codigo:'PR-023', nombre:'Poro', grupo:'Especial', unidad:'atado', precio:0, bgPos:'66.66% 83.33%', equiv_kg: 0.5 },
   { codigo:'PR-024', nombre:'Maíz Morado', grupo:'Especial', unidad:'kg', precio:0, bgPos:'100% 83.33%', equiv_kg: 1 },
-  
-  // FILA 7 (Y: 100%)
   { codigo:'PR-025', nombre:'Ají Escabeche', grupo:'Especial', unidad:'kg', precio:0, bgPos:'0% 100%', equiv_kg: 1 },
   { codigo:'PR-026', nombre:'Limón Cítrico', grupo:'Especial', unidad:'kg', precio:0, bgPos:'33.33% 100%', equiv_kg: 1 },
   { codigo:'PR-027', nombre:'Vainita', grupo:'Especial', unidad:'kg', precio:0, bgPos:'66.66% 100%', equiv_kg: 1 },
@@ -1318,12 +1302,8 @@ const WHATSAPP_NEGOCIO = '51977101608';
 const MINIMO_COMPRA = 20;
 const COMISION_YAPE_PORC = 2.95;
 
-// ==========================================
-// CONFIGURACIÓN DE DELIVERY (PIE / MOTO)
-// ==========================================
 const CONFIG_DELIVERY = {
-  modo: 'pie', // <-- Cambia a 'moto' en el futuro
-  
+  modo: 'pie',
   pie: {
     maxDistancia: 3.5,
     maxPeso: 15,
@@ -1338,7 +1318,6 @@ const CONFIG_DELIVERY = {
       { maxKg: 15.0, costo: 4.00 }
     ]
   },
-
   moto: {
     maxDistancia: 8.0,
     maxPeso: 30,
@@ -1380,15 +1359,12 @@ function getFechasRonda(){
   const lunes = new Date(hoy);
   lunes.setDate(hoy.getDate() + diff);
   lunes.setHours(0,0,0,0);
-
   const viernes = new Date(lunes);
   viernes.setDate(lunes.getDate() + 4);
   viernes.setHours(17, 0, 0, 0);
-
   const domingo = new Date(lunes);
   domingo.setDate(lunes.getDate() + 6);
   domingo.setHours(0,0,0,0);
-
   return { lunes, viernes, domingo };
 }
 
@@ -1399,17 +1375,13 @@ function formatearFechaRonda(d){
 function actualizarRelojRonda(){
   const reloj = $('relojRonda');
   if (!reloj) return;
-
   const { viernes, domingo } = getFechasRonda();
   const ahora = new Date();
-
   const fechaEl = $('relojFecha');
   if (fechaEl) fechaEl.textContent = formatearFechaRonda(domingo);
-
   const restante = viernes.getTime() - ahora.getTime();
   const tiempoEl = $('relojTiempo');
   const cerradoEl = $('relojCerrado');
-
   if (restante <= 0){
     reloj.classList.add('cerrada');
     reloj.classList.remove('urgente');
@@ -1425,19 +1397,15 @@ function actualizarRelojRonda(){
     }
     return;
   }
-
   reloj.classList.remove('cerrada');
   if (tiempoEl) tiempoEl.classList.remove('hidden');
   if (cerradoEl) cerradoEl.classList.add('hidden');
-
   reloj.classList.toggle('urgente', restante < 24 * 3600 * 1000);
-
   const segs   = Math.floor(restante / 1000);
   const dias   = Math.floor(segs / 86400);
   const horas  = Math.floor((segs % 86400) / 3600);
   const mins   = Math.floor((segs % 3600) / 60);
   const segsR  = segs % 60;
-
   const elD = $('relojDias');  if (elD) elD.textContent = dias;
   const elH = $('relojHoras'); if (elH) elH.textContent = String(horas).padStart(2,'0');
   const elM = $('relojMin');   if (elM) elM.textContent = String(mins).padStart(2,'0');
@@ -1471,7 +1439,7 @@ if (cliente.lng == null) cliente.lng = null;
 
 let pedidos = cargar(LS_PEDIDOS, []);
 let recogerEnLocal = false;
-let metodoPago = 'yape'; // 'yape' | 'efectivo'
+let metodoPago = 'yape';
 
 let mapaDrawer = null;
 let marcadorDrawer = null;
@@ -1545,7 +1513,6 @@ function descuentoAplicado(){
   return 0;
 }
 
-// --- CÁLCULO DE PESO Y DISTANCIA ---
 function pesoTotalCarrito() {
   return itemsCarrito().reduce((total, item) => {
     const pesoUnitario = item.equiv_kg || 1;
@@ -1567,17 +1534,12 @@ function calcularDistanciaKm() {
 
 function costoDelivery() {
   if (recogerEnLocal) return 0;
-
   const peso = pesoTotalCarrito();
   const distancia = calcularDistanciaKm();
-
   if (distancia === null) return CONFIG_DELIVERY[CONFIG_DELIVERY.modo].tarifasDistancia[0].costo;
-
   const config = CONFIG_DELIVERY[CONFIG_DELIVERY.modo];
-
   if (distancia > config.maxDistancia) return -1;
   if (peso > config.maxPeso) return -2;
-
   let tarifaBase = 0;
   for (const rango of config.tarifasDistancia) {
     if (distancia <= rango.maxKm) {
@@ -1585,7 +1547,6 @@ function costoDelivery() {
       break;
     }
   }
-
   let recargoPeso = 0;
   for (const rango of config.recargosPeso) {
     if (peso <= rango.maxKg) {
@@ -1593,11 +1554,9 @@ function costoDelivery() {
       break;
     }
   }
-
   return +(tarifaBase + recargoPeso).toFixed(2);
 }
 
-// --- COMISIÓN YAPE (Sobre Subtotal + Delivery) ---
 function comisionYape() {
   if (metodoPago !== 'yape') return 0;
   const delivery = costoDelivery();
@@ -1683,20 +1642,15 @@ function seleccionarSugerencia(r){
   const via = a.road || a.pedestrian || a.neighbourhood || '';
   const dist = a.suburb || a.city_district || a.town || a.city || '';
   const calleLimpia = via || r.display_name.split(',')[0];
-
   cliente.calle = calleLimpia;
   cliente.distrito = dist;
   cliente.lat = +parseFloat(r.lat).toFixed(6);
   cliente.lng = +parseFloat(r.lon).toFixed(6);
-
   const zi = deducirZonaSync(dist);
   if (zi.zona) cliente.zona = zi.zona;
-
   guardar(LS_CLIENTE, cliente);
-
   const inp = $('inpCalle');
   if (inp) inp.value = calleLimpia;
-
   ocultarSugerencias();
   mostrarEstadoBusqueda('ok');
   mostrarMapaDrawer();
@@ -1736,7 +1690,6 @@ function mostrarMapaDrawer(){
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
         { maxZoom: 19, attribution: 'Tiles © Esri' }
       ).addTo(mapaDrawer);
-
       const icono = L.divIcon({
         className:'',
         html:`<div style="width:26px;height:26px;border-radius:50% 50% 50% 0;background:var(--naranja-zanah);border:3px solid var(--carbon);transform:rotate(-45deg);box-shadow:2px 2px 0 var(--carbon);"></div>`,
@@ -1772,7 +1725,6 @@ function actualizarChecklistDir(){
   const calleOk = validarCalle();
   const numV = validarNumeroCasa(cliente.numero);
   const refV = validarReferencia(cliente.referencia);
-
   const c1 = $('chk-calle');
   const c2 = $('chk-numero');
   const c3 = $('chk-referencia');
@@ -1791,10 +1743,7 @@ function actualizarBotonConfirmar(){
   const tel = soloDigitos(cliente.telefono);
   const nombreOk = !!cliente.nombre.trim();
   const telOk = tel.length === 9 && tel.startsWith('9');
-
   const delivery = costoDelivery();
-
-  // Si el delivery es negativo (fuera de cobertura o peso excedido), bloqueamos
   if (!recogerEnLocal && delivery < 0) {
     btn.disabled = true;
     btn.textContent = delivery === -1 ? 'Fuera de cobertura a pie' : 'Peso excedido (máx 15 kg)';
@@ -1802,41 +1751,29 @@ function actualizarBotonConfirmar(){
     btn.style.color = '#A88A72';
     return;
   }
-
-  // Restaurar estilos si todo está ok
   btn.style.background = '';
   btn.style.color = '';
   btn.textContent = 'Confirmar pedido por WhatsApp';
-
   if (recogerEnLocal){
     btn.disabled = !(nombreOk && telOk);
     return;
   }
-
   const calleOk = validarCalle();
   const numOk = validarNumeroCasa(cliente.numero).ok;
   const refOk = validarReferencia(cliente.referencia).ok;
-
   btn.disabled = !(nombreOk && telOk && calleOk && numOk && refOk);
 }
-
-// ----------------------------------------------------
-// RENDERIZADO DINÁMICO DEL CATÁLOGO
-// ----------------------------------------------------
 
 function renderCatalogo(){
   const cont = $('catalogoCont');
   if (!cont) return;
-  
   const grupos = {};
   PRODUCTOS.forEach(p => {
     const g = p.grupo || 'Otros';
     if (!grupos[g]) grupos[g] = [];
     grupos[g].push(p);
   });
-
   let html = '';
-  
   const gruposOrdenados = Object.keys(grupos).sort((a,b) => {
       const idxA = ORDEN_GRUPOS.indexOf(a);
       const idxB = ORDEN_GRUPOS.indexOf(b);
@@ -1845,23 +1782,18 @@ function renderCatalogo(){
       if(idxB !== -1) return 1;
       return a.localeCompare(b);
   });
-
   gruposOrdenados.forEach(g => {
     html += `<h3 class="grupo-titulo">${g} <small>${grupos[g].length} productos</small></h3>`;
     if (DESCRIPCION_GRUPOS[g]) {
       html += `<p class="grupo-desc">${DESCRIPCION_GRUPOS[g]}</p>`;
     }
     html += `<div class="productos-grid">`;
-    
     grupos[g].forEach(p => {
       const qty = (carrito[p.codigo] && carrito[p.codigo].qty) || 0;
       const enCarrito = qty > 0;
-
       let bgPos = p.bgPos || '0% 0%';
       let fotoStyle = `--bg-pos:${bgPos};`;
-
       const precioMostrar = p.precio > 0 ? soles(p.precio) : 'Cargando...';
-
       html += `
         <div class="producto ${enCarrito ? 'en-carrito' : ''}" data-codigo="${p.codigo}">
           <div class="producto-foto" style="${fotoStyle}"></div>
@@ -1889,7 +1821,6 @@ function renderCatalogo(){
     });
     html += `</div>`;
   });
-  
   cont.innerHTML = html;
   bindQtyInputs();
 }
@@ -1919,7 +1850,6 @@ function bindQtyInputs(){
       guardar(LS_CARRITO, carrito);
       renderCartBar();
     });
-
     inp.addEventListener('blur', () => {
       const codigo = inp.dataset.qty;
       const n = normalizarCantidad(inp.value);
@@ -1935,7 +1865,6 @@ function bindQtyInputs(){
       guardar(LS_CARRITO, carrito);
       renderCartBar();
     });
-
     inp.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
     inp.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
@@ -1975,7 +1904,6 @@ function cerrarDrawer(){
 
 function renderDrawer(){
   destruirMapaDrayerSafe();
-
   const body = $('drawerBody');
   const foot = $('drawerFoot');
   const items = itemsCarrito();
@@ -2001,11 +1929,9 @@ function renderDrawer(){
   }
 
   $('drawerTitulo').textContent = `Tu pedido · ${totalItems()} ${totalItems() === 1 ? 'producto' : 'productos'}`;
-
   const numV = validarNumeroCasa(cliente.numero);
   const refV = validarReferencia(cliente.referencia);
   const calleOk = validarCalle();
-
   const faltaMinimo = subtotal < MINIMO_COMPRA;
 
   body.innerHTML = `
@@ -2025,7 +1951,6 @@ function renderDrawer(){
     ${(() => {
       let msgDelivery = '';
       let colorDelivery = 'var(--texto-suave)';
-      
       if (recogerEnLocal) {
         msgDelivery = 'Gratis (recojo en local)';
         colorDelivery = 'var(--verde-culantro)';
@@ -2040,33 +1965,27 @@ function renderDrawer(){
       } else {
         msgDelivery = soles(delivery);
       }
-
       return `
         <div class="resumen">
           <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
-          
           ${(dist !== null && !recogerEnLocal) ? `
             <div class="resumen-linea" style="font-size:11px; color:var(--texto-muy-suave); padding-bottom:8px; border-bottom:1px dashed var(--borde);">
               <span>Peso aprox: ${peso.toFixed(1)} kg · Distancia: ${dist.toFixed(1)} km</span>
             </div>
           ` : ''}
-
           <div class="resumen-linea">
             <span>Delivery (${CONFIG_DELIVERY.modo})</span>
             <span style="color:${colorDelivery}; font-weight:700;">${msgDelivery}</span>
           </div>
-          
           ${metodoPago === 'yape' && delivery >= 0 ? `
             <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span>${soles(comision)}</span></div>
           ` : ''}
-          
           <div class="resumen-linea total"><span>Total a pagar</span><span>${soles(total)}</span></div>
         </div>
       `;
     })()}
 
     <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Método de pago</h4>
-
     <div style="display:flex; gap:12px; margin-bottom:20px;">
       <button type="button" class="metodo-pago ${metodoPago === 'yape' ? 'activo' : ''}" data-metodo="yape"
         style="flex:1; padding:12px; border:2px solid var(--carbon); border-radius:var(--radio-sm); background:${metodoPago === 'yape' ? 'var(--miel-suave)' : 'var(--blanco)'}; font-weight:700; font-size:14px; box-shadow:2px 2px 0 var(--carbon); transition:all .15s;">
@@ -2252,7 +2171,6 @@ function bindDrawerInputs(){
       guardar(LS_CLIENTE, cliente);
       actualizarChecklistDir();
       actualizarBotonConfirmar();
-
       clearTimeout(debounceDir);
       if (q.length < 4){
         ocultarSugerencias();
@@ -2261,12 +2179,10 @@ function bindDrawerInputs(){
       }
       debounceDir = setTimeout(() => buscarDireccion(q), 500);
     });
-
     inpCalle.addEventListener('focus', () => {
       const q = inpCalle.value.trim();
       if (q.length >= 4 && sugerenciasCache.length) renderSugerencias(sugerenciasCache);
     });
-
     inpCalle.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') ocultarSugerencias();
     });
@@ -2283,7 +2199,6 @@ function bindDrawerInputs(){
       inpNumero.value = v;
       cliente.numero = v;
       guardar(LS_CLIENTE, cliente);
-
       const numV = validarNumeroCasa(v);
       const fb = $('feedbackNumero');
       if (fb){
@@ -2349,23 +2264,6 @@ function onToggleRecojo(e){
   renderDrawer();
 }
 
-function actualizarResumenYPrecio(){
-  const subtotal = subtotalCarrito();
-  const delivery = costoDelivery();
-  const comision = comisionYape();
-  const total = totalCarrito();
-  const resumenEl = document.querySelector('.drawer-body .resumen');
-  if (resumenEl) {
-    resumenEl.innerHTML = `
-      <div class="resumen-linea"><span>Subtotal</span><span>${soles(subtotal)}</span></div>
-      <div class="resumen-linea"><span>Delivery</span><span style="${delivery === 0 ? 'color:var(--verde-culantro); font-weight:700;' : ''}">${delivery === 0 ? 'Gratis (recojo)' : soles(delivery)}</span></div>
-      <div class="resumen-linea"><span>Comisión Yape (${COMISION_YAPE_PORC}%)</span><span>${soles(comision)}</span></div>
-      <div class="resumen-linea total"><span>Total</span><span>${soles(total)}</span></div>
-    `;
-  }
-  renderCartBar();
-}
-
 function cambiarQty(codigo, delta){
   const actual = (carrito[codigo] && carrito[codigo].qty) || 0;
   const nuevo = Math.max(0, +(actual + delta).toFixed(2));
@@ -2397,18 +2295,15 @@ function construirMensajeWhatsApp(){
   const refTxt = (cliente.referencia || '').trim() || '—';
   const peso = pesoTotalCarrito();
   const dist = calcularDistanciaKm();
-
   const productosTxt = items
     .map(i => `${i.nombre} (x${i.qty} ${i.unidad}) - ${soles(i.subtotal)}`)
     .join(' ▸ ');
-
   const lineas = [
     '🛒 PEDIDO - COMPRA CON MISTI',
     `▸ Nombre: ${cliente.nombre || ''}`,
     `▸ ID: ${idCliente}`,
     `▸ Ronda: ${ronda}`
   ];
-
   if (recogerEnLocal){
     lineas.push('▸ Dirección: Recojo en local (Eduardo Bello 385)');
     lineas.push(`▸ Referencia: —`);
@@ -2420,23 +2315,19 @@ function construirMensajeWhatsApp(){
       lineas.push(`▸ Lng: ${Number(cliente.lng).toFixed(5)}`);
     }
   }
-
   lineas.push(`▸ Producto(s): ${productosTxt}`);
   lineas.push(`▸ Peso aprox: ${peso.toFixed(1)} kg`);
   lineas.push(`▸ Subtotal: ${soles(subtotal)}`);
-  
   if (recogerEnLocal) {
     lineas.push(`▸ Delivery: Gratis (recojo en local)`);
   } else {
     lineas.push(`▸ Delivery: ${cliente.lat ? soles(delivery) : 'Por calcular'}`);
     if (dist) lineas.push(`   (Distancia aprox: ${dist.toFixed(1)} km)`);
   }
-
   lineas.push(`▸ Comisión Yape (${COMISION_YAPE_PORC}%): ${soles(comision)}`);
   lineas.push(`▸ TOTAL: ${soles(total)}`);
   lineas.push(`▸ Pago: ${metodoPago === 'yape' ? 'Yape' : 'Efectivo'}`);
   lineas.push(`▸ Solicitud: Confirmar día de entrega y coordinar pago.`);
-
   return lineas.join('\n');
 }
 
@@ -2449,9 +2340,7 @@ function validarPedido(){
     cliente.referencia = ($('inpReferencia')?.value || cliente.referencia || '').trim();
   }
   guardar(LS_CLIENTE, cliente);
-
   let ok = true, primerError = null;
-
   if (itemsCarrito().length === 0) { alert('Tu canasta está vacía.'); return false; }
   if (subtotalCarrito() < MINIMO_COMPRA) {
     alert(`El mínimo de compra es S/ ${MINIMO_COMPRA}. Te faltan ${soles(MINIMO_COMPRA - subtotalCarrito())}.`);
@@ -2460,7 +2349,6 @@ function validarPedido(){
   if (!cliente.nombre) { $('inpNombre')?.classList.add('error'); primerError = primerError || $('inpNombre'); ok = false; }
   const tel = soloDigitos(cliente.telefono);
   if (tel.length !== 9 || !tel.startsWith('9')) { $('inpTelefono')?.classList.add('error'); primerError = primerError || $('inpTelefono'); ok = false; }
-
   if (!recogerEnLocal){
     if (!validarCalle()){
       $('inpCalle')?.classList.add('error');
@@ -2485,7 +2373,6 @@ function validarPedido(){
       return false;
     }
   }
-
   if (!ok) {
     if (primerError) primerError.focus();
     alert('Revisa los campos marcados en rojo.');
@@ -2496,7 +2383,6 @@ function validarPedido(){
 
 function confirmarPedido(){
   if (!validarPedido()) return;
-
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
   const descuento = descuentoAplicado();
@@ -2508,7 +2394,6 @@ function confirmarPedido(){
   const ronda = getRondaId();
   const mensaje = construirMensajeWhatsApp();
   const url = `https://wa.me/${WHATSAPP_NEGOCIO}?text=${encodeURIComponent(mensaje)}`;
-
   const pedido = {
     cliente_id: idCliente,
     ronda: ronda,
@@ -2539,9 +2424,7 @@ function confirmarPedido(){
   };
   pedidos.unshift(pedido);
   guardar(LS_PEDIDOS, pedidos);
-
   window.open(url, '_blank');
-
   $('drawerTitulo').textContent = 'Pedido enviado';
   $('drawerBody').innerHTML = `
     <div class="confirmacion">
@@ -2572,13 +2455,10 @@ function init(){
   if (window.L && L.TileLayer && L.TileLayer.prototype && L.TileLayer.prototype.options){
     L.TileLayer.prototype.options.referrerPolicy = 'strict-origin-when-cross-origin';
   }
-
   const ronda = getRondaId();
   document.querySelectorAll('.rondaId').forEach(el => el.textContent = ronda);
-
   renderCatalogo();
   renderCartBar();
-
   $('cartBar').addEventListener('click', abrirDrawer);
   $('cartBar').addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirDrawer(); }
@@ -2588,11 +2468,9 @@ function init(){
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && $('drawer').classList.contains('open')) cerrarDrawer();
   });
-
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.dir-search')) ocultarSugerencias();
   });
-
   actualizarRelojRonda();
   setInterval(actualizarRelojRonda, 1000);
 }
@@ -2652,25 +2530,29 @@ async function cargarTodoElCatalogo() {
       const data = d.data();
       const codigo = data.codigo_producto || d.id;
 
-      let precio = 0;
+      // ✅ FIX: P_L_final viene en S//kg desde el admin.
+      // Lo convertimos a S//unidad de venta multiplicando por equiv_kg.
+      let precio_kg = 0;
       if (typeof data.P_L_final === 'number' && data.P_L_final > 0) {
-        precio = data.P_L_final;
+        precio_kg = data.P_L_final;
       } else if (typeof data.P_L_sugerido === 'number' && data.P_L_sugerido > 0) {
-        precio = data.P_L_sugerido;
+        precio_kg = data.P_L_sugerido;
       } else if (typeof data.P_L_mercado === 'number' && data.P_L_mercado > 0) {
-        precio = data.P_L_mercado;
+        precio_kg = data.P_L_mercado;
       }
-      precio = Math.round(precio * 100) / 100;
 
       const productoCfg = PRODUCTOS.find(p => p.codigo === codigo);
       const posicionBG = productoCfg ? productoCfg.bgPos : '0% 0%';
-      
+
       let equiv_kg = 1;
       if (typeof data.equiv_kg === 'number' && data.equiv_kg > 0) {
         equiv_kg = data.equiv_kg;
       } else if (productoCfg && productoCfg.equiv_kg) {
         equiv_kg = productoCfg.equiv_kg;
       }
+
+      // ✅ Conversión clave: S//kg × kg/unidad = S//unidad de venta
+      const precio = Math.round(precio_kg * equiv_kg * 100) / 100;
 
       nuevosProductos.push({
         codigo,
