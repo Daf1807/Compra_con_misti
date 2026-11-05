@@ -1384,6 +1384,7 @@
   </div>
 </div>
 
+<!-- SCRIPTS DEL HTML ORIGINAL -->
 <script>
 let PRODUCTOS = [
   { codigo:'PR-001', nombre:'Papa Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 0%', equiv_kg: 1 },
@@ -1683,7 +1684,6 @@ function costoDelivery() {
     }
   }
   const resultado = +(tarifaBase + recargoPeso).toFixed(2);
-  console.log(`[Misti] Distancia: ${distancia.toFixed(2)} km · Peso: ${peso.toFixed(1)} kg · Delivery: S/ ${resultado.toFixed(2)}`);
   return resultado;
 }
 
@@ -1919,21 +1919,17 @@ async function actualizarCoordsDesdePin(lat, lng){
   const mt = $('mapaTxt');
   if (mt) mt.textContent = `Buscando la dirección de este punto...`;
 
-  // Feedback visual de carga en el input
   const inpCalle = $('inpCalle');
   let placeholderOriginal = '';
   if (inpCalle) {
     placeholderOriginal = inpCalle.placeholder;
     inpCalle.placeholder = 'Buscando calle...';
-    inpCalle.classList.add('buscando');
   }
 
-  // Buscar la dirección real por coordenadas (Reverse Geocoding)
   const res = await buscarDireccionPorCoords(cliente.lat, cliente.lng);
 
   if (inpCalle) {
     inpCalle.placeholder = placeholderOriginal;
-    inpCalle.classList.remove('buscando');
   }
 
   if (res && res.calle) {
@@ -2730,8 +2726,9 @@ function validarPedido(){
   return true;
 }
 
-function confirmarPedido(){
+async function confirmarPedido(){
   if (!validarPedido()) return;
+  
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
   const descuento = descuentoAplicado();
@@ -2739,14 +2736,14 @@ function confirmarPedido(){
   const comision = comisionYape();
   const total = totalCarrito();
   const tel = soloDigitos(cliente.telefono);
-  const idCliente = '001' + tel;
   const ronda = getRondaId();
   const mensaje = construirMensajeWhatsApp();
   const url = `https://wa.me/${WHATSAPP_NEGOCIO}?text=${encodeURIComponent(mensaje)}`;
-  const pedido = {
-    cliente_id: idCliente,
+  
+  // Preparamos el objeto con TODO lo que sale en la boleta
+  const pedidoParaFirebase = {
+    idCliente: '001' + tel,
     ronda: ronda,
-    fecha: new Date().toISOString(),
     cliente: {
       nombre: cliente.nombre,
       telefono: tel,
@@ -2754,33 +2751,44 @@ function confirmarPedido(){
       numero: recogerEnLocal ? '' : cliente.numero,
       referencia: recogerEnLocal ? '' : cliente.referencia,
       distrito: cliente.distrito || '',
-      zona: cliente.zona || 'A',
-      recojo_local: recogerEnLocal,
       lat: recogerEnLocal ? null : cliente.lat,
       lng: recogerEnLocal ? null : cliente.lng
     },
+    modalidad: recogerEnLocal ? 'recojo' : 'delivery',
+    metodoPago: metodoPago === 'yape' ? 'Yape' : 'Efectivo',
+    subtotal: subtotal,
+    total: total,
+    peso: pesoTotalCarrito(),
+    distancia: calcularDistanciaKm() || 0,
+    costoDelivery: delivery >= 0 ? delivery : 0,
+    comisionYape: comision,
     items: items.map(i => ({
-      codigo: i.codigo, nombre: i.nombre, unidad: i.unidad,
-      cantidad: i.qty, precio_unitario: i.precio, subtotal: i.subtotal
-    })),
-    subtotal,
-    descuento_recojo: descuento,
-    delivery_costo: delivery,
-    comision_yape: comision,
-    metodo_pago: metodoPago,
-    total,
-    mensaje_enviado: mensaje
+      codigo: i.codigo, 
+      nombre: i.nombre, 
+      unidad: i.unidad,
+      cantidad: i.qty, 
+      precio_unitario: i.precio, 
+      subtotal: i.subtotal
+    }))
   };
-  pedidos.unshift(pedido);
-  guardar(LS_PEDIDOS, pedidos);
+
+  // Guardamos en Firebase
+  let guardadoOk = false;
+  if (typeof window.guardarPedidoEnFirebase === 'function') {
+    guardadoOk = await window.guardarPedidoEnFirebase(pedidoParaFirebase);
+  }
+
+  // Abrimos WhatsApp
   window.open(url, '_blank');
+  
+  // Mostramos la pantalla de confirmación
   $('drawerTitulo').textContent = 'Pedido enviado';
   $('drawerBody').innerHTML = `
     <div class="confirmacion">
       <div class="confirmacion-icon">✓</div>
       <h3>¡Pedido listo!</h3>
       <p>Se abrió WhatsApp con el resumen. Envíalo para confirmar tu pedido.</p>
-      <p style="font-size:13px;">Coordinaremos la entrega y el pago por WhatsApp.</p>
+      <p style="font-size:13px;">${guardadoOk ? '✅ El pedido quedó registrado en el sistema como <b>Pendiente</b>.' : '⚠️ El pedido no se pudo registrar en el sistema automáticamente, pero tu mensaje de WhatsApp llegará bien.'}</p>
     </div>
   `;
   $('drawerFoot').innerHTML = `
@@ -2839,7 +2847,7 @@ init();
 
 <script type="module">
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAonWel671riadA7rP7yKTWFy1APCad1LI",
@@ -2853,6 +2861,56 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Guardar el pedido directo a Firestore
+window.guardarPedidoEnFirebase = async function(data) {
+  try {
+    const rondaId = data.ronda; 
+    const pedidosRef = collection(db, "rondas", rondaId, "pedidos");
+    
+    const nuevoPedido = {
+      pedido_id: data.idCliente,
+      id_ronda: rondaId,
+      cliente_nombre: data.cliente.nombre,
+      cliente_celular: data.cliente.telefono,
+      direccion: data.cliente.calle + ' ' + data.cliente.numero,
+      distrito: data.cliente.distrito || '',
+      lat: data.cliente.lat || null,
+      lng: data.cliente.lng || null,
+      modalidad: data.modalidad, // 'delivery' o 'recojo'
+      metodo_pago: data.metodoPago, // 'Yape' o 'Efectivo'
+      subtotal: data.subtotal,
+      total: data.total,
+      peso_aprox: data.peso,
+      distancia_km: data.distancia,
+      costo_delivery: data.costoDelivery,
+      comision_yape: data.comisionYape,
+      estado: "pendiente", // 👈 Aquí entra como pendiente
+      notas: data.cliente.referencia || '',
+      fecha: new Date().toISOString(),
+      tipo_cliente: "B2C",
+      verificado_por: null,
+      descuento_recojo: 0,
+      items: data.items,
+      historial_estados: [
+        {
+          estado: "pendiente",
+          fecha: new Date().toISOString(),
+          motivo: "Pedido creado desde la web",
+          por: "Cliente"
+        }
+      ]
+    };
+
+    const docRef = await addDoc(pedidosRef, nuevoPedido);
+    console.log("✅ Pedido guardado en Firebase con ID:", docRef.id);
+    return true;
+  } catch (error) {
+    console.error("❌ Error guardando pedido en Firebase:", error);
+    return false;
+  }
+};
+
+// --- CÓDIGO ORIGINAL DE CARGA DE CATÁLOGO ---
 function grupoDesdeCodigo(codigo) {
   const num = parseInt(String(codigo || '').replace(/\D/g, ''), 10);
   if (isNaN(num)) return 'Especial';
@@ -2874,16 +2932,10 @@ async function cargarTodoElCatalogo() {
         const p = d.data();
         mapaProductos[p.codigo] = p;
       });
-      console.log(`[Misti] ✓ ${Object.keys(mapaProductos).length} productos maestros cargados`);
-    } catch (e) {
-      console.warn("[Misti] No se pudieron cargar productos maestros:", e);
-    }
+    } catch (e) { console.warn("[Misti] No se pudieron cargar productos maestros:", e); }
 
     const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
-    if (preciosSnap.empty) {
-      console.warn("[Misti] Sin precios en Firestore. Manteniendo catálogo local.");
-      return;
-    }
+    if (preciosSnap.empty) return;
 
     const nuevosProductos = [];
     preciosSnap.docs.forEach(d => {
@@ -2891,45 +2943,18 @@ async function cargarTodoElCatalogo() {
       const codigo = data.codigo_producto || d.id;
       const prod = mapaProductos[codigo];
 
-      let precio_kg = 0;
-      if (typeof data.P_L_final === 'number' && data.P_L_final > 0) {
-        precio_kg = data.P_L_final;
-      } else if (typeof data.P_L_sugerido === 'number' && data.P_L_sugerido > 0) {
-        precio_kg = data.P_L_sugerido;
-      } else if (typeof data.P_L_mercado === 'number' && data.P_L_mercado > 0) {
-        precio_kg = data.P_L_mercado;
-      }
-
+      let precio_kg = data.P_L_final || data.P_L_sugerido || data.P_L_mercado || 0;
       let equiv_kg = 1;
-      let fuenteEquiv = 'default';
-
-      if (prod) {
-        if (typeof prod.equiv_kg_venta === 'number' && prod.equiv_kg_venta > 0) {
-          equiv_kg = prod.equiv_kg_venta;
-          fuenteEquiv = 'producto_maestro.equiv_kg_venta';
-        } else if (typeof prod.equiv_kg === 'number' && prod.equiv_kg > 0) {
-          equiv_kg = prod.equiv_kg;
-          fuenteEquiv = 'producto_maestro.equiv_kg';
-        }
-      }
-      if (fuenteEquiv === 'default' && typeof data.equiv_kg === 'number' && data.equiv_kg > 0) {
-        equiv_kg = data.equiv_kg;
-        fuenteEquiv = 'precio.equiv_kg';
-      }
-      if (fuenteEquiv === 'default') {
+      if (prod && prod.equiv_kg_venta > 0) equiv_kg = prod.equiv_kg_venta;
+      else if (prod && prod.equiv_kg > 0) equiv_kg = prod.equiv_kg;
+      else if (data.equiv_kg > 0) equiv_kg = data.equiv_kg;
+      else {
         const cfg = PRODUCTOS.find(p => p.codigo === codigo);
-        if (cfg && cfg.equiv_kg) {
-          equiv_kg = cfg.equiv_kg;
-          fuenteEquiv = 'catalogo_local';
-        }
+        if (cfg && cfg.equiv_kg) equiv_kg = cfg.equiv_kg;
       }
 
       const precio = Math.round(precio_kg * equiv_kg * 100) / 100;
-
-      console.log(`[Misti] ${codigo} ${data.nombre || ''}: P_L_final=${precio_kg} × equiv_kg=${equiv_kg} (${fuenteEquiv}) = ${precio}`);
-
       const productoCfg = PRODUCTOS.find(p => p.codigo === codigo);
-      const posicionBG = productoCfg ? productoCfg.bgPos : '0% 0%';
 
       nuevosProductos.push({
         codigo,
@@ -2939,7 +2964,7 @@ async function cargarTodoElCatalogo() {
         precio,
         equiv_kg,
         img: 'catalogo-misti-grid.png',
-        bgPos: posicionBG,
+        bgPos: productoCfg ? productoCfg.bgPos : '0% 0%',
         bgSize: '400% 700%'
       });
     });
@@ -2950,12 +2975,7 @@ async function cargarTodoElCatalogo() {
     const gruposPresentes = [...new Set(PRODUCTOS.map(p => p.grupo))];
     const ordenPreferido = ['Básicos', 'Sazón y Aderezos', 'Hierbas y Aromáticos', 'Especial'];
     ORDEN_GRUPOS = ordenPreferido.filter(g => gruposPresentes.includes(g));
-    gruposPresentes.forEach(g => {
-      if (!ORDEN_GRUPOS.includes(g)) ORDEN_GRUPOS.push(g);
-    });
-
-    console.log(`[Misti] ✓ ${PRODUCTOS.length} productos finales`);
-    console.log(`[Misti] Hub: ${MISTI_LAT}, ${MISTI_LNG} (Eduardo Bello 385, La Victoria)`);
+    gruposPresentes.forEach(g => { if (!ORDEN_GRUPOS.includes(g)) ORDEN_GRUPOS.push(g); });
 
     if (typeof renderCatalogo === 'function') renderCatalogo();
     if (typeof renderCartBar === 'function') renderCartBar();
