@@ -777,25 +777,6 @@
     50%{box-shadow:0 0 0 8px rgba(63,125,63,0);}
   }
 
-  /* Ruta info */
-  .ruta-info{
-    padding:9px 12px;
-    background:var(--carbon);
-    color:var(--crema);
-    font-size:11.5px; font-weight:600;
-    display:none; align-items:center; gap:8px;
-    line-height:1.4;
-    border-top:2px solid var(--carbon);
-  }
-  .ruta-info.visible{display:flex;}
-  .ruta-info .ruta-icon{font-size:14px; flex-shrink:0;}
-  .ruta-info strong{color:var(--miel); font-weight:800;}
-  .ruta-info .ruta-nota{
-    display:block; font-size:10px; font-weight:500;
-    color:rgba(250,244,232,0.65); margin-top:2px;
-  }
-  @media (min-width:640px){ .ruta-info{padding:10px 14px; font-size:12px;} }
-
   .estado-busqueda{margin-top:10px; display:none;}
   .estado-busqueda.visible{display:block;}
   .estado-busqueda .msg{
@@ -1590,7 +1571,6 @@ let metodoPago = 'yape';
 let mapaDrawer = null;
 let marcadorDrawer = null;
 let marcadorHub = null;
-let rutaLayer = null;
 let debounceDir = null;
 let sugerenciasCache = [];
 
@@ -1811,7 +1791,6 @@ function seleccionarSugerencia(r){
   actualizarChecklistDir();
   actualizarBotonConfirmar();
   actualizarBoleta();
-  calcularYMostrarRuta();
 }
 
 function mostrarEstadoBusqueda(tipo){
@@ -1836,7 +1815,6 @@ function mostrarEstadoBusqueda(tipo){
     if (btn) btn.addEventListener('click', () => {
       mostrarMapaDrawer();
       mostrarEstadoBusqueda('idle');
-      // Si no hay coords, centrar en el hub (ya lo hace mostrarMapaDrawer)
     });
   } else if (tipo === 'error'){
     el.innerHTML = `<div class="msg error">! <span>Error de conexión. Intenta de nuevo o ubica el pin en el mapa.</span></div>`;
@@ -1862,7 +1840,6 @@ function mostrarMapaDrawer(){
         { maxZoom: 19, attribution: 'Tiles © Esri' }
       ).addTo(mapaDrawer);
 
-      // Marcador fijo del hub El Misti
       const iconoHub = L.divIcon({
         className:'',
         html:`<div style="position:relative;width:22px;height:22px;">
@@ -1876,7 +1853,6 @@ function mostrarMapaDrawer(){
         .addTo(mapaDrawer)
         .bindPopup('<strong>El Misti</strong><br>Eduardo Bello 385<br>Santa Catalina, La Victoria');
 
-      // Click en el mapa mueve/crea el pin del cliente
       mapaDrawer.on('click', (e) => {
         if (!marcadorDrawer){
           crearMarcador(e.latlng.lat, e.latlng.lng);
@@ -1900,9 +1876,6 @@ function mostrarMapaDrawer(){
         ? 'Arrastra el pin o toca el mapa para ajustar tu ubicación exacta.'
         : 'Toca el mapa para marcar tu ubicación exacta. El punto rojo es El Misti.';
     }
-
-    // Si hay coords, calcular ruta
-    if (hayCoords) calcularYMostrarRuta();
   }, 220);
 }
 
@@ -1938,7 +1911,6 @@ function actualizarCoordsDesdePin(lat, lng){
 
   actualizarBoleta();
   actualizarBotonConfirmar();
-  calcularYMostrarRuta();
 }
 
 function destruirMapaDrawer(){
@@ -1947,7 +1919,6 @@ function destruirMapaDrawer(){
     mapaDrawer = null;
     marcadorDrawer = null;
     marcadorHub = null;
-    rutaLayer = null;
   }
 }
 
@@ -2400,7 +2371,6 @@ function renderDrawer(){
           <span class="dot-pulse"></span>
           <span id="mapaTxt">Arrastra el pin o toca el mapa para ajustar tu ubicación exacta.</span>
         </div>
-        <div class="ruta-info" id="rutaInfo"></div>
       </div>
 
       <div id="zonaInfo"></div>
@@ -2435,7 +2405,6 @@ function renderDrawer(){
     if (btn) btn.disabled = true;
   }
 
-  // Mostrar el mapa siempre (aunque no haya coords) si hay calle escrita
   if (!recogerEnLocal && (cliente.calle || (cliente.lat != null && cliente.lng != null))){
     mostrarMapaDrawer();
   }
@@ -2487,7 +2456,6 @@ function bindDrawerInputs(){
   if (inpCalle){
     inpCalle.addEventListener('input', () => {
       const q = inpCalle.value.trim();
-      // Solo invalidar coords si la calle cambió respecto a lo guardado
       if (q !== cliente.calle) {
         if (cliente.lat != null) {
           cliente.lat = null;
@@ -2495,8 +2463,6 @@ function bindDrawerInputs(){
           const caja = $('mapaCajaDrawer');
           if (caja) caja.classList.remove('visible');
           destruirMapaDrayerSafe();
-          const ri = $('rutaInfo');
-          if (ri) { ri.classList.remove('visible'); ri.innerHTML = ''; }
         }
       }
       cliente.calle = q;
@@ -2512,7 +2478,6 @@ function bindDrawerInputs(){
       }
       debounceDir = setTimeout(() => {
         buscarDireccion(q);
-        // Mostrar mapa aunque no haya resultado
         if (!cliente.lat) mostrarMapaDrawer();
       }, 500);
     });
@@ -2788,57 +2753,6 @@ function finalizarPedido(){
   cerrarDrawer();
   renderCatalogo();
   renderCartBar();
-}
-
-// === RUTA CAMINANDO CON OSRM ===
-async function calcularYMostrarRuta(){
-  if (!mapaDrawer || cliente.lat == null || cliente.lng == null) return;
-  // Eliminar ruta previa
-  if (rutaLayer) {
-    try { mapaDrawer.removeLayer(rutaLayer); } catch(e){}
-    rutaLayer = null;
-  }
-  const info = $('rutaInfo');
-  if (info) {
-    info.classList.add('visible');
-    info.innerHTML = `<span class="ruta-icon">⏳</span><span>Calculando ruta a pie…</span>`;
-  }
-  try {
-    // OSRM público: perfil foot no garantizado, pero devuelve ruta por calles
-    const url = `https://router.project-osrm.org/route/v1/foot/${MISTI_LNG},${MISTI_LAT};${cliente.lng},${cliente.lat}?overview=full&geometries=geojson`;
-    const res = await fetch(url);
-    const data = await res.json();
-    if (!data.routes || !data.routes.length) throw new Error('Sin ruta');
-    const ruta = data.routes[0];
-    const geojson = ruta.geometry;
-    rutaLayer = L.geoJSON(geojson, {
-      style: {
-        color: '#C7392B',
-        weight: 5,
-        opacity: 0.85,
-        dashArray: '10 6',
-        lineCap: 'round',
-        lineJoin: 'round'
-      }
-    }).addTo(mapaDrawer);
-
-    // Ajustar vista para incluir hub + cliente + ruta
-    try {
-      const bounds = L.latLngBounds([[MISTI_LAT, MISTI_LNG], [cliente.lat, cliente.lng]]);
-      mapaDrawer.fitBounds(bounds, { padding: [30, 30] });
-    } catch(e){}
-
-    const km = (ruta.distance / 1000).toFixed(2);
-    const min = Math.round(ruta.duration / 60);
-    if (info) {
-      info.innerHTML = `<span class="ruta-icon">🚶</span><span>Ruta a pie: <strong>${km} km</strong> · ~<strong>${min} min</strong><span class="ruta-nota">Ruta referencial por calles. La entrega se coordina por WhatsApp.</span></span>`;
-    }
-  } catch (e) {
-    console.warn('OSRM error:', e);
-    if (info) {
-      info.innerHTML = `<span class="ruta-icon">⚠</span><span>No se pudo calcular la ruta. El pin quedó fijado correctamente.<span class="ruta-nota">Veremos la ruta al coordinar por WhatsApp.</span></span>`;
-    }
-  }
 }
 
 function init(){
