@@ -1739,6 +1739,24 @@ async function buscarDireccion(q){
   }
 }
 
+// Reverse geocoding cuando el usuario mueve el pin
+async function buscarDireccionPorCoords(lat, lng){
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`;
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!data || !data.address) return null;
+    const a = data.address;
+    const via = a.road || a.pedestrian || a.neighbourhood || a.suburb || '';
+    const dist = a.suburb || a.city_district || a.town || a.city || a.county || '';
+    return { calle: via, distrito: dist };
+  } catch (e) {
+    console.warn('Nominatim reverse error:', e);
+    return null;
+  }
+}
+
 function renderSugerencias(lista){
   const box = $('sugerencias');
   if (!box) return;
@@ -1893,16 +1911,43 @@ function crearMarcador(lat, lng){
   });
 }
 
-function actualizarCoordsDesdePin(lat, lng){
+async function actualizarCoordsDesdePin(lat, lng){
   cliente.lat = +lat.toFixed(6);
   cliente.lng = +lng.toFixed(6);
   guardar(LS_CLIENTE, cliente);
 
   const mt = $('mapaTxt');
+  if (mt) mt.textContent = `Buscando la dirección de este punto...`;
+
+  // Feedback visual de carga en el input
+  const inpCalle = $('inpCalle');
+  let placeholderOriginal = '';
+  if (inpCalle) {
+    placeholderOriginal = inpCalle.placeholder;
+    inpCalle.placeholder = 'Buscando calle...';
+    inpCalle.classList.add('buscando');
+  }
+
+  // Buscar la dirección real por coordenadas (Reverse Geocoding)
+  const res = await buscarDireccionPorCoords(cliente.lat, cliente.lng);
+
+  if (inpCalle) {
+    inpCalle.placeholder = placeholderOriginal;
+    inpCalle.classList.remove('buscando');
+  }
+
+  if (res && res.calle) {
+    cliente.calle = res.calle;
+    if (res.distrito) cliente.distrito = res.distrito;
+    if (inpCalle) inpCalle.value = cliente.calle;
+  }
+
   if (mt) mt.textContent = `Pin fijado en ${cliente.lat.toFixed(5)}, ${cliente.lng.toFixed(5)}`;
 
   const zi = deducirZonaSync(cliente.distrito || cliente.calle || '');
   if (zi.zona) cliente.zona = zi.zona;
+  
+  guardar(LS_CLIENTE, cliente);
   actualizarZonaInfo();
   actualizarChecklistDir();
 
