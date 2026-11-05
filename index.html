@@ -2580,40 +2580,52 @@ function construirMensajeWhatsApp(){
   const refTxt = (cliente.referencia || '').trim() || '—';
   const peso = pesoTotalCarrito();
   const dist = calcularDistanciaKm();
+  
+  // Lista de productos simple, uno por línea
   const productosTxt = items
-    .map(i => `${i.nombre} (x${i.qty} ${i.unidad}) - ${soles(i.subtotal)}`)
-    .join(' ▸ ');
-  const lineas = [
-    '🛒 PEDIDO - COMPRA CON MISTI',
-    `▸ Nombre: ${cliente.nombre || ''}`,
-    `▸ ID: ${idCliente}`,
-    `▸ Ronda: ${ronda}`
-  ];
-  if (recogerEnLocal){
-    lineas.push('▸ Dirección: Recojo en local (Eduardo Bello 385)');
-    lineas.push(`▸ Referencia: —`);
-  } else {
-    lineas.push(`▸ Dirección: ${(cliente.calle || '').trim()} ${(cliente.numero || '').trim()}`.trim());
-    lineas.push(`▸ Referencia: ${refTxt}`);
-    if (cliente.lat != null && cliente.lng != null){
-      lineas.push(`▸ Lat: ${Number(cliente.lat).toFixed(5)}`);
-      lineas.push(`▸ Lng: ${Number(cliente.lng).toFixed(5)}`);
-    }
-  }
-  lineas.push(`▸ Producto(s): ${productosTxt}`);
-  lineas.push(`▸ Peso aprox: ${peso.toFixed(1)} kg`);
-  lineas.push(`▸ Subtotal: ${soles(subtotal)}`);
+    .map(i => `- ${i.nombre} (x${i.qty} ${i.unidad}): ${soles(i.subtotal)}`)
+    .join('\n');
+
+  // Armamos el mensaje de forma natural
+  let mensaje = `Hola, quiero hacer este pedido:\n\n`;
+  
+  mensaje += `Nombre: ${cliente.nombre || ''}\n`;
+  mensaje += `Celular: ${tel}\n`;
+  mensaje += `Ronda: ${ronda}\n\n`;
+
   if (recogerEnLocal) {
-    lineas.push(`▸ Delivery: Gratis (recojo en local)`);
+    mensaje += `Modalidad: Recojo en local\n`;
+    mensaje += `Dirección: Eduardo Bello 385, Santa Catalina\n\n`;
   } else {
-    lineas.push(`▸ Delivery: ${cliente.lat ? soles(delivery) : 'Por calcular'}`);
-    if (dist) lineas.push(`   (Distancia aprox: ${dist.toFixed(1)} km)`);
+    mensaje += `Modalidad: Delivery\n`;
+    mensaje += `Dirección: ${(cliente.calle || '').trim()} ${(cliente.numero || '').trim()}\n`;
+    if (refTxt !== '—') mensaje += `Referencia: ${refTxt}\n`;
+    
+    if (cliente.lat != null && cliente.lng != null) {
+      mensaje += `Mapa: https://maps.google.com/?q=${cliente.lat},${cliente.lng}\n`;
+    }
+    mensaje += `\n`;
   }
-  lineas.push(`▸ Comisión Yape (${COMISION_YAPE_PORC}%): ${soles(comision)}`);
-  lineas.push(`▸ TOTAL: ${soles(total)}`);
-  lineas.push(`▸ Pago: ${metodoPago === 'yape' ? 'Yape' : 'Efectivo'}`);
-  lineas.push(`▸ Solicitud: Confirmar día de entrega y coordinar pago.`);
-  return lineas.join('\n');
+
+  mensaje += `Productos:\n${productosTxt}\n\n`;
+  
+  mensaje += `Peso aprox: ${peso.toFixed(1)} kg\n`;
+  mensaje += `Subtotal: ${soles(subtotal)}\n`;
+  
+  if (recogerEnLocal) {
+    mensaje += `Delivery: Gratis (recojo en local)\n`;
+  } else {
+    mensaje += `Delivery: ${cliente.lat ? soles(delivery) : 'Por calcular'}\n`;
+    if (dist) mensaje += `Distancia: ${dist.toFixed(1)} km\n`;
+  }
+  
+  mensaje += `Comisión Yape: ${soles(comision)}\n`;
+  mensaje += `Total a pagar: ${soles(total)}\n\n`;
+  
+  mensaje += `Pago: ${metodoPago === 'yape' ? 'Yape' : 'Efectivo'}\n`;
+  mensaje += `Por favor, confirmar la entrega.`;
+
+  return mensaje;
 }
 
 function validarPedido(){
