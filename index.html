@@ -365,33 +365,6 @@
   .qty-wrap .unit{font-size:11.5px; font-weight:700; color:var(--texto-suave); flex-shrink:0; padding-right:2px; font-family:var(--font-hand);}
   @media (min-width:640px){ .qty-wrap .unit{font-size:12.5px;} }
 
-  .como-grid{display:grid; grid-template-columns:1fr; gap:14px;}
-  @media (min-width:560px){ .como-grid{grid-template-columns:1fr 1fr;} }
-  @media (min-width:960px){ .como-grid{grid-template-columns:repeat(4,1fr); gap:16px;} }
-  .como-paso{
-    background:var(--blanco); border:2px solid var(--carbon);
-    border-radius:var(--radio); padding:18px 16px;
-    box-shadow:3px 3px 0 var(--carbon);
-    display:flex; flex-direction:column; gap:10px;
-  }
-  @media (min-width:640px){ .como-paso{padding:22px 20px; gap:12px;} }
-  .como-paso-num{
-    width:40px; height:40px; border-radius:50%;
-    background:var(--rojo-aji); color:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-display); font-weight:800; font-size:18px;
-    border:2px solid var(--carbon);
-    box-shadow:2px 2px 0 var(--carbon);
-    flex-shrink:0;
-  }
-  @media (min-width:640px){ .como-paso-num{width:44px; height:44px; font-size:20px;} }
-  .como-paso:nth-child(2) .como-paso-num{background:var(--naranja-zanah);}
-  .como-paso:nth-child(3) .como-paso-num{background:var(--miel); color:var(--carbon);}
-  .como-paso:nth-child(4) .como-paso-num{background:var(--verde-culantro);}
-  .como-paso h4{font-size:15.5px; font-weight:700; color:var(--carbon); font-family:var(--font-display); line-height:1.2; letter-spacing:-0.02em;}
-  .como-paso p{font-size:13.5px; color:var(--texto-suave); line-height:1.55;}
-  @media (min-width:640px){ .como-paso h4{font-size:16.5px;} }
-
   #donde{background:var(--crema-2); border-top:2px solid var(--carbon); border-bottom:2px solid var(--carbon);}
   .donde-grid{display:grid; grid-template-columns:1fr; gap:24px;}
   @media (min-width:820px){ .donde-grid{grid-template-columns:1fr 1fr; gap:56px;} }
@@ -1196,7 +1169,7 @@
         <div class="hero-datos">
           <div class="hero-dato"><b>+200</b><span>Productos esta ronda</span></div>
           <div class="hero-dato"><b>S/ 20</b><span>Mínimo de compra</span></div>
-          <div class="hero-dato"><b>Dom 4–6 p.m.</b><span>Delivery disponible</span></div>
+          <div class="hero-dato"><b>Por WhatsApp</b><span>Coordinación directa</span></div>
         </div>
       </div>
       <div class="hero-ilu">
@@ -1232,7 +1205,7 @@
 
     <div class="ronda-banner">
       <span class="dot"></span>
-      <span><strong>Ronda <span class="rondaId"></span> abierta.</strong> Cierra el viernes a las 5:00 pm. Mínimo de compra S/ 20. Delivery disponible el domingo, de 4 a 6 p. m.</span>
+      <span><strong>Ronda <span class="rondaId"></span> abierta.</strong> Cierra el viernes a las 5:00 pm. Mínimo de compra S/ 20. Coordinación de entrega por WhatsApp.</span>
     </div>
 
     <div id="catalogoCont">
@@ -1240,38 +1213,6 @@
             <div class="spinner-sm" style="margin: 0 auto 10px; width:24px; height:24px; border-width:3px;"></div>
             <p>Cargando catálogo desde la nube...</p>
         </div>
-    </div>
-  </div>
-</section>
-
-<section id="como">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-eyebrow">Cuatro pasos, sin complicaciones</span>
-      <h2>Tú eliges. <em>Nosotros organizamos la compra.</em></h2>
-    </div>
-
-    <div class="como-grid">
-      <div class="como-paso">
-        <div class="como-paso-num">1</div>
-        <h4>Arma tu canasta</h4>
-        <p>Explora el catálogo, selecciona los productos que necesitas e indica las cantidades. Puedes combinar alimentos según tus preferencias y tu presupuesto.</p>
-      </div>
-      <div class="como-paso">
-        <div class="como-paso-num">2</div>
-        <h4>Confirma por WhatsApp</h4>
-        <p>Envía tu selección y revisa el resumen del pedido. Coordinamos contigo el importe, la modalidad de entrega y el pago.</p>
-      </div>
-      <div class="como-paso">
-        <div class="como-paso-num">3</div>
-        <h4>Compramos el domingo</h4>
-        <p>Reunimos los pedidos y coordinamos el abastecimiento con nuestros proveedores. Organizamos la compra teniendo en cuenta las necesidades de las familias y las compras habituales de la cocina de El Misti.</p>
-      </div>
-      <div class="como-paso">
-        <div class="como-paso-num">4</div>
-        <h4>Recibe tu pedido</h4>
-        <p>Entregamos los pedidos el domingo, según la coordinación por WhatsApp. Delivery disponible de 4 a 6 p. m., o recógelo en nuestro local, sin descuento.</p>
-      </div>
     </div>
   </div>
 </section>
@@ -1292,7 +1233,7 @@
         </div>
         <div class="linea">
           <b>Delivery</b>
-          <span>Delivery disponible el domingo, de 4:00 a 6:00 p. m. Fuera de ese horario, se coordina por WhatsApp.</span>
+          <span>La entrega y el delivery se coordinan directamente por WhatsApp al momento de realizar tu pedido.</span>
         </div>
         <div class="linea">
           <b>Recojo</b>
@@ -1302,10 +1243,10 @@
       <div>
         <h4 style="font-family:var(--font-display); font-size:14px; font-weight:700; color:var(--rojo-aji); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px;">Punto de recojo</h4>
         <p style="font-size:14.5px; line-height:1.6; color:var(--texto);">
-          Puedes recoger tu pedido en <strong>Eduardo Bello 385, Santa Catalina, La Victoria</strong>, el domingo, según la coordinación realizada por WhatsApp. El recojo no tiene descuento.
+          Puedes recoger tu pedido en <strong>Eduardo Bello 385, Santa Catalina, La Victoria</strong>, según la coordinación realizada por WhatsApp. El recojo no tiene descuento.
         </p>
         <p style="font-size:14.5px; line-height:1.6; color:var(--texto); margin-top:12px;">
-          El delivery está disponible el domingo, de 4:00 a 6:00 p. m. Fuera de ese horario, se coordina por WhatsApp.
+          El delivery y los horarios se acuerdan directamente contigo al momento de confirmar tu pedido.
         </p>
       </div>
     </div>
@@ -1352,8 +1293,7 @@
         <ul>
           <li>WhatsApp: +51 977 101 608</li>
           <li>Pedidos hasta el viernes, 5:00 p. m.</li>
-          <li>Compra y entrega el domingo</li>
-          <li>Delivery disponible domingo 4–6 p. m.</li>
+          <li>Compra y entrega coordinada por WhatsApp</li>
         </ul>
       </div>
     </div>
