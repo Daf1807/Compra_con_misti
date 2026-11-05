@@ -66,7 +66,6 @@
   @media (min-width:640px){ .wrap{padding:0 26px;} }
   @media (min-width:960px){ .wrap{padding:0 34px;} }
 
-  /* NAV */
   .nav{
     position:sticky; top:0; z-index:50;
     background:rgba(250,244,232,0.95);
@@ -1000,7 +999,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="wrap nav-inner">
     <a href="#" class="brand">
@@ -1018,7 +1016,6 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <header class="hero">
   <div class="wrap">
     <div class="hero-grid">
@@ -1077,7 +1074,6 @@
   </div>
 </header>
 
-<!-- CATÁLOGO -->
 <section id="catalogo">
   <div class="wrap">
     <div class="section-head">
@@ -1111,7 +1107,6 @@
   </div>
 </section>
 
-<!-- CÓMO FUNCIONA -->
 <section id="como">
   <div class="wrap">
     <div class="section-head">
@@ -1144,7 +1139,6 @@
   </div>
 </section>
 
-<!-- DÓNDE ESTAMOS -->
 <section id="donde">
   <div class="wrap">
     <div class="section-head">
@@ -1181,7 +1175,6 @@
   </div>
 </section>
 
-<!-- CIERRE -->
 <section id="cierre">
   <div class="wrap">
     <div class="cierre-card">
@@ -1196,7 +1189,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="wrap">
     <div class="footer-grid">
@@ -1232,7 +1224,6 @@
   </div>
 </footer>
 
-<!-- BARRA FLOTANTE -->
 <div class="cart-bar" id="cartBar" role="button" tabindex="0" aria-label="Ver pedido">
   <div class="cart-bar-info">
     <span class="cart-bar-count" id="cartBarCount">0</span>
@@ -1244,7 +1235,6 @@
   </div>
 </div>
 
-<!-- DRAWER -->
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Confirmar pedido">
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="drawer-panel">
@@ -1258,7 +1248,6 @@
 </div>
 
 <script>
-// Estructura de respaldo y posicionamiento exacto de la cuadrícula 4x7
 let PRODUCTOS = [
   { codigo:'PR-001', nombre:'Papa Amarilla', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'0% 0%', equiv_kg: 1 },
   { codigo:'PR-002', nombre:'Papa Blanca', grupo:'Básicos', unidad:'kg', precio:0, bgPos:'33.33% 0%', equiv_kg: 1 },
@@ -2490,7 +2479,7 @@ init();
 
 <script type="module">
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAonWel671riadA7rP7yKTWFy1APCad1LI",
@@ -2516,10 +2505,23 @@ function grupoDesdeCodigo(codigo) {
 async function cargarTodoElCatalogo() {
   try {
     const rondaHoy = getRondaId();
-    console.log(`[Misti] Cargando precios de rondas/${rondaHoy}/precios`);
+    console.log(`[Misti] Cargando catálogo de la ronda ${rondaHoy}`);
 
+    // 1) Cargar PRODUCTOS MAESTROS (fuente de verdad de equiv_kg)
+    let mapaProductos = {};
+    try {
+      const productosSnap = await getDocs(collection(db, "catalogo", "productos", "items"));
+      productosSnap.docs.forEach(d => {
+        const p = d.data();
+        mapaProductos[p.codigo] = p;
+      });
+      console.log(`[Misti] ✓ ${Object.keys(mapaProductos).length} productos maestros cargados`);
+    } catch (e) {
+      console.warn("[Misti] No se pudieron cargar productos maestros:", e);
+    }
+
+    // 2) Cargar precios de la ronda
     const preciosSnap = await getDocs(collection(db, "rondas", rondaHoy, "precios"));
-
     if (preciosSnap.empty) {
       console.warn("[Misti] Sin precios en Firestore. Manteniendo catálogo local.");
       return;
@@ -2529,9 +2531,9 @@ async function cargarTodoElCatalogo() {
     preciosSnap.docs.forEach(d => {
       const data = d.data();
       const codigo = data.codigo_producto || d.id;
+      const prod = mapaProductos[codigo];
 
-      // ✅ FIX: P_L_final viene en S//kg desde el admin.
-      // Lo convertimos a S//unidad de venta multiplicando por equiv_kg.
+      // --- PASO 1: precio base en S//kg ---
       let precio_kg = 0;
       if (typeof data.P_L_final === 'number' && data.P_L_final > 0) {
         precio_kg = data.P_L_final;
@@ -2541,24 +2543,49 @@ async function cargarTodoElCatalogo() {
         precio_kg = data.P_L_mercado;
       }
 
+      // --- PASO 2: equiv_kg (kg por unidad de venta) ---
+      // Prioridad 1: producto maestro (equiv_kg_venta)
+      // Prioridad 2: producto maestro (equiv_kg)
+      // Prioridad 3: doc de precio (equiv_kg)
+      // Prioridad 4: catálogo local (PRODUCTOS)
+      let equiv_kg = 1;
+      let fuenteEquiv = 'default';
+
+      if (prod) {
+        if (typeof prod.equiv_kg_venta === 'number' && prod.equiv_kg_venta > 0) {
+          equiv_kg = prod.equiv_kg_venta;
+          fuenteEquiv = 'producto_maestro.equiv_kg_venta';
+        } else if (typeof prod.equiv_kg === 'number' && prod.equiv_kg > 0) {
+          equiv_kg = prod.equiv_kg;
+          fuenteEquiv = 'producto_maestro.equiv_kg';
+        }
+      }
+      if (fuenteEquiv === 'default' && typeof data.equiv_kg === 'number' && data.equiv_kg > 0) {
+        equiv_kg = data.equiv_kg;
+        fuenteEquiv = 'precio.equiv_kg';
+      }
+      if (fuenteEquiv === 'default') {
+        const cfg = PRODUCTOS.find(p => p.codigo === codigo);
+        if (cfg && cfg.equiv_kg) {
+          equiv_kg = cfg.equiv_kg;
+          fuenteEquiv = 'catalogo_local';
+        }
+      }
+
+      // --- PASO 3: precio final = S//kg × kg/unidad = S//unidad ---
+      const precio = Math.round(precio_kg * equiv_kg * 100) / 100;
+
+      // Log por producto para debug
+      console.log(`[Misti] ${codigo} ${data.nombre || ''}: P_L_final=${precio_kg} × equiv_kg=${equiv_kg} (${fuenteEquiv}) = ${precio}`);
+
       const productoCfg = PRODUCTOS.find(p => p.codigo === codigo);
       const posicionBG = productoCfg ? productoCfg.bgPos : '0% 0%';
 
-      let equiv_kg = 1;
-      if (typeof data.equiv_kg === 'number' && data.equiv_kg > 0) {
-        equiv_kg = data.equiv_kg;
-      } else if (productoCfg && productoCfg.equiv_kg) {
-        equiv_kg = productoCfg.equiv_kg;
-      }
-
-      // ✅ Conversión clave: S//kg × kg/unidad = S//unidad de venta
-      const precio = Math.round(precio_kg * equiv_kg * 100) / 100;
-
       nuevosProductos.push({
         codigo,
-        nombre: data.nombre || 'Producto',
-        grupo: data.grupo || grupoDesdeCodigo(codigo),
-        unidad: data.unidad_venta || 'kg',
+        nombre: data.nombre || prod?.nombre || 'Producto',
+        grupo: data.grupo || prod?.grupo || grupoDesdeCodigo(codigo),
+        unidad: data.unidad_venta || prod?.unidad_venta || 'kg',
         precio,
         equiv_kg,
         img: 'catalogo-misti-grid.png',
@@ -2568,7 +2595,6 @@ async function cargarTodoElCatalogo() {
     });
 
     nuevosProductos.sort((a, b) => a.codigo.localeCompare(b.codigo));
-
     PRODUCTOS = nuevosProductos;
 
     const gruposPresentes = [...new Set(PRODUCTOS.map(p => p.grupo))];
@@ -2578,16 +2604,15 @@ async function cargarTodoElCatalogo() {
       if (!ORDEN_GRUPOS.includes(g)) ORDEN_GRUPOS.push(g);
     });
 
-    console.log(`[Misti] ✓ ${PRODUCTOS.length} productos cargados desde Firestore`);
+    console.log(`[Misti] ✓ ${PRODUCTOS.length} productos finales`);
+    console.log('[Misti] Cebolla china:', PRODUCTOS.find(p => p.codigo === 'PR-013'));
 
     if (typeof renderCatalogo === 'function') renderCatalogo();
     if (typeof renderCartBar === 'function') renderCartBar();
-
     document.querySelectorAll('.rondaId').forEach(el => el.textContent = rondaHoy);
 
   } catch (e) {
     console.error("[Misti] Error crítico leyendo Firestore:", e);
-    console.log("[Misti] Se mantienen los productos de respaldo.");
   }
 }
 
