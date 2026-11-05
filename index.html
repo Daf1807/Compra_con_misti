@@ -2781,7 +2781,17 @@ async function confirmarPedido(){
   // Abrimos WhatsApp
   window.open(url, '_blank');
   
-  // Mostramos la pantalla de confirmación
+  // 1. RESETEAMOS LA CANASTA INMEDIATAMENTE
+  carrito = {};
+  recogerEnLocal = false;
+  metodoPago = 'yape';
+  guardar(LS_CARRITO, carrito);
+  
+  // 2. Refrescamos el catálogo y la barra para que se vea vacío de fondo
+  renderCatalogo();
+  renderCartBar();
+  
+  // 3. Mostramos la pantalla de confirmación (que tapa el fondo vacío)
   $('drawerTitulo').textContent = 'Pedido enviado';
   $('drawerBody').innerHTML = `
     <div class="confirmacion">
@@ -2791,11 +2801,16 @@ async function confirmarPedido(){
       <p style="font-size:13px;">${guardadoOk ? '✅ El pedido quedó registrado en el sistema como <b>Pendiente</b>.' : '⚠️ El pedido no se pudo registrar en el sistema automáticamente, pero tu mensaje de WhatsApp llegará bien.'}</p>
     </div>
   `;
+  
+  // 4. El botón ahora solo cierra el panel (la canasta ya está en 0)
   $('drawerFoot').innerHTML = `
     <a href="${url}" target="_blank" class="btn btn-primary btn-block" style="margin-bottom:10px;">Reabrir WhatsApp</a>
-    <button class="btn btn-secondary btn-block" id="btnFinalizar">Finalizar</button>
+    <button class="btn btn-secondary btn-block" id="btnCerrarConfirmacion">Volver al catálogo</button>
   `;
-  $('btnFinalizar').addEventListener('click', finalizarPedido);
+  
+  $('btnCerrarConfirmacion').addEventListener('click', () => {
+    cerrarDrawer(); // Solo cierra el panel, la canasta ya está vacía
+  });
 }
 
 function finalizarPedido(){
@@ -2847,7 +2862,7 @@ init();
 
 <script type="module">
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, setDoc, doc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAonWel671riadA7rP7yKTWFy1APCad1LI",
@@ -2861,14 +2876,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Guardar el pedido directo a Firestore
+// Guardar el pedido directo a Firestore con ID único basado en fecha y teléfono
 window.guardarPedidoEnFirebase = async function(data) {
   try {
     const rondaId = data.ronda; 
-    const pedidosRef = collection(db, "rondas", rondaId, "pedidos");
     
+    // Generamos un ID único con la fecha y el teléfono (ej: 20261105-143810-934495196)
+    const ahora = new Date();
+    const fechaStr = ahora.toISOString().replace(/[-:T.]/g, '').slice(0, 14); // 20261105143810
+    const idUnico = `${fechaStr}-${data.cliente.telefono}`; 
+
     const nuevoPedido = {
-      pedido_id: data.idCliente,
+      pedido_id: idUnico,
       id_ronda: rondaId,
       cliente_nombre: data.cliente.nombre,
       cliente_celular: data.cliente.telefono,
@@ -2876,15 +2895,15 @@ window.guardarPedidoEnFirebase = async function(data) {
       distrito: data.cliente.distrito || '',
       lat: data.cliente.lat || null,
       lng: data.cliente.lng || null,
-      modalidad: data.modalidad, // 'delivery' o 'recojo'
-      metodo_pago: data.metodoPago, // 'Yape' o 'Efectivo'
-      subtotal: data.subtotal,
-      total: data.total,
-      peso_aprox: data.peso,
-      distancia_km: data.distancia,
-      costo_delivery: data.costoDelivery,
-      comision_yape: data.comisionYape,
-      estado: "pendiente", // 👈 Aquí entra como pendiente
+      modalidad: data.modalidad,
+      metodo_pago: data.metodoPago,
+      subtotal: Number(data.subtotal) || 0,
+      total: Number(data.total) || 0,
+      peso_aprox: Number(data.peso) || 0,
+      distancia_km: Number(data.distancia) || 0,
+      costo_delivery: Number(data.costoDelivery) || 0,
+      comision_yape: Number(data.comisionYape) || 0,
+      estado: "pendiente",
       notas: data.cliente.referencia || '',
       fecha: new Date().toISOString(),
       tipo_cliente: "B2C",
@@ -2901,8 +2920,10 @@ window.guardarPedidoEnFirebase = async function(data) {
       ]
     };
 
-    const docRef = await addDoc(pedidosRef, nuevoPedido);
-    console.log("✅ Pedido guardado en Firebase con ID:", docRef.id);
+    const docRef = doc(db, "rondas", rondaId, "pedidos", idUnico);
+    await setDoc(docRef, nuevoPedido);
+    
+    console.log("✅ Pedido guardado con ID:", idUnico);
     return true;
   } catch (error) {
     console.error("❌ Error guardando pedido en Firebase:", error);
