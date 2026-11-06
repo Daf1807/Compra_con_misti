@@ -845,6 +845,58 @@
   .reloj-ronda.cerrada{ box-shadow:6px 6px 0 var(--borde-fuerte); }
   .reloj-ronda.urgente{ box-shadow:6px 6px 0 var(--miel); }
 
+  /* === BANNER DE ESTADO DEL PEDIDO === */
+  .banner-pedido{
+    margin-top:-8px;
+    margin-bottom:20px;
+    padding:12px 16px;
+    border-radius:var(--radio);
+    border:2px solid var(--carbon);
+    box-shadow:3px 3px 0 var(--carbon);
+    font-size:13px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    line-height:1.45;
+  }
+  @media (min-width:640px){
+    .banner-pedido{padding:14px 18px; font-size:13.5px; margin-top:-10px; margin-bottom:26px;}
+  }
+  .banner-pedido.enviado{
+    background:var(--miel-suave);
+    color:var(--carbon);
+    box-shadow:3px 3px 0 var(--miel);
+  }
+  .banner-pedido.confirmado{
+    background:#E4EFDC;
+    color:var(--verde-hoja);
+    box-shadow:3px 3px 0 var(--verde-culantro);
+  }
+  .banner-pedido .banner-msg{flex:1; min-width:200px;}
+  .banner-pedido .banner-msg strong{font-weight:800;}
+  .banner-pedido .banner-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  .banner-pedido .banner-btn{
+    padding:7px 14px;
+    border-radius:var(--radio-full);
+    border:2px solid var(--carbon);
+    background:var(--blanco);
+    color:var(--carbon);
+    font-size:12px;
+    font-weight:700;
+    box-shadow:2px 2px 0 var(--carbon);
+    transition:all .15s;
+    cursor:pointer;
+    white-space:nowrap;
+    font-family:var(--font-body);
+  }
+  .banner-pedido .banner-btn:hover{
+    transform:translate(-1px,-1px);
+    box-shadow:3px 3px 0 var(--carbon);
+  }
+
   .reloj-bloque{
     padding:18px 16px;
     display:flex;
@@ -1151,6 +1203,9 @@
             <div class="reloj-fecha" id="relojFecha">—</div>
           </div>
         </div>
+
+        <!-- Banner de estado del pedido (enviado / confirmado) -->
+        <div id="bannerPedido" class="banner-pedido hidden"></div>
 
         <h1>De la cocina de <em>El Misti</em><br>a tu mesa.</h1>
         <p class="hero-lede">
@@ -1489,6 +1544,7 @@ const DISTRITOS_LIMA = {
 const LS_CARRITO = 'misti_carrito';
 const LS_CLIENTE = 'misti_cliente';
 const LS_PEDIDOS = 'misti_pedidos';
+const LS_PEDIDO_ESTADO = 'misti_pedido_estado';
 
 let carrito = cargar(LS_CARRITO, {});
 let cliente = cargar(LS_CLIENTE, {
@@ -1506,6 +1562,18 @@ if (cliente.lat == null) cliente.lat = null;
 if (cliente.lng == null) cliente.lng = null;
 
 let pedidos = cargar(LS_PEDIDOS, []);
+
+// === NUEVO: estado del pedido (borrador / enviado / confirmado) ===
+let estadoPedido = cargar(LS_PEDIDO_ESTADO, {
+  estado: 'borrador',  // 'borrador' | 'enviado' | 'confirmado'
+  version: 0,
+  ronda: null,
+  fecha: null,
+  telefono: null
+});
+if (!estadoPedido.estado) estadoPedido.estado = 'borrador';
+if (estadoPedido.version == null) estadoPedido.version = 0;
+
 let recogerEnLocal = false;
 let metodoPago = 'yape';
 
@@ -1930,6 +1998,16 @@ function actualizarBotonConfirmar(){
   const nombreOk = !!cliente.nombre.trim();
   const telOk = tel.length === 9 && tel.startsWith('9');
   const delivery = costoDelivery();
+
+  // Bloqueo por pedido confirmado por admin
+  if (estadoPedido.estado === 'confirmado') {
+    btn.disabled = true;
+    btn.textContent = 'Pedido confirmado y pagado';
+    btn.style.background = '#E4EFDC';
+    btn.style.color = 'var(--verde-hoja)';
+    return;
+  }
+
   if (!recogerEnLocal && delivery < 0) {
     btn.disabled = true;
     btn.textContent = delivery === -1 ? 'Fuera de cobertura a pie' : 'Peso excedido (máx 15 kg)';
@@ -1939,7 +2017,9 @@ function actualizarBotonConfirmar(){
   }
   btn.style.background = '';
   btn.style.color = '';
-  btn.textContent = 'Confirmar pedido por WhatsApp';
+  btn.textContent = estadoPedido.estado === 'enviado'
+    ? 'Reenviar pedido actualizado'
+    : 'Confirmar pedido por WhatsApp';
 
   if (recogerEnLocal){
     btn.disabled = !(nombreOk && telOk);
@@ -2086,10 +2166,22 @@ function renderCartBar(){
   $('cartBar').classList.toggle('visible', count > 0);
 }
 
-function abrirDrawer(){
+async function abrirDrawer(){
   $('drawer').classList.add('open');
   document.body.style.overflow = 'hidden';
   renderDrawer();
+
+  // Sincronizar con Firestore en segundo plano (para detectar si el admin ya confirmó)
+  const prevEstado = estadoPedido.estado;
+  const prevVersion = estadoPedido.version;
+  try {
+    await sincronizarEstadoPedido(false);
+  } catch(e){ console.warn('sync error', e); }
+
+  if ((prevEstado !== estadoPedido.estado || prevVersion !== estadoPedido.version)
+      && $('drawer').classList.contains('open')) {
+    renderDrawer();
+  }
 }
 function cerrarDrawer(){
   $('drawer').classList.remove('open');
@@ -2241,6 +2333,7 @@ function renderDrawer(){
   const refV = validarReferencia(cliente.referencia);
   const calleOk = validarCalle();
   const faltaMinimo = subtotal < MINIMO_COMPRA;
+  const estaConfirmado = estadoPedido.estado === 'confirmado';
 
   if (items.length === 0) {
     $('drawerTitulo').textContent = 'Tu pedido';
@@ -2257,22 +2350,40 @@ function renderDrawer(){
 
   $('drawerTitulo').textContent = `Tu pedido · ${totalItems()} ${totalItems() === 1 ? 'producto' : 'productos'}`;
 
+  // Aviso según estado
+  let avisoEstado = '';
+  if (estadoPedido.estado === 'enviado') {
+    avisoEstado = `
+      <div class="aviso" style="background:var(--miel-suave); color:var(--carbon); border-color:var(--carbon); margin-top:14px;">
+        <span>🟡 Tu pedido <strong>v${estadoPedido.version}</strong> fue enviado. Si modificas y reenvías, se enviará como <strong>v${estadoPedido.version + 1}</strong>.</span>
+      </div>`;
+  } else if (estaConfirmado) {
+    avisoEstado = `
+      <div class="aviso aviso-ok" style="margin-top:14px;">
+        <span>🟢 Tu pedido <strong>v${estadoPedido.version}</strong> está confirmado y pagado. Llega el domingo. Ya no se puede modificar.</span>
+      </div>`;
+  }
+
   body.innerHTML = `
     <div>${items.map(i => `
       <div class="cart-item">
         <div class="cart-item-nombre">${escapar(i.nombre)} <span class="unidad">· ${escapar(i.unidad)}</span></div>
         <div class="cart-item-precio">${soles(i.subtotal)}</div>
+        ${estaConfirmado ? '' : `
         <div class="cart-item-controls">
           <button class="qty-mini" data-dec="${i.codigo}" aria-label="Quitar">−</button>
           <span class="qty-mini-num">${i.qty}</span>
           <button class="qty-mini" data-inc="${i.codigo}" aria-label="Agregar">+</button>
           <button class="qty-mini-del" data-del="${i.codigo}" aria-label="Eliminar">×</button>
-        </div>
+        </div>`}
       </div>
     `).join('')}</div>
 
+    ${avisoEstado}
+
     ${renderResumenHTML()}
 
+    ${estaConfirmado ? '' : `
     <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Método de pago</h4>
     <div style="display:flex; gap:12px; margin-bottom:20px;">
       <button type="button" class="metodo-pago ${metodoPago === 'yape' ? 'activo' : ''}" data-metodo="yape"
@@ -2284,6 +2395,7 @@ function renderDrawer(){
         Efectivo
       </button>
     </div>
+    `}
 
     ${faltaMinimo ? `
       <div class="aviso aviso-error" style="margin-top:14px;">
@@ -2291,6 +2403,7 @@ function renderDrawer(){
       </div>
     ` : ''}
 
+    ${estaConfirmado ? '' : `
     <h4 style="font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--carbon); margin:26px 0 14px;">Tus datos</h4>
 
     <div class="campo">
@@ -2365,33 +2478,39 @@ function renderDrawer(){
         </ul>
       </div>
     </div>
+    `}
 
     <div id="boleta"></div>
   `;
 
   foot.innerHTML = `
-    <button class="btn btn-primary btn-block" id="btnConfirmar" ${faltaMinimo ? 'disabled' : ''}>Confirmar pedido por WhatsApp</button>
+    <button class="btn btn-primary btn-block" id="btnConfirmar" ${faltaMinimo || estaConfirmado ? 'disabled' : ''}>
+      ${estaConfirmado
+        ? 'Pedido confirmado y pagado'
+        : (estadoPedido.estado === 'enviado' ? 'Reenviar pedido actualizado' : 'Confirmar pedido por WhatsApp')}
+    </button>
+    ${estadoPedido.estado === 'enviado' ? `
+      <button class="btn btn-secondary btn-block" id="btnCancelarPedido" style="margin-top:8px;">Cancelar pedido</button>
+    ` : ''}
   `;
 
-  bindQtyButtons();
-  bindDrawerInputs();
-  bindMetodoPagoButtons();
-  actualizarZonaInfo();
-  actualizarChecklistDir();
+  if (!estaConfirmado) {
+    bindQtyButtons();
+    bindDrawerInputs();
+    bindMetodoPagoButtons();
+    actualizarZonaInfo();
+    actualizarChecklistDir();
+  }
   actualizarBotonConfirmar();
   actualizarBoleta();
 
-  if (faltaMinimo){
-    const btn = $('btnConfirmar');
-    if (btn) btn.disabled = true;
-  }
-
-  if (!recogerEnLocal && (cliente.calle || (cliente.lat != null && cliente.lng != null))){
+  if (!recogerEnLocal && (cliente.calle || (cliente.lat != null && cliente.lng != null)) && !estaConfirmado){
     mostrarMapaDrawer();
   }
 
   $('btnConfirmar').addEventListener('click', confirmarPedido);
-  $('checkRecojo').addEventListener('change', onToggleRecojo);
+  if ($('checkRecojo')) $('checkRecojo').addEventListener('change', onToggleRecojo);
+  if ($('btnCancelarPedido')) $('btnCancelarPedido').addEventListener('click', cancelarPedido);
 }
 
 function bindMetodoPagoButtons(){
@@ -2568,27 +2687,28 @@ function eliminar(codigo){
   renderDrawer();
 }
 
-function construirMensajeWhatsApp(){
+function construirMensajeWhatsApp(version){
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
   const delivery = costoDelivery();
   const comision = comisionYape();
   const total = totalCarrito();
   const tel = soloDigitos(cliente.telefono);
-  const idCliente = '001' + (tel || '000000000');
   const ronda = getRondaId();
   const refTxt = (cliente.referencia || '').trim() || '—';
   const peso = pesoTotalCarrito();
   const dist = calcularDistanciaKm();
-  
+
   // Lista de productos simple, uno por línea
   const productosTxt = items
     .map(i => `- ${i.nombre} (x${i.qty} ${i.unidad}): ${soles(i.subtotal)}`)
     .join('\n');
 
-  // Armamos el mensaje de forma natural
-  let mensaje = `Hola, quiero hacer este pedido:\n\n`;
-  
+  // Marcador de versión bien visible para tu chat de WhatsApp
+  const esActualizacion = (version || 1) > 1;
+  let mensaje = `${esActualizacion ? '🔄 PEDIDO ACTUALIZADO' : '🔔 NUEVO PEDIDO'} · v${version || 1} · ${ronda}\n\n`;
+  mensaje += `Hola, quiero hacer este pedido:\n\n`;
+
   mensaje += `Nombre: ${cliente.nombre || ''}\n`;
   mensaje += `Celular: ${tel}\n`;
   mensaje += `Ronda: ${ronda}\n\n`;
@@ -2600,7 +2720,7 @@ function construirMensajeWhatsApp(){
     mensaje += `Modalidad: Delivery\n`;
     mensaje += `Dirección: ${(cliente.calle || '').trim()} ${(cliente.numero || '').trim()}\n`;
     if (refTxt !== '—') mensaje += `Referencia: ${refTxt}\n`;
-    
+
     if (cliente.lat != null && cliente.lng != null) {
       mensaje += `Mapa: https://maps.google.com/?q=${cliente.lat},${cliente.lng}\n`;
     }
@@ -2608,20 +2728,20 @@ function construirMensajeWhatsApp(){
   }
 
   mensaje += `Productos:\n${productosTxt}\n\n`;
-  
+
   mensaje += `Peso aprox: ${peso.toFixed(1)} kg\n`;
   mensaje += `Subtotal: ${soles(subtotal)}\n`;
-  
+
   if (recogerEnLocal) {
     mensaje += `Delivery: Gratis (recojo en local)\n`;
   } else {
     mensaje += `Delivery: ${cliente.lat ? soles(delivery) : 'Por calcular'}\n`;
     if (dist) mensaje += `Distancia: ${dist.toFixed(1)} km\n`;
   }
-  
+
   mensaje += `Comisión Yape: ${soles(comision)}\n`;
   mensaje += `Total a pagar: ${soles(total)}\n\n`;
-  
+
   mensaje += `Pago: ${metodoPago === 'yape' ? 'Yape' : 'Efectivo'}\n`;
   mensaje += `Por favor, confirmar la entrega.`;
 
@@ -2680,19 +2800,45 @@ function validarPedido(){
 
 async function confirmarPedido(){
   if (!validarPedido()) return;
-  
+
+  const tel = soloDigitos(cliente.telefono);
+  const ronda = getRondaId();
+
+  // Safety: chequear en Firestore si el admin ya lo confirmó (por si el sync falló)
+  if (typeof window.leerPedidoDeFirebase === 'function') {
+    try {
+      const existente = await window.leerPedidoDeFirebase(tel, ronda);
+      if (existente && existente.estado === 'confirmado') {
+        estadoPedido = {
+          estado: 'confirmado',
+          version: existente.version || 1,
+          ronda: ronda,
+          fecha: existente.fecha || new Date().toISOString(),
+          telefono: tel
+        };
+        guardar(LS_PEDIDO_ESTADO, estadoPedido);
+        renderBannerPedido();
+        renderDrawer();
+        alert('Tu pedido ya fue confirmado y pagado por nosotros.\n\nSi necesitas algo adicional, escríbenos por WhatsApp.');
+        return;
+      }
+    } catch(e){ console.warn('check confirmado falló:', e); }
+  }
+
   const items = itemsCarrito();
   const subtotal = subtotalCarrito();
-  const descuento = descuentoAplicado();
   const delivery = costoDelivery();
   const comision = comisionYape();
   const total = totalCarrito();
-  const tel = soloDigitos(cliente.telefono);
-  const ronda = getRondaId();
-  const mensaje = construirMensajeWhatsApp();
+
+  // Calcular nueva versión (solo si es el mismo cliente/ronda)
+  const esMismaRonda = estadoPedido.ronda === ronda;
+  const baseVersion = esMismaRonda ? (estadoPedido.version || 0) : 0;
+  const nuevaVersion = baseVersion + 1;
+
+  const mensaje = construirMensajeWhatsApp(nuevaVersion);
   const url = `https://wa.me/${WHATSAPP_NEGOCIO}?text=${encodeURIComponent(mensaje)}`;
-  
-  // Preparamos el objeto con TODO lo que sale en la boleta
+
   const pedidoParaFirebase = {
     idCliente: '001' + tel,
     ronda: ronda,
@@ -2715,64 +2861,228 @@ async function confirmarPedido(){
     costoDelivery: delivery >= 0 ? delivery : 0,
     comisionYape: comision,
     items: items.map(i => ({
-      codigo: i.codigo, 
-      nombre: i.nombre, 
+      codigo: i.codigo,
+      nombre: i.nombre,
       unidad: i.unidad,
-      cantidad: i.qty, 
-      precio_unitario: i.precio, 
+      cantidad: i.qty,
+      precio_unitario: i.precio,
       subtotal: i.subtotal
     }))
   };
 
-  // Guardamos en Firebase
+  // Guardar en Firestore
   let guardadoOk = false;
   if (typeof window.guardarPedidoEnFirebase === 'function') {
-    guardadoOk = await window.guardarPedidoEnFirebase(pedidoParaFirebase);
+    guardadoOk = await window.guardarPedidoEnFirebase(pedidoParaFirebase, nuevaVersion);
   }
 
-  // Abrimos WhatsApp
+  // Abrir WhatsApp
   window.open(url, '_blank');
-  
-  // 1. RESETEAMOS LA CANASTA INMEDIATAMENTE
-  carrito = {};
-  recogerEnLocal = false;
-  metodoPago = 'yape';
-  guardar(LS_CARRITO, carrito);
-  
-  // 2. Refrescamos el catálogo y la barra para que se vea vacío de fondo
-  renderCatalogo();
-  renderCartBar();
-  
-  // 3. Mostramos la pantalla de confirmación (que tapa el fondo vacío)
+
+  // === CAMBIO CLAVE: NO borramos el carrito. Marcamos estado 'enviado'. ===
+  estadoPedido = {
+    estado: 'enviado',
+    version: nuevaVersion,
+    ronda: ronda,
+    fecha: new Date().toISOString(),
+    telefono: tel
+  };
+  guardar(LS_PEDIDO_ESTADO, estadoPedido);
+
+  renderBannerPedido();
+
+  // Pantalla de confirmación
   $('drawerTitulo').textContent = 'Pedido enviado';
   $('drawerBody').innerHTML = `
     <div class="confirmacion">
       <div class="confirmacion-icon">✓</div>
-      <h3>¡Pedido listo!</h3>
+      <h3>¡Pedido enviado!</h3>
       <p>Se abrió WhatsApp con el resumen. Envíalo para confirmar tu pedido.</p>
-      <p style="font-size:13px;">${guardadoOk ? '✅ El pedido quedó registrado en el sistema como <b>Pendiente</b>.' : '⚠️ El pedido no se pudo registrar en el sistema automáticamente, pero tu mensaje de WhatsApp llegará bien.'}</p>
+      <p style="font-size:13px;">${guardadoOk ? '✅ El pedido quedó registrado en el sistema.' : '⚠️ El pedido no se pudo registrar automáticamente, pero tu WhatsApp llegará bien.'}</p>
+      <div style="font-size:13px; margin-top:16px; padding:12px 14px; background:var(--miel-suave); border-radius:10px; border:2px solid var(--carbon); text-align:left;">
+        🟡 <strong>Pedido v${nuevaVersion} pendiente de pago.</strong><br>
+        Mientras no lo pagues, puedes <strong>modificar los productos</strong> y reenviarlo cuando quieras.
+      </div>
     </div>
   `;
-  
-  // 4. El botón ahora solo cierra el panel (la canasta ya está en 0)
+
   $('drawerFoot').innerHTML = `
     <a href="${url}" target="_blank" class="btn btn-primary btn-block" style="margin-bottom:10px;">Reabrir WhatsApp</a>
     <button class="btn btn-secondary btn-block" id="btnCerrarConfirmacion">Volver al catálogo</button>
   `;
-  
+
   $('btnCerrarConfirmacion').addEventListener('click', () => {
-    cerrarDrawer(); // Solo cierra el panel, la canasta ya está vacía
+    cerrarDrawer();
+    renderBannerPedido();
   });
 }
 
-function finalizarPedido(){
-  carrito = {};
+async function cancelarPedido(){
+  if (!confirm('¿Cancelar tu pedido de esta ronda?\n\nSe borrará de nuestra lista. Tu canasta se mantiene por si quieres volver a armarla.')) return;
+
+  const tel = soloDigitos(cliente.telefono);
+  const ronda = getRondaId();
+
+  if (typeof window.cancelarPedidoEnFirebase === 'function') {
+    try { await window.cancelarPedidoEnFirebase(tel, ronda); } catch(e){ console.warn(e); }
+  }
+
+  estadoPedido = {
+    estado: 'borrador',
+    version: 0,
+    ronda: null,
+    fecha: null,
+    telefono: null
+  };
+  guardar(LS_PEDIDO_ESTADO, estadoPedido);
+
   recogerEnLocal = false;
   metodoPago = 'yape';
-  guardar(LS_CARRITO, carrito);
+
+  renderBannerPedido();
   cerrarDrawer();
-  renderCatalogo();
-  renderCartBar();
+}
+
+// === NUEVO: Verifica si cambió la ronda o el teléfono → resetea estado ===
+function verificarCambioRonda(){
+  const rondaActual = getRondaId();
+  const telActual = soloDigitos(cliente.telefono);
+
+  // Cambió la ronda → nueva sesión
+  if (estadoPedido.ronda && estadoPedido.ronda !== rondaActual) {
+    estadoPedido = { estado: 'borrador', version: 0, ronda: null, fecha: null, telefono: null };
+    guardar(LS_PEDIDO_ESTADO, estadoPedido);
+    return;
+  }
+
+  // Cambió el teléfono mientras había un pedido activo → reset
+  if (estadoPedido.estado !== 'borrador'
+      && estadoPedido.telefono
+      && telActual
+      && estadoPedido.telefono !== telActual) {
+    estadoPedido = { estado: 'borrador', version: 0, ronda: null, fecha: null, telefono: null };
+    guardar(LS_PEDIDO_ESTADO, estadoPedido);
+  }
+}
+
+// === NUEVO: Sincroniza el estado local con Firestore ===
+async function sincronizarEstadoPedido(restoreItems){
+  const tel = soloDigitos(cliente.telefono);
+  if (!tel || tel.length !== 9) return;
+  const ronda = getRondaId();
+
+  // Si el teléfono local no coincide con el del pedido activo, no sincronizar
+  if (estadoPedido.telefono && estadoPedido.telefono !== tel) return;
+
+  if (typeof window.leerPedidoDeFirebase !== 'function') return;
+
+  let docData = null;
+  try {
+    docData = await window.leerPedidoDeFirebase(tel, ronda);
+  } catch(e){
+    console.warn('[Misti] sync falló:', e);
+    return;
+  }
+
+  if (!docData) {
+    // No hay pedido en Firestore. Si creíamos que había uno, resetear.
+    if (estadoPedido.estado === 'enviado' || estadoPedido.estado === 'confirmado') {
+      if (estadoPedido.ronda === ronda) {
+        estadoPedido = { estado: 'borrador', version: 0, ronda: null, fecha: null, telefono: null };
+        guardar(LS_PEDIDO_ESTADO, estadoPedido);
+        renderBannerPedido();
+      }
+    }
+    return;
+  }
+
+  const estadoFS = docData.estado;
+  const versionFS = docData.version || 1;
+
+  if (estadoFS === 'confirmado') {
+    estadoPedido = {
+      estado: 'confirmado',
+      version: versionFS,
+      ronda: ronda,
+      fecha: docData.fecha || new Date().toISOString(),
+      telefono: tel
+    };
+    guardar(LS_PEDIDO_ESTADO, estadoPedido);
+
+    if (restoreItems && Object.keys(carrito).length === 0 && Array.isArray(docData.items)) {
+      docData.items.forEach(it => { carrito[it.codigo] = { qty: it.cantidad }; });
+      guardar(LS_CARRITO, carrito);
+      renderCatalogo();
+      renderCartBar();
+    }
+  } else {
+    // 'pendiente' u otro estado activo
+    if (estadoPedido.estado === 'borrador') {
+      estadoPedido = {
+        estado: 'enviado',
+        version: versionFS,
+        ronda: ronda,
+        fecha: docData.fecha || new Date().toISOString(),
+        telefono: tel
+      };
+      guardar(LS_PEDIDO_ESTADO, estadoPedido);
+
+      if (restoreItems && Object.keys(carrito).length === 0 && Array.isArray(docData.items)) {
+        docData.items.forEach(it => { carrito[it.codigo] = { qty: it.cantidad }; });
+        guardar(LS_CARRITO, carrito);
+        renderCatalogo();
+        renderCartBar();
+      }
+    } else if (estadoPedido.estado === 'enviado') {
+      // Actualizar versión si Firestore tiene una más nueva (por otra sesión)
+      if (versionFS > estadoPedido.version) {
+        estadoPedido.version = versionFS;
+        guardar(LS_PEDIDO_ESTADO, estadoPedido);
+      }
+    }
+  }
+
+  renderBannerPedido();
+}
+
+// === NUEVO: Pinta el banner de estado debajo del reloj ===
+function renderBannerPedido(){
+  const el = $('bannerPedido');
+  if (!el) return;
+
+  if (estadoPedido.estado === 'borrador') {
+    el.className = 'banner-pedido hidden';
+    el.innerHTML = '';
+    return;
+  }
+
+  const version = estadoPedido.version || 1;
+
+  if (estadoPedido.estado === 'enviado') {
+    el.className = 'banner-pedido enviado';
+    el.innerHTML = `
+      <div class="banner-msg">
+        🟡 Tu pedido de esta ronda está <strong>pendiente de pago</strong> (v${version}). Puedes modificar los productos y reenviar cuando quieras.
+      </div>
+      <div class="banner-actions">
+        <button class="banner-btn" id="btnVerMiPedido">Ver mi pedido</button>
+      </div>
+    `;
+    const btn = $('btnVerMiPedido');
+    if (btn) btn.addEventListener('click', abrirDrawer);
+  } else if (estadoPedido.estado === 'confirmado') {
+    el.className = 'banner-pedido confirmado';
+    el.innerHTML = `
+      <div class="banner-msg">
+        🟢 Tu pedido está <strong>confirmado y pagado</strong>. Llega el domingo. Ya no se puede modificar.
+      </div>
+      <div class="banner-actions">
+        <button class="banner-btn" id="btnVerMiPedido">Ver mi pedido</button>
+      </div>
+    `;
+    const btn = $('btnVerMiPedido');
+    if (btn) btn.addEventListener('click', abrirDrawer);
+  }
 }
 
 function init(){
@@ -2781,8 +3091,10 @@ function init(){
   }
   const ronda = getRondaId();
   document.querySelectorAll('.rondaId').forEach(el => el.textContent = ronda);
+  verificarCambioRonda();
   renderCatalogo();
   renderCartBar();
+  renderBannerPedido();
   $('cartBar').addEventListener('click', abrirDrawer);
   $('cartBar').addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirDrawer(); }
@@ -2797,6 +3109,9 @@ function init(){
   });
   actualizarRelojRonda();
   setInterval(actualizarRelojRonda, 1000);
+
+  // Sync inicial (recupera pedido si se perdió cache o detecta confirmación del admin)
+  setTimeout(() => { sincronizarEstadoPedido(true); }, 900);
 }
 
 init();
@@ -2814,7 +3129,7 @@ init();
 
 <script type="module">
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, setDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, setDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAonWel671riadA7rP7yKTWFy1APCad1LI",
@@ -2828,19 +3143,42 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Guardar el pedido directo a Firestore con ID único basado en fecha y teléfono
-window.guardarPedidoEnFirebase = async function(data) {
+// ID único por cliente por ronda: {telefono}-{ronda}
+// Si el cliente reenvía, se actualiza el mismo documento (nunca duplica)
+window.guardarPedidoEnFirebase = async function(data, version) {
   try {
-    const rondaId = data.ronda; 
-    
-    // Generamos un ID único con la fecha y el teléfono (ej: 20261105-143810-934495196)
-    const ahora = new Date();
-    const fechaStr = ahora.toISOString().replace(/[-:T.]/g, '').slice(0, 14); // 20261105143810
-    const idUnico = `${fechaStr}-${data.cliente.telefono}`; 
+    const rondaId = data.ronda;
+    const idUnico = `${data.cliente.telefono}-${rondaId}`;
+    const docRef = doc(db, "rondas", rondaId, "pedidos", idUnico);
+
+    // Safety: si el admin ya lo marcó 'confirmado', no sobrescribir
+    let historialExistente = [];
+    try {
+      const snap = await getDoc(docRef);
+      if (snap.exists()) {
+        const cur = snap.data();
+        if (cur.estado === 'confirmado') {
+          console.warn('[Misti] Pedido ya confirmado. No se sobrescribe.');
+          return false;
+        }
+        historialExistente = Array.isArray(cur.historial_estados) ? cur.historial_estados : [];
+      }
+    } catch(e){ /* seguimos */ }
+
+    const ahora = new Date().toISOString();
+    const nuevoEvento = {
+      estado: "pendiente",
+      fecha: ahora,
+      motivo: (version || 1) > 1
+        ? `Cliente actualizó el pedido a v${version}`
+        : "Pedido creado desde la web",
+      por: "Cliente"
+    };
 
     const nuevoPedido = {
       pedido_id: idUnico,
       id_ronda: rondaId,
+      version: version || 1,
       cliente_nombre: data.cliente.nombre,
       cliente_celular: data.cliente.telefono,
       direccion: data.cliente.calle + ' ' + data.cliente.numero,
@@ -2857,28 +3195,46 @@ window.guardarPedidoEnFirebase = async function(data) {
       comision_yape: Number(data.comisionYape) || 0,
       estado: "pendiente",
       notas: data.cliente.referencia || '',
-      fecha: new Date().toISOString(),
+      fecha: ahora,
+      updated_at: ahora,
       tipo_cliente: "B2C",
       verificado_por: null,
       descuento_recojo: 0,
       items: data.items,
-      historial_estados: [
-        {
-          estado: "pendiente",
-          fecha: new Date().toISOString(),
-          motivo: "Pedido creado desde la web",
-          por: "Cliente"
-        }
-      ]
+      historial_estados: [...historialExistente, nuevoEvento]
     };
 
-    const docRef = doc(db, "rondas", rondaId, "pedidos", idUnico);
-    await setDoc(docRef, nuevoPedido);
-    
-    console.log("✅ Pedido guardado con ID:", idUnico);
+    await setDoc(docRef, nuevoPedido, { merge: true });
+
+    console.log("✅ Pedido guardado:", idUnico, "· v" + (version || 1));
     return true;
   } catch (error) {
-    console.error("❌ Error guardando pedido en Firebase:", error);
+    console.error("❌ Error guardando pedido:", error);
+    return false;
+  }
+};
+
+// Lee un pedido por teléfono + ronda (para sync)
+window.leerPedidoDeFirebase = async function(tel, ronda) {
+  try {
+    const idUnico = `${tel}-${ronda}`;
+    const snap = await getDoc(doc(db, "rondas", ronda, "pedidos", idUnico));
+    return snap.exists() ? snap.data() : null;
+  } catch(e){
+    console.warn('[Misti] leerPedido error:', e);
+    return null;
+  }
+};
+
+// Cancela (elimina) un pedido por teléfono + ronda
+window.cancelarPedidoEnFirebase = async function(tel, ronda) {
+  try {
+    const idUnico = `${tel}-${ronda}`;
+    await deleteDoc(doc(db, "rondas", ronda, "pedidos", idUnico));
+    console.log("🗑️ Pedido cancelado:", idUnico);
+    return true;
+  } catch(e){
+    console.warn('[Misti] cancelarPedido error:', e);
     return false;
   }
 };
